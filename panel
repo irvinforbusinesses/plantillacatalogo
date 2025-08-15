@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel del Operador</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --color-bg: #E8F0F5;
+  --color-accent: #2F528F;
+  --color-light: #FFFFFF;
+  --color-gray: #F6F8FB;
+  --color-text-dark: #1A1A1A;
+}
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--color-bg);
+  color: var(--color-text-dark);
+  padding: 1rem;
+  max-width: 500px;
+  margin: auto;
+  padding-bottom: 60px; /* espacio para footer */
+}
+header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+h1 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.8rem;
+  color: var(--color-accent);
+}
+nav {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+nav button {
+  flex: 1;
+  background: var(--color-accent);
+  color: white;
+  border: none;
+  padding: 0.75rem;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+}
+nav button.inactive {
+  background: #a0b6e0;
+}
+section {
+  background: var(--color-light);
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-top: 1rem;
+  display: none;
+}
+section.active {
+  display: block;
+}
+label {
+  display: block;
+  margin: 1rem 0 0.5rem;
+  font-weight: 600;
+}
+select, input {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+button.action-btn {
+  margin-top: 1rem;
+  background: var(--color-accent);
+  color: white;
+  border: none;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  width: 100%;
+  font-weight: bold;
+  cursor: pointer;
+}
+.mensaje {
+  margin-top: 1rem;
+  font-size: 0.95rem;
+  padding: 0.75rem;
+  border-radius: 8px;
+  text-align: center;
+  background: #FFF4CC;
+  color: #665c00;
+  border: 1px solid #FFE08A;
+}
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  color: #888;
+  text-align: center;
+  padding: 0.5rem;
+  font-size: 0.8rem;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Panel del Operador</h1>
+  <nav>
+    <button id="btnInicio">Inicio</button>
+    <button id="btnAgregar" class="inactive">Agregar Paquete</button>
+    <button id="btnActualizar" class="inactive">Actualizar Seguimiento</button>
+  </nav>
+</header>
+
+<section id="inicio" class="active">
+  <h2>Recordatorios</h2>
+  <p>No hay recordatorios por el momento.</p>
+</section>
+
+<section id="agregar">
+  <h2>Registrar Paquete</h2>
+  <form id="formAgregar">
+    <label>Nombre del cliente:</label>
+    <input type="text" required>
+    <label>Teléfono:</label>
+    <input type="tel" required>
+    <label>Dirección 1:</label>
+    <input type="text" required>
+    <label>Dirección 2:</label>
+    <input type="text">
+    <label>Ciudad:</label>
+    <input type="text" required>
+    <label>Estado:</label>
+    <input type="text" required>
+    <label>Código Postal:</label>
+    <input type="text" required>
+    <label>Tipo de envío:</label>
+    <select required>
+      <option value="">Seleccionar</option>
+      <option value="aereo">Aéreo</option>
+      <option value="maritimo">Marítimo</option>
+    </select>
+    <button type="submit" class="action-btn">Registrar Paquete</button>
+  </form>
+  <div id="mensajeAgregar" class="mensaje" style="display:none;">
+    Esta plataforma es de prueba, dog. Acción no disponible por el momento.
+  </div>
+</section>
+
+<section id="actualizar">
+  <h2>Actualizar Estado</h2>
+  <form id="formActualizar">
+    <label>Código del paquete:</label>
+    <input type="text" required>
+    <label>Ingrese estado:</label>
+    <input type="text" required>
+    <label>Ingrese fecha:</label>
+    <input type="date" id="fechaEstado" required>
+    <button type="submit" class="action-btn">Actualizar Estado</button>
+  </form>
+  <div id="mensajeActualizar" class="mensaje" style="display:none;">
+    Esta plataforma es de prueba, dog. Acción no disponible por el momento.
+  </div>
+</section>
+
+<footer>
+  &copy; 2025. Irvin Prado. Ascende Superius - Seek Higher Things
+</footer>
+
+<script>
+const btnInicio = document.getElementById('btnInicio');
+const btnAgregar = document.getElementById('btnAgregar');
+const btnActualizar = document.getElementById('btnActualizar');
+const secciones = {
+  inicio: document.getElementById('inicio'),
+  agregar: document.getElementById('agregar'),
+  actualizar: document.getElementById('actualizar')
+};
+
+function mostrarSeccion(nombre) {
+  for (let sec in secciones) {
+    secciones[sec].classList.remove('active');
+  }
+  secciones[nombre].classList.add('active');
+  btnInicio.classList.add('inactive');
+  btnAgregar.classList.add('inactive');
+  btnActualizar.classList.add('inactive');
+  if (nombre === 'inicio') btnInicio.classList.remove('inactive');
+  if (nombre === 'agregar') btnAgregar.classList.remove('inactive');
+  if (nombre === 'actualizar') btnActualizar.classList.remove('inactive');
+}
+
+btnInicio.addEventListener('click', () => mostrarSeccion('inicio'));
+btnAgregar.addEventListener('click', () => mostrarSeccion('agregar'));
+btnActualizar.addEventListener('click', () => mostrarSeccion('actualizar'));
+
+// Fecha actual preseleccionada
+document.getElementById("fechaEstado").value = new Date().toISOString().split('T')[0];
+
+// Eventos formularios
+document.getElementById("formAgregar").addEventListener("submit", function(e){
+  e.preventDefault();
+  this.reset();
+  document.getElementById("mensajeAgregar").style.display = "block";
+  setTimeout(()=>document.getElementById("mensajeAgregar").style.display="none", 3000);
+});
+
+document.getElementById("formActualizar").addEventListener("submit", function(e){
+  e.preventDefault();
+  this.reset();
+  document.getElementById("mensajeActualizar").style.display = "block";
+  setTimeout(()=>document.getElementById("mensajeActualizar").style.display="none", 3000);
+  document.getElementById("fechaEstado").value = new Date().toISOString().split('T')[0];
+});
+</script>
+
+</body>
+</html>
