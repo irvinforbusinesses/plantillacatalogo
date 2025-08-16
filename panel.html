@@ -13,11 +13,8 @@
   --color-gray: #F6F8FB;
   --color-text-dark: #1A1A1A;
 }
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
 body {
   font-family: 'Inter', sans-serif;
   background: var(--color-bg);
@@ -25,12 +22,9 @@ body {
   padding: 1rem;
   max-width: 500px;
   margin: auto;
-  padding-bottom: 60px; /* espacio para footer */
 }
-header {
-  text-align: center;
-  margin-bottom: 2rem;
-}
+
+header { text-align: center; margin-bottom: 2rem; }
 h1 {
   font-family: 'Poppins', sans-serif;
   font-size: 1.8rem;
@@ -52,9 +46,8 @@ nav button {
   border-radius: 8px;
   cursor: pointer;
 }
-nav button.inactive {
-  background: #a0b6e0;
-}
+nav button.inactive { background: #a0b6e0; }
+
 section {
   background: var(--color-light);
   padding: 1.5rem;
@@ -62,9 +55,8 @@ section {
   margin-top: 1rem;
   display: none;
 }
-section.active {
-  display: block;
-}
+section.active { display: block; }
+
 label {
   display: block;
   margin: 1rem 0 0.5rem;
@@ -77,6 +69,8 @@ select, input {
   border: 1px solid #ccc;
   font-size: 1rem;
 }
+input::placeholder { color: #9aa3ad; }
+
 button.action-btn {
   margin-top: 1rem;
   background: var(--color-accent);
@@ -89,6 +83,40 @@ button.action-btn {
   font-weight: bold;
   cursor: pointer;
 }
+
+/* Tooltips: solo al hacer clic (focus) */
+.form-group { position: relative; }
+.tooltip {
+  display: none;
+  position: absolute;
+  left: 0;
+  top: -1.8rem;
+  background: #1f2a44;
+  color: #fff;
+  padding: 0.35rem 0.55rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  white-space: normal;
+  max-width: 95%;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+.form-group:focus-within .tooltip { display: block; }
+
+/* Teléfono con código + input */
+.phone-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+.phone-row select {
+  width: 35%;
+  min-width: 110px;
+}
+.phone-row input {
+  flex: 1;
+}
+
+/* Mensajes */
 .mensaje {
   margin-top: 1rem;
   font-size: 0.95rem;
@@ -99,15 +127,14 @@ button.action-btn {
   color: #665c00;
   border: 1px solid #FFE08A;
 }
+
+/* Footer (no sticky) */
 footer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
   color: #888;
   text-align: center;
-  padding: 0.5rem;
+  padding: 0.8rem 0.5rem;
   font-size: 0.8rem;
+  margin-top: 1.5rem;
 }
 </style>
 </head>
@@ -130,28 +157,52 @@ footer {
 <section id="agregar">
   <h2>Registrar Paquete</h2>
   <form id="formAgregar">
-    <label>Nombre del cliente:</label>
-    <input type="text" required>
-    <label>Teléfono:</label>
-    <input type="tel" required>
-    <label>Dirección 1:</label>
-    <input type="text" required>
-    <label>Dirección 2:</label>
-    <input type="text">
-    <label>Ciudad:</label>
-    <input type="text" required>
-    <label>Estado:</label>
-    <input type="text" required>
-    <label>Código Postal:</label>
-    <input type="text" required>
-    <label>Tipo de envío:</label>
-    <select required>
-      <option value="">Seleccionar</option>
-      <option value="aereo">Aéreo</option>
-      <option value="maritimo">Marítimo</option>
-    </select>
+    <!-- Nombre -->
+    <div class="form-group">
+      <label for="nombre">Nombre del cliente</label>
+      <div class="tooltip">Ingresa un nombre y un apellido</div>
+      <input type="text" id="nombre" name="nombre" placeholder="Ej: Lester Gamez" required>
+    </div>
+
+    <!-- Teléfono (código + dígitos) -->
+    <div class="form-group">
+      <label for="telefonoDigits">Teléfono</label>
+      <div class="tooltip">Selecciona (505) o (1) y luego ingresa de 8 a 10 dígitos</div>
+      <div class="phone-row">
+        <select id="telCode" name="telCode" aria-label="Código de país" required>
+          <option value="(505)">(505)</option>
+          <option value="(1)">(1)</option>
+        </select>
+        <input type="tel"
+               id="telefonoDigits"
+               name="telefonoDigits"
+               placeholder="Ej: 12345678"
+               inputmode="numeric"
+               pattern="[0-9]{8,10}"
+               title="Ingresa solo números (8 a 10 dígitos)"
+               required>
+      </div>
+    </div>
+
+    <!-- Peso -->
+    <div class="form-group">
+      <label for="peso">Peso en libras</label>
+      <div class="tooltip">Ingresa solo valores numéricos</div>
+      <input type="number" id="peso" name="peso" placeholder="Ej: 1.0" step="0.01" min="0" required>
+    </div>
+
+    <!-- Tipo de envío -->
+    <div class="form-group">
+      <label for="tipo">Tipo de envío</label>
+      <select id="tipo" name="tipo" required>
+        <option value="aereo">Aéreo</option>
+        <option value="maritimo">Marítimo</option>
+      </select>
+    </div>
+
     <button type="submit" class="action-btn">Registrar Paquete</button>
   </form>
+
   <div id="mensajeAgregar" class="mensaje" style="display:none;">
     Esta plataforma es de prueba, dog. Acción no disponible por el momento.
   </div>
@@ -160,14 +211,53 @@ footer {
 <section id="actualizar">
   <h2>Actualizar Estado</h2>
   <form id="formActualizar">
-    <label>Código del paquete:</label>
-    <input type="text" required>
-    <label>Ingrese estado:</label>
-    <input type="text" required>
-    <label>Ingrese fecha:</label>
-    <input type="date" id="fechaEstado" required>
+    <!-- Nombre -->
+    <div class="form-group">
+      <label for="nombreSeg">Nombre del cliente</label>
+      <div class="tooltip">Ingresa un nombre y un apellido</div>
+      <input type="text" id="nombreSeg" name="nombreSeg" placeholder="Ej: Lester Gamez" required>
+    </div>
+
+    <!-- Teléfono (código + dígitos) -->
+    <div class="form-group">
+      <label for="telefonoSegDigits">Teléfono</label>
+      <div class="tooltip">Selecciona (505) o (1) y luego ingresa de 8 a 10 dígitos</div>
+      <div class="phone-row">
+        <select id="telCodeSeg" name="telCodeSeg" aria-label="Código de país" required>
+          <option value="(505)">(505)</option>
+          <option value="(1)">(1)</option>
+        </select>
+        <input type="tel"
+               id="telefonoSegDigits"
+               name="telefonoSegDigits"
+               placeholder="Ej: 12345678"
+               inputmode="numeric"
+               pattern="[0-9]{8,10}"
+               title="Ingresa solo números (8 a 10 dígitos)"
+               required>
+      </div>
+    </div>
+
+    <!-- Estado -->
+    <div class="form-group">
+      <label for="estado">Estado del paquete</label>
+      <select id="estado" name="estado" required>
+        <option value="recibido">Recibido</option>
+        <option value="en_transito">En tránsito</option>
+        <option value="en_aduana">En Aduana</option>
+        <option value="listo_recoger">Listo Para Recoger</option>
+      </select>
+    </div>
+
+    <!-- Fecha -->
+    <div class="form-group">
+      <label for="fechaEstado">Ingrese fecha</label>
+      <input type="date" id="fechaEstado" name="fechaEstado" required>
+    </div>
+
     <button type="submit" class="action-btn">Actualizar Estado</button>
   </form>
+
   <div id="mensajeActualizar" class="mensaje" style="display:none;">
     Esta plataforma es de prueba, dog. Acción no disponible por el momento.
   </div>
@@ -188,10 +278,9 @@ const secciones = {
 };
 
 function mostrarSeccion(nombre) {
-  for (let sec in secciones) {
-    secciones[sec].classList.remove('active');
-  }
+  for (let sec in secciones) secciones[sec].classList.remove('active');
   secciones[nombre].classList.add('active');
+
   btnInicio.classList.add('inactive');
   btnAgregar.classList.add('inactive');
   btnActualizar.classList.add('inactive');
@@ -207,7 +296,7 @@ btnActualizar.addEventListener('click', () => mostrarSeccion('actualizar'));
 // Fecha actual preseleccionada
 document.getElementById("fechaEstado").value = new Date().toISOString().split('T')[0];
 
-// Eventos formularios
+// Formularios (modo demo)
 document.getElementById("formAgregar").addEventListener("submit", function(e){
   e.preventDefault();
   this.reset();
