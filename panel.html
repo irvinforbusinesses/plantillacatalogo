@@ -40,20 +40,47 @@ textarea { resize: vertical; }
 
 button.action-btn { margin-top: 1rem; background: var(--color-accent); color: white; border: none; padding: 0.75rem; font-size: 1rem; border-radius: 8px; width: 100%; font-weight: bold; cursor: pointer; }
 
-/* Recordatorios */
-.recordatorio-item { background: var(--color-gray); padding: 0.75rem; border-radius: 6px; margin-bottom: 0.75rem; display: flex; justify-content: space-between; align-items: center; }
-.recordatorio-info { flex: 1; }
-.btnEliminar { background: #f56565; color: white; border: none; padding: 0.25rem 0.4rem; border-radius: 4px; font-size: 0.7rem; cursor: pointer; }
+.recordatorio-item {
+  background: var(--color-gray);
+  padding: 0.75rem;
+  border-radius: 16px; /* esquinas más redondeadas */
+  margin-bottom: 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden; /* para que la animación no se desborde */
+}
+
+.recordatorio-info {
+  flex: 1;
+  border-radius: 12px; /* parpadeo con esquinas suaves */
+  padding: 0.4rem; /* opcional, para resaltar el área parpadeante */
+}
+  .btnEliminar { 
+  background: #f56565; 
+  color: white; 
+  border: none; 
+  padding: 0.35rem 0.6rem; /* tamaño más cómodo */
+  border-radius: 12px;      /* esquinas redondeadas */
+  font-size: 0.75rem;
+  cursor: pointer; 
+  transition: background 0.2s ease; /* hover suave */
+}
+.btnEliminar:hover {
+  background: #ff6b6b; /* color más claro al pasar el mouse */
+}
 
 /* Pop-ups */
 .popUp, .confirmPop { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--color-light); padding: 1rem; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 999; }
 .popUp button, .confirmPop button { margin-top: 0.5rem; width: 100%; }
 
 /* Animación parpadeo */
-@keyframes parpadeo { 
-  0% { background-color: var(--color-light); color: var(--color-text-dark); } 
-  50% { background-color: var(--color-accent); color: #fff; } 
-  100% { background-color: var(--color-light); color: var(--color-text-dark); } 
+@keyframes parpadeo {
+  0% { background-color: var(--color-light); color: var(--color-text-dark); transform: scale(1); }
+  25% { background-color: #e0f0ff; color: var(--color-accent); transform: scale(1.02); }
+  50% { background-color: var(--color-accent); color: #fff; transform: scale(1.05); }
+  75% { background-color: #e0f0ff; color: var(--color-accent); transform: scale(1.02); }
+  100% { background-color: var(--color-light); color: var(--color-text-dark); transform: scale(1); }
 }
 
 /* Tooltips estilo burbuja blanca */
