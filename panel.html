@@ -25,293 +25,280 @@ body {
 }
 
 header { text-align: center; margin-bottom: 2rem; }
-h1 {
-  font-family: 'Poppins', sans-serif;
-  font-size: 1.8rem;
-  color: var(--color-accent);
-}
-nav {
-  display: flex;
-  justify-content: center;
-  gap: 0.5rem;
-  margin-top: 1rem;
-}
-nav button {
-  flex: 1;
-  background: var(--color-accent);
-  color: white;
-  border: none;
-  padding: 0.75rem;
-  font-weight: bold;
-  border-radius: 8px;
-  cursor: pointer;
-}
+h1 { font-family: 'Poppins', sans-serif; font-size: 1.8rem; color: var(--color-accent); }
+nav { display: flex; justify-content: center; gap: 0.5rem; margin-top: 1rem; }
+nav button { flex: 1; background: var(--color-accent); color: white; border: none; padding: 0.75rem; font-weight: bold; border-radius: 8px; cursor: pointer; }
 nav button.inactive { background: #a0b6e0; }
 
-section {
-  background: var(--color-light);
-  padding: 1.5rem;
-  border-radius: 12px;
-  margin-top: 1rem;
-  display: none;
-}
+section { background: var(--color-light); padding: 1.5rem; border-radius: 12px; margin-top: 1rem; display: none; }
 section.active { display: block; }
 
-label {
-  display: block;
-  margin: 1rem 0 0.5rem;
-  font-weight: 600;
-}
-select, input {
-  width: 100%;
-  padding: 0.75rem;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  font-size: 1rem;
-}
+label { display: block; margin: 1rem 0 0.5rem; font-weight: 600; }
+input, select, textarea { width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #ccc; font-size: 1rem; }
 input::placeholder { color: #9aa3ad; }
+textarea { resize: vertical; }
 
-button.action-btn {
-  margin-top: 1rem;
-  background: var(--color-accent);
-  color: white;
-  border: none;
-  padding: 0.75rem;
-  font-size: 1rem;
-  border-radius: 8px;
-  width: 100%;
-  font-weight: bold;
-  cursor: pointer;
+button.action-btn { margin-top: 1rem; background: var(--color-accent); color: white; border: none; padding: 0.75rem; font-size: 1rem; border-radius: 8px; width: 100%; font-weight: bold; cursor: pointer; }
+
+/* Recordatorios */
+.recordatorio-item { background: var(--color-gray); padding: 0.75rem; border-radius: 6px; margin-bottom: 0.75rem; display: flex; justify-content: space-between; align-items: center; }
+.recordatorio-info { flex: 1; }
+.btnEliminar { background: #f56565; color: white; border: none; padding: 0.25rem 0.4rem; border-radius: 4px; font-size: 0.7rem; cursor: pointer; }
+
+/* Pop-ups */
+.popUp, .confirmPop { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--color-light); padding: 1rem; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 999; }
+.popUp button, .confirmPop button { margin-top: 0.5rem; width: 100%; }
+
+/* Animación parpadeo */
+@keyframes parpadeo { 
+  0% { background-color: var(--color-light); color: var(--color-text-dark); } 
+  50% { background-color: var(--color-accent); color: #fff; } 
+  100% { background-color: var(--color-light); color: var(--color-text-dark); } 
 }
 
-/* Tooltips: solo al hacer clic (focus) */
+/* Tooltips estilo burbuja blanca */
 .form-group { position: relative; }
-.tooltip {
-  display: none;
-  position: absolute;
-  left: 0;
-  top: -1.8rem;
-  background: #1f2a44;
-  color: #fff;
-  padding: 0.35rem 0.55rem;
-  border-radius: 6px;
-  font-size: 0.8rem;
-  white-space: normal;
-  max-width: 95%;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-}
+.tooltip { display: none; position: absolute; left: 0; top: -2rem; background: var(--color-light); color: var(--color-text-dark); padding: 0.35rem 0.55rem; border-radius: 6px; font-size: 0.8rem; white-space: normal; max-width: 95%; box-shadow: 0 4px 12px rgba(0,0,0,0.12); border: 1px solid #ccc; }
 .form-group:focus-within .tooltip { display: block; }
 
-/* Teléfono con código + input */
-.phone-row {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-}
-.phone-row select {
-  width: 35%;
-  min-width: 110px;
-}
-.phone-row input {
-  flex: 1;
-}
+/* Teléfono */
+.phone-row { display: flex; gap: 0.5rem; align-items: center; }
+.phone-row select { width: 35%; min-width: 110px; }
+.phone-row input { flex: 1; }
 
 /* Mensajes */
-.mensaje {
-  margin-top: 1rem;
-  font-size: 0.95rem;
-  padding: 0.75rem;
-  border-radius: 8px;
-  text-align: center;
-  background: #FFF4CC;
-  color: #665c00;
-  border: 1px solid #FFE08A;
-}
+.mensaje { margin-top: 1rem; font-size: 0.95rem; padding: 0.75rem; border-radius: 8px; text-align: center; background: #FFF4CC; color: #665c00; border: 1px solid #FFE08A; }
 
-/* Footer (no sticky) */
-footer {
-  color: #888;
-  text-align: center;
-  padding: 0.8rem 0.5rem;
-  font-size: 0.8rem;
-  margin-top: 1.5rem;
-}
+/* Footer */
+footer { color: #888; text-align: center; padding: 0.8rem 0.5rem; font-size: 0.8rem; margin-top: 1.5rem; }
 </style>
 </head>
 <body>
 
 <header>
-  <h1>Panel del Operador</h1>
-  <nav>
-    <button id="btnInicio">Inicio</button>
-    <button id="btnAgregar" class="inactive">Agregar Paquete</button>
-    <button id="btnActualizar" class="inactive">Actualizar Seguimiento</button>
-  </nav>
+<h1>Panel del Operador</h1>
+<nav>
+<button id="btnInicio">Inicio</button>
+<button id="btnAgregar" class="inactive">Agregar Paquete</button>
+<button id="btnActualizar" class="inactive">Actualizar Seguimiento</button>
+</nav>
 </header>
 
+<!-- Inicio: Recordatorios -->
 <section id="inicio" class="active">
-  <h2>Recordatorios</h2>
+<h2>Inicio</h2>
+<div id="listaRecordatorios">
   <p>No hay recordatorios por el momento.</p>
+</div>
+<button id="btnAgregarRecord" class="action-btn">Agregar Recordatorio</button>
+
+<!-- Pop-up Formulario -->
+<div class="popUp" id="popFormRecord">
+<h3>Agregar Recordatorio</h3>
+<form id="formRecord">
+  <label for="tituloRecord">Título del recordatorio</label>
+  <input type="text" id="tituloRecord" placeholder="Ej: Llamada importante" required>
+  <label for="descRecord">Descripción</label>
+  <textarea id="descRecord" rows="2" placeholder="Ej: Llamar a cliente, enviar factura..." required></textarea>
+  <label for="fechaRecord">Fecha límite</label>
+  <input type="date" id="fechaRecord" required>
+  <button type="submit" class="action-btn">Agregar</button>
+  <button type="button" id="cerrarPopForm" class="action-btn" style="background:#888;">Cancelar</button>
+</form>
+</div>
+
+<!-- Pop-up Confirmación Agregado -->
+<div class="confirmPop" id="popConfirm">
+<p>Recordatorio agregado</p>
+<button id="cerrarPopConfirm" class="action-btn">Cerrar</button>
+</div>
+
+<!-- Pop-up Confirmación Eliminar -->
+<div class="confirmPop" id="popEliminarConfirm">
+<p>¿Desea eliminar este recordatorio?</p>
+<button id="btnConfirmEliminar" class="action-btn" style="background:#f56565;">Eliminar</button>
+<button id="btnCancelarEliminar" class="action-btn" style="background:#888;">Cancelar</button>
+</div>
 </section>
 
+<!-- Agregar Paquete -->
 <section id="agregar">
-  <h2>Registrar Paquete</h2>
-  <form id="formAgregar">
-    <!-- Nombre -->
-    <div class="form-group">
-      <label for="nombre">Nombre del cliente</label>
-      <div class="tooltip">Ingresa un nombre y un apellido</div>
-      <input type="text" id="nombre" name="nombre" placeholder="Ej: Lester Gamez" required>
-    </div>
-
-    <!-- Teléfono (código + dígitos) -->
-    <div class="form-group">
-      <label for="telefonoDigits">Teléfono</label>
-      <div class="tooltip">Selecciona (505) o (1) y luego ingresa de 8 a 10 dígitos</div>
-      <div class="phone-row">
-        <select id="telCode" name="telCode" aria-label="Código de país" required>
-          <option value="(505)">(505)</option>
-          <option value="(1)">(1)</option>
-        </select>
-        <input type="tel"
-               id="telefonoDigits"
-               name="telefonoDigits"
-               placeholder="Ej: 12345678"
-               inputmode="numeric"
-               pattern="[0-9]{8,10}"
-               title="Ingresa solo números (8 a 10 dígitos)"
-               required>
-      </div>
-    </div>
-
-    <!-- Peso -->
-    <div class="form-group">
-      <label for="peso">Peso en libras</label>
-      <div class="tooltip">Ingresa solo valores numéricos</div>
-      <input type="number" id="peso" name="peso" placeholder="Ej: 1.0" step="0.01" min="0" required>
-    </div>
-
-    <!-- Tipo de envío -->
-    <div class="form-group">
-      <label for="tipo">Tipo de envío</label>
-      <select id="tipo" name="tipo" required>
-        <option value="aereo">Aéreo</option>
-        <option value="maritimo">Marítimo</option>
-      </select>
-    </div>
-
-    <button type="submit" class="action-btn">Registrar Paquete</button>
-  </form>
-
-  <div id="mensajeAgregar" class="mensaje" style="display:none;">
-    Esta plataforma es de prueba, dog. Acción no disponible por el momento.
+<h2>Registrar Paquete</h2>
+<form id="formAgregar">
+  <div class="form-group">
+    <label for="nombre">Nombre del cliente</label>
+    <div class="tooltip">Ingresa un nombre y un apellido</div>
+    <input type="text" id="nombre" name="nombre" placeholder="Ej: Lester Gamez" required>
   </div>
+  <div class="form-group">
+    <label for="telefonoDigits">Teléfono</label>
+    <div class="tooltip">Selecciona (505) o (1) y luego ingresa de 8 a 10 dígitos</div>
+    <div class="phone-row">
+      <select id="telCode" name="telCode" required>
+        <option value="(505)">(505)</option>
+        <option value="(1)">(1)</option>
+      </select>
+      <input type="tel" id="telefonoDigits" name="telefonoDigits" placeholder="Ej: 12345678"
+             inputmode="numeric" pattern="[0-9]{8,10}" title="Ingresa solo números (8 a 10 dígitos)" required>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="tipo">Tipo de envío</label>
+    <select id="tipo" name="tipo" required>
+      <option value="aereo">Aéreo</option>
+      <option value="maritimo">Marítimo</option>
+    </select>
+  </div>
+  <button type="submit" class="action-btn">Registrar Paquete</button>
+</form>
+<div id="mensajeAgregar" class="mensaje" style="display:none;">
+Esta plataforma es de prueba, dog. Acción no disponible por el momento.
+</div>
 </section>
 
+<!-- Actualizar Seguimiento -->
 <section id="actualizar">
-  <h2>Actualizar Estado</h2>
-  <form id="formActualizar">
-    <!-- Nombre -->
-    <div class="form-group">
-      <label for="nombreSeg">Nombre del cliente</label>
-      <div class="tooltip">Ingresa un nombre y un apellido</div>
-      <input type="text" id="nombreSeg" name="nombreSeg" placeholder="Ej: Lester Gamez" required>
-    </div>
-
-    <!-- Teléfono (código + dígitos) -->
-    <div class="form-group">
-      <label for="telefonoSegDigits">Teléfono</label>
-      <div class="tooltip">Selecciona (505) o (1) y luego ingresa de 8 a 10 dígitos</div>
-      <div class="phone-row">
-        <select id="telCodeSeg" name="telCodeSeg" aria-label="Código de país" required>
-          <option value="(505)">(505)</option>
-          <option value="(1)">(1)</option>
-        </select>
-        <input type="tel"
-               id="telefonoSegDigits"
-               name="telefonoSegDigits"
-               placeholder="Ej: 12345678"
-               inputmode="numeric"
-               pattern="[0-9]{8,10}"
-               title="Ingresa solo números (8 a 10 dígitos)"
-               required>
-      </div>
-    </div>
-
-    <!-- Estado -->
-    <div class="form-group">
-      <label for="estado">Estado del paquete</label>
-      <select id="estado" name="estado" required>
-        <option value="recibido">Recibido</option>
-        <option value="en_transito">En tránsito</option>
-        <option value="en_aduana">En Aduana</option>
-        <option value="listo_recoger">Listo Para Recoger</option>
-      </select>
-    </div>
-
-    <!-- Fecha -->
-    <div class="form-group">
-      <label for="fechaEstado">Ingrese fecha</label>
-      <input type="date" id="fechaEstado" name="fechaEstado" required>
-    </div>
-
-    <button type="submit" class="action-btn">Actualizar Estado</button>
-  </form>
-
-  <div id="mensajeActualizar" class="mensaje" style="display:none;">
-    Esta plataforma es de prueba, dog. Acción no disponible por el momento.
+<h2>Actualizar Estado</h2>
+<form id="formActualizar">
+  <div class="form-group">
+    <label for="nombreSeg">Nombre del cliente</label>
+    <div class="tooltip">Ingresa un nombre y un apellido</div>
+    <input type="text" id="nombreSeg" name="nombreSeg" placeholder="Ej: Lester Gamez" required>
   </div>
+  <div class="form-group">
+    <label for="telefonoSegDigits">Teléfono</label>
+    <div class="tooltip">Selecciona (505) o (1) y luego ingresa de 8 a 10 dígitos</div>
+    <div class="phone-row">
+      <select id="telCodeSeg" name="telCodeSeg" required>
+        <option value="(505)">(505)</option>
+        <option value="(1)">(1)</option>
+      </select>
+      <input type="tel" id="telefonoSegDigits" name="telefonoSegDigits" placeholder="Ej: 12345678"
+             inputmode="numeric" pattern="[0-9]{8,10}" title="Ingresa solo números (8 a 10 dígitos)" required>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="estado">Estado del paquete</label>
+    <select id="estado" name="estado" required>
+      <option value="recibido">Recibido</option>
+      <option value="en_transito">En tránsito</option>
+      <option value="en_aduana">En Aduana</option>
+      <option value="listo_recoger">Listo Para Recoger</option>
+    </select>
+  </div>
+<div class="form-group">
+  <label for="pesoSeg">Peso en libras</label>
+  <input type="number" id="pesoSeg" name="pesoSeg" step="0.1" min="0" placeholder="Ej: 1.0">
+</div>
+  <div class="form-group">
+    <label for="fechaEstado">Ingrese fecha</label>
+    <input type="date" id="fechaEstado" name="fechaEstado" required>
+  </div>
+  <button type="submit" class="action-btn">Actualizar Estado</button>
+</form>
+<div id="mensajeActualizar" class="mensaje" style="display:none;">
+Esta plataforma es de prueba, dog. Acción no disponible por el momento.
+</div>
 </section>
 
 <footer>
-  &copy; 2025. Irvin Prado. Ascende Superius - Seek Higher Things
+&copy; 2025. Irvin Prado. Ascende Superius - Seek Higher Things
 </footer>
 
 <script>
+// Navegación
 const btnInicio = document.getElementById('btnInicio');
 const btnAgregar = document.getElementById('btnAgregar');
 const btnActualizar = document.getElementById('btnActualizar');
-const secciones = {
-  inicio: document.getElementById('inicio'),
-  agregar: document.getElementById('agregar'),
-  actualizar: document.getElementById('actualizar')
-};
-
-function mostrarSeccion(nombre) {
-  for (let sec in secciones) secciones[sec].classList.remove('active');
+const secciones = { inicio: document.getElementById('inicio'), agregar: document.getElementById('agregar'), actualizar: document.getElementById('actualizar') };
+function mostrarSeccion(nombre){
+  for(let sec in secciones) secciones[sec].classList.remove('active');
   secciones[nombre].classList.add('active');
-
-  btnInicio.classList.add('inactive');
-  btnAgregar.classList.add('inactive');
-  btnActualizar.classList.add('inactive');
-  if (nombre === 'inicio') btnInicio.classList.remove('inactive');
-  if (nombre === 'agregar') btnAgregar.classList.remove('inactive');
-  if (nombre === 'actualizar') btnActualizar.classList.remove('inactive');
+  btnInicio.classList.add('inactive'); btnAgregar.classList.add('inactive'); btnActualizar.classList.add('inactive');
+  if(nombre==='inicio') btnInicio.classList.remove('inactive');
+  if(nombre==='agregar') btnAgregar.classList.remove('inactive');
+  if(nombre==='actualizar') btnActualizar.classList.remove('inactive');
 }
-
-btnInicio.addEventListener('click', () => mostrarSeccion('inicio'));
-btnAgregar.addEventListener('click', () => mostrarSeccion('agregar'));
-btnActualizar.addEventListener('click', () => mostrarSeccion('actualizar'));
+btnInicio.addEventListener('click',()=>mostrarSeccion('inicio'));
+btnAgregar.addEventListener('click',()=>mostrarSeccion('agregar'));
+btnActualizar.addEventListener('click',()=>mostrarSeccion('actualizar'));
 
 // Fecha actual preseleccionada
 document.getElementById("fechaEstado").value = new Date().toISOString().split('T')[0];
 
-// Formularios (modo demo)
+// Formularios demo
 document.getElementById("formAgregar").addEventListener("submit", function(e){
-  e.preventDefault();
-  this.reset();
-  document.getElementById("mensajeAgregar").style.display = "block";
-  setTimeout(()=>document.getElementById("mensajeAgregar").style.display="none", 3000);
+  e.preventDefault(); this.reset(); document.getElementById("mensajeAgregar").style.display="block";
+  setTimeout(()=>document.getElementById("mensajeAgregar").style.display="none",3000);
 });
-
 document.getElementById("formActualizar").addEventListener("submit", function(e){
-  e.preventDefault();
-  this.reset();
-  document.getElementById("mensajeActualizar").style.display = "block";
-  setTimeout(()=>document.getElementById("mensajeActualizar").style.display="none", 3000);
+  e.preventDefault(); this.reset(); document.getElementById("mensajeActualizar").style.display="block";
+  setTimeout(()=>document.getElementById("mensajeActualizar").style.display="none",3000);
   document.getElementById("fechaEstado").value = new Date().toISOString().split('T')[0];
 });
-</script>
 
+// RECORDATORIOS
+const listDiv = document.getElementById('listaRecordatorios');
+const formR = document.getElementById('formRecord');
+const popForm = document.getElementById('popFormRecord');
+const popConfirm = document.getElementById('popConfirm');
+const popEliminarConfirm = document.getElementById('popEliminarConfirm');
+const btnAgregarRecord = document.getElementById('btnAgregarRecord');
+const cerrarPopForm = document.getElementById('cerrarPopForm');
+const cerrarPopConfirm = document.getElementById('cerrarPopConfirm');
+const btnConfirmEliminar = document.getElementById('btnConfirmEliminar');
+const btnCancelarEliminar = document.getElementById('btnCancelarEliminar');
+const fechaInput = document.getElementById('fechaRecord');
+let indexEliminar=null;
+
+fechaInput.value = new Date().toISOString().split('T')[0];
+
+function cargarRecord(){
+  const arr = JSON.parse(localStorage.getItem('recordatorios')||'[]');
+  const hoy = new Date().toISOString().split('T')[0];
+  listDiv.innerHTML='';
+  const activos = arr.filter(r=>r.fecha>=hoy);
+  if(!activos.length){ listDiv.innerHTML='<p>No hay recordatorios por el momento.</p>'; return;}
+  activos.forEach((r,index)=>{
+    const div = document.createElement('div');
+    div.classList.add('recordatorio-item');
+    div.innerHTML = `<div class="recordatorio-info"><strong>${r.titulo}</strong><br>${r.desc}<br><small>${r.fecha}</small></div>
+    <button class="btnEliminar" data-index="${index}">X</button>`;
+    listDiv.appendChild(div);
+    if(r.fecha===hoy){ div.querySelector('.recordatorio-info').style.animation="parpadeo 1.2s infinite"; }
+  });
+}
+cargarRecord();
+
+btnAgregarRecord.addEventListener('click', ()=>{ popForm.style.display='block'; });
+cerrarPopForm.addEventListener('click', ()=>{ popForm.style.display='none'; });
+
+formR.addEventListener('submit', e=>{
+  e.preventDefault();
+  const arr = JSON.parse(localStorage.getItem('recordatorios')||'[]');
+  arr.push({titulo:document.getElementById('tituloRecord').value, desc:document.getElementById('descRecord').value, fecha:fechaInput.value});
+  localStorage.setItem('recordatorios', JSON.stringify(arr));
+  formR.reset(); fechaInput.value=new Date().toISOString().split('T')[0];
+  popForm.style.display='none'; popConfirm.style.display='block';
+  cargarRecord();
+});
+cerrarPopConfirm.addEventListener('click', ()=>{ popConfirm.style.display='none'; });
+
+listDiv.addEventListener('click', e=>{
+  if(e.target.classList.contains('btnEliminar')){
+    indexEliminar=e.target.dataset.index;
+    popEliminarConfirm.style.display='block';
+  }
+});
+btnCancelarEliminar.addEventListener('click', ()=>{ popEliminarConfirm.style.display='none'; indexEliminar=null; });
+btnConfirmEliminar.addEventListener('click', ()=>{
+  const arr = JSON.parse(localStorage.getItem('recordatorios')||'[]');
+  arr.splice(indexEliminar,1);
+  localStorage.setItem('recordatorios', JSON.stringify(arr));
+  cargarRecord();
+  popEliminarConfirm.style.display='none';
+  indexEliminar=null;
+});
+</script>
 </body>
 </html>
