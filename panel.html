@@ -98,6 +98,31 @@ button.action-btn { margin-top: 1rem; background: var(--color-accent); color: wh
 
 /* Footer */
 footer { color: #888; text-align: center; padding: 0.8rem 0.5rem; font-size: 0.8rem; margin-top: 1.5rem; }
+  /* Optimización pop-up para móviles */
+@media (max-width: 600px) {
+  .popUp {
+    width: 90%;               /* ocupa casi todo el ancho de la pantalla */
+    max-width: 400px;         /* no demasiado grande en pantallas más anchas */
+    padding: 1.5rem;          /* más espacio interior */
+    border-radius: 16px;      /* bordes redondeados */
+  }
+
+  .popUp form input,
+  .popUp form textarea,
+  .popUp form select,
+  .popUp button {
+    font-size: 1rem;          /* más fácil de leer y tocar */
+  }
+
+  .popUp form label {
+    font-size: 0.95rem;       /* etiquetas más legibles */
+  }
+
+  .popUp form textarea {
+    min-height: 80px;         /* más cómodo al escribir */
+  }
+}
+
 </style>
 </head>
 <body>
