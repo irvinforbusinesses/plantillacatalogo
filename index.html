@@ -3,314 +3,229 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Panel del Operador</title>
+<title>Seguimiento y Cotización</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@600&display=swap" rel="stylesheet">
 <style>
 :root {
-  --color-bg: #E8F0F5;
-  --color-accent: #2F528F;
-  --color-light: #FFFFFF;
-  --color-gray: #F6F8FB;
-  --color-text-dark: #1A1A1A;
+--color-bg: #E8F0F5;
+--color-accent: #2F528F;
+--color-light: #FFFFFF;
+--color-gray: #F6F8FB;
+--color-text-dark: #1A1A1A;
 }
-* { box-sizing: border-box; margin: 0; padding: 0; }
-
+* {
+box-sizing: border-box;
+margin: 0;
+padding: 0;
+}
 body {
-  font-family: 'Inter', sans-serif;
-  background: var(--color-bg);
-  color: var(--color-text-dark);
-  padding: 1rem;
-  max-width: 500px;
-  margin: auto;
+font-family: 'Inter', sans-serif;
+background: var(--color-bg);
+color: var(--color-text-dark);
+padding: 1rem;
+max-width: 500px;
+margin: auto;
+padding-bottom: 60px; /* espacio para el footer */
 }
-
-header { text-align: center; margin-bottom: 2rem; }
+header {
+text-align: center;
+margin-bottom: 2rem;
+}
 h1 {
-  font-family: 'Poppins', sans-serif;
-  font-size: 1.8rem;
-  color: var(--color-accent);
+font-family: 'Poppins', sans-serif;
+font-size: 1.8rem;
+color: var(--color-accent);
 }
 nav {
-  display: flex;
-  justify-content: center;
-  gap: 0.5rem;
-  margin-top: 1rem;
+display: flex;
+justify-content: center;
+gap: 0.5rem;
+margin-top: 1rem;
 }
 nav button {
-  flex: 1;
-  background: var(--color-accent);
-  color: white;
-  border: none;
-  padding: 0.75rem;
-  font-weight: bold;
-  border-radius: 8px;
-  cursor: pointer;
+flex: 1;
+background: var(--color-accent);
+color: white;
+border: none;
+padding: 0.75rem;
+font-weight: bold;
+border-radius: 8px;
+cursor: pointer;
 }
-nav button.inactive { background: #a0b6e0; }
-
+nav button.inactive {
+background: #a0b6e0;
+}
 section {
-  background: var(--color-light);
-  padding: 1.5rem;
-  border-radius: 12px;
-  margin-top: 1rem;
-  display: none;
+background: var(--color-light);
+padding: 1.5rem;
+border-radius: 12px;
+margin-top: 1rem;
+display: none;
 }
-section.active { display: block; }
+section.active {
+display: block;
+}
 
+/* Sección de bienvenida */
+#inicio {
+text-align: center;
+padding: 2rem 1rem;
+}
+#inicio h2 {
+font-family: 'Poppins', sans-serif;
+font-size: 2rem;
+margin-bottom: 1rem;
+color: var(--color-accent);
+}
+#inicio p {
+font-size: 1.1rem;
+line-height: 1.6;
+white-space: pre-line;
+}
+
+/* Inputs mobile-friendly */
 label {
-  display: block;
-  margin: 1rem 0 0.5rem;
-  font-weight: 600;
+display: block;
+margin: 1rem 0 0.5rem;
+font-weight: 600;
 }
 select, input {
-  width: 100%;
-  padding: 0.75rem;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  font-size: 1rem;
+width: 100%;
+padding: 0.75rem;
+border-radius: 8px;
+border: 1px solid #ccc;
+font-size: 1rem;
 }
-input::placeholder { color: #9aa3ad; }
-
-button.action-btn {
-  margin-top: 1rem;
-  background: var(--color-accent);
-  color: white;
-  border: none;
-  padding: 0.75rem;
-  font-size: 1rem;
-  border-radius: 8px;
-  width: 100%;
-  font-weight: bold;
-  cursor: pointer;
+button.calc-btn {
+margin-top: 1rem;
+background: var(--color-accent);
+color: white;
+border: none;
+padding: 0.75rem;
+font-size: 1rem;
+border-radius: 8px;
+width: 100%;
+font-weight: bold;
+cursor: pointer;
 }
-
-/* Tooltips: solo al hacer clic (focus) */
-.form-group { position: relative; }
-.tooltip {
-  display: none;
-  position: absolute;
-  left: 0;
-  top: -1.8rem;
-  background: #1f2a44;
-  color: #fff;
-  padding: 0.35rem 0.55rem;
-  border-radius: 6px;
-  font-size: 0.8rem;
-  white-space: normal;
-  max-width: 95%;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-}
-.form-group:focus-within .tooltip { display: block; }
-
-/* Teléfono con código + input */
-.phone-row {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-}
-.phone-row select {
-  width: 35%;
-  min-width: 110px;
-}
-.phone-row input {
-  flex: 1;
+.resultado {
+margin-top: 1rem;
+font-size: 1.1rem;
+font-weight: 600;
 }
 
-/* Mensajes */
-.mensaje {
-  margin-top: 1rem;
-  font-size: 0.95rem;
-  padding: 0.75rem;
-  border-radius: 8px;
-  text-align: center;
-  background: #FFF4CC;
-  color: #665c00;
-  border: 1px solid #FFE08A;
-}
-
-/* Footer (no sticky) */
+/* Footer */
 footer {
-  color: #888;
-  text-align: center;
-  padding: 0.8rem 0.5rem;
-  font-size: 0.8rem;
-  margin-top: 1.5rem;
+position: fixed;
+bottom: 0;
+left: 0;
+width: 100%;
+color: #888;
+text-align: center;
+padding: 0.5rem;
+font-size: 0.8rem;
 }
 </style>
 </head>
 <body>
 
 <header>
-  <h1>Panel del Operador</h1>
-  <nav>
-    <button id="btnInicio">Inicio</button>
-    <button id="btnAgregar" class="inactive">Agregar Paquete</button>
-    <button id="btnActualizar" class="inactive">Actualizar Seguimiento</button>
-  </nav>
+  <h1>Nica Expressway </h1>
+<nav>
+<button id="btnInicio">Inicio</button>
+<button id="btnCotizar" class="inactive">Cotizar</button>
+<button id="btnSeguimiento" class="inactive">Seguimiento</button>
+</nav>
 </header>
 
 <section id="inicio" class="active">
-  <h2>Recordatorios</h2>
-  <p>No hay recordatorios por el momento.</p>
+<h2>Bienvenido</h2>
+<p>✈️📦 Envíos de USA a Nicaragua  
+🚛 Rápidos, seguros y confiables  
+📍 Miami — 🇳🇮 Nicaragua</p>
 </section>
 
-<section id="agregar">
-  <h2>Registrar Paquete</h2>
-  <form id="formAgregar">
-    <!-- Nombre -->
-    <div class="form-group">
-      <label for="nombre">Nombre del cliente</label>
-      <div class="tooltip">Ingresa un nombre y un apellido</div>
-      <input type="text" id="nombre" name="nombre" placeholder="Ej: Lester Gamez" required>
-    </div>
+<section id="cotizar">
+<h2>Calculadora de Envío</h2>
+<label for="tipoEnvio">Tipo de envío:</label>
+<select id="tipoEnvio">
+<option value="aereo">Aéreo</option>
+<option value="maritimo">Marítimo</option>
+</select>
 
-    <!-- Teléfono (código + dígitos) -->
-    <div class="form-group">
-      <label for="telefonoDigits">Teléfono</label>
-      <div class="tooltip">Selecciona (505) o (1) y luego ingresa de 8 a 10 dígitos</div>
-      <div class="phone-row">
-        <select id="telCode" name="telCode" aria-label="Código de país" required>
-          <option value="(505)">(505)</option>
-          <option value="(1)">(1)</option>
-        </select>
-        <input type="tel"
-               id="telefonoDigits"
-               name="telefonoDigits"
-               placeholder="Ej: 12345678"
-               inputmode="numeric"
-               pattern="[0-9]{8,10}"
-               title="Ingresa solo números (8 a 10 dígitos)"
-               required>
-      </div>
-    </div>
+<label for="peso">Peso aproximado (libras):</label>
+<input type="number" id="peso" placeholder="Ej: 5">
 
-    <!-- Peso -->
-    <div class="form-group">
-      <label for="peso">Peso en libras</label>
-      <div class="tooltip">Ingresa solo valores numéricos</div>
-      <input type="number" id="peso" name="peso" placeholder="Ej: 1.0" step="0.01" min="0" required>
-    </div>
+<button class="calc-btn" onclick="calcular()">Calcular</button>
 
-    <!-- Tipo de envío -->
-    <div class="form-group">
-      <label for="tipo">Tipo de envío</label>
-      <select id="tipo" name="tipo" required>
-        <option value="aereo">Aéreo</option>
-        <option value="maritimo">Marítimo</option>
-      </select>
-    </div>
-
-    <button type="submit" class="action-btn">Registrar Paquete</button>
-  </form>
-
-  <div id="mensajeAgregar" class="mensaje" style="display:none;">
-    Esta plataforma es de prueba, dog. Acción no disponible por el momento.
-  </div>
+<div class="resultado" id="resultado"></div>
 </section>
 
-<section id="actualizar">
-  <h2>Actualizar Estado</h2>
-  <form id="formActualizar">
-    <!-- Nombre -->
-    <div class="form-group">
-      <label for="nombreSeg">Nombre del cliente</label>
-      <div class="tooltip">Ingresa un nombre y un apellido</div>
-      <input type="text" id="nombreSeg" name="nombreSeg" placeholder="Ej: Lester Gamez" required>
-    </div>
-
-    <!-- Teléfono (código + dígitos) -->
-    <div class="form-group">
-      <label for="telefonoSegDigits">Teléfono</label>
-      <div class="tooltip">Selecciona (505) o (1) y luego ingresa de 8 a 10 dígitos</div>
-      <div class="phone-row">
-        <select id="telCodeSeg" name="telCodeSeg" aria-label="Código de país" required>
-          <option value="(505)">(505)</option>
-          <option value="(1)">(1)</option>
-        </select>
-        <input type="tel"
-               id="telefonoSegDigits"
-               name="telefonoSegDigits"
-               placeholder="Ej: 12345678"
-               inputmode="numeric"
-               pattern="[0-9]{8,10}"
-               title="Ingresa solo números (8 a 10 dígitos)"
-               required>
-      </div>
-    </div>
-
-    <!-- Estado -->
-    <div class="form-group">
-      <label for="estado">Estado del paquete</label>
-      <select id="estado" name="estado" required>
-        <option value="recibido">Recibido</option>
-        <option value="en_transito">En tránsito</option>
-        <option value="en_aduana">En Aduana</option>
-        <option value="listo_recoger">Listo Para Recoger</option>
-      </select>
-    </div>
-
-    <!-- Fecha -->
-    <div class="form-group">
-      <label for="fechaEstado">Ingrese fecha</label>
-      <input type="date" id="fechaEstado" name="fechaEstado" required>
-    </div>
-
-    <button type="submit" class="action-btn">Actualizar Estado</button>
-  </form>
-
-  <div id="mensajeActualizar" class="mensaje" style="display:none;">
-    Esta plataforma es de prueba, dog. Acción no disponible por el momento.
-  </div>
+<section id="seguimiento">
+<h2>Seguimiento de Pedido</h2>
+<label for="codigo">Código de seguimiento:</label>
+<input type="text" id="codigo" placeholder="Ej: ABC123">
+<button class="calc-btn">Buscar</button>
+<div class="resultado">Aquí se mostrará el estado del envío.</div>
 </section>
 
 <footer>
-  &copy; 2025. Irvin Prado. Ascende Superius - Seek Higher Things
+<p>&copy; 2025. Irvin Prado. Ascende Superius - Seek Higher Things
 </footer>
 
 <script>
 const btnInicio = document.getElementById('btnInicio');
-const btnAgregar = document.getElementById('btnAgregar');
-const btnActualizar = document.getElementById('btnActualizar');
+const btnCotizar = document.getElementById('btnCotizar');
+const btnSeguimiento = document.getElementById('btnSeguimiento');
 const secciones = {
-  inicio: document.getElementById('inicio'),
-  agregar: document.getElementById('agregar'),
-  actualizar: document.getElementById('actualizar')
+inicio: document.getElementById('inicio'),
+cotizar: document.getElementById('cotizar'),
+seguimiento: document.getElementById('seguimiento')
 };
 
 function mostrarSeccion(nombre) {
-  for (let sec in secciones) secciones[sec].classList.remove('active');
-  secciones[nombre].classList.add('active');
-
-  btnInicio.classList.add('inactive');
-  btnAgregar.classList.add('inactive');
-  btnActualizar.classList.add('inactive');
-  if (nombre === 'inicio') btnInicio.classList.remove('inactive');
-  if (nombre === 'agregar') btnAgregar.classList.remove('inactive');
-  if (nombre === 'actualizar') btnActualizar.classList.remove('inactive');
+for (let sec in secciones) {
+secciones[sec].classList.remove('active');
+}
+secciones[nombre].classList.add('active');
+btnInicio.classList.add('inactive');
+btnCotizar.classList.add('inactive');
+btnSeguimiento.classList.add('inactive');
+if (nombre === 'inicio') btnInicio.classList.remove('inactive');
+if (nombre === 'cotizar') btnCotizar.classList.remove('inactive');
+if (nombre === 'seguimiento') btnSeguimiento.classList.remove('inactive');
 }
 
 btnInicio.addEventListener('click', () => mostrarSeccion('inicio'));
-btnAgregar.addEventListener('click', () => mostrarSeccion('agregar'));
-btnActualizar.addEventListener('click', () => mostrarSeccion('actualizar'));
+btnCotizar.addEventListener('click', () => mostrarSeccion('cotizar'));
+btnSeguimiento.addEventListener('click', () => mostrarSeccion('seguimiento'));
 
-// Fecha actual preseleccionada
-document.getElementById("fechaEstado").value = new Date().toISOString().split('T')[0];
+function calcular() {
+const tipo = document.getElementById('tipoEnvio').value;
+const peso = parseFloat(document.getElementById('peso').value);
+const resultadoDiv = document.getElementById('resultado');
 
-// Formularios (modo demo)
-document.getElementById("formAgregar").addEventListener("submit", function(e){
-  e.preventDefault();
-  this.reset();
-  document.getElementById("mensajeAgregar").style.display = "block";
-  setTimeout(()=>document.getElementById("mensajeAgregar").style.display="none", 3000);
-});
+if (isNaN(peso) || peso <= 0) {
+resultadoDiv.textContent = "Por favor, ingresa un peso válido.";
+return;
+}
 
-document.getElementById("formActualizar").addEventListener("submit", function(e){
-  e.preventDefault();
-  this.reset();
-  document.getElementById("mensajeActualizar").style.display = "block";
-  setTimeout(()=>document.getElementById("mensajeActualizar").style.display="none", 3000);
-  document.getElementById("fechaEstado").value = new Date().toISOString().split('T')[0];
-});
+let precio = 0;
+let dias = 0;
+
+if (tipo === "aereo") {
+precio = peso * 7.50;
+dias = 7;
+} else {
+precio = peso * 3.00;
+dias = 15;
+}
+
+resultadoDiv.innerHTML = `
+   Precio estimado: $${precio.toFixed(2)} USD<br>
+   Llegada estimada: ${dias} días
+ `;
+}
 </script>
 
 </body>
