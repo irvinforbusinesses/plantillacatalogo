@@ -24,6 +24,7 @@ body {
   margin: auto;
 }
 
+/* --------- NAV/SECCIONES ORIGINALES --------- */
 header { text-align: center; margin-bottom: 2rem; }
 h1 { font-family: 'Poppins', sans-serif; font-size: 1.8rem; color: var(--color-accent); }
 nav { display: flex; justify-content: center; gap: 0.5rem; margin-top: 1rem; }
@@ -43,34 +44,32 @@ button.action-btn { margin-top: 1rem; background: var(--color-accent); color: wh
 .recordatorio-item {
   background: var(--color-gray);
   padding: 0.75rem;
-  border-radius: 16px; /* esquinas más redondeadas */
+  border-radius: 16px;
   margin-bottom: 0.75rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  overflow: hidden; /* para que la animación no se desborde */
+  overflow: hidden;
 }
 
 .recordatorio-info {
   flex: 1;
-  border-radius: 12px; /* parpadeo con esquinas suaves */
-  padding: 0.4rem; /* opcional, para resaltar el área parpadeante */
+  border-radius: 12px;
+  padding: 0.4rem;
 }
-  .btnEliminar { 
+.btnEliminar { 
   background: #f56565; 
   color: white; 
   border: none; 
-  padding: 0.35rem 0.6rem; /* tamaño más cómodo */
-  border-radius: 12px;      /* esquinas redondeadas */
+  padding: 0.35rem 0.6rem;
+  border-radius: 12px;
   font-size: 0.75rem;
   cursor: pointer; 
-  transition: background 0.2s ease; /* hover suave */
+  transition: background 0.2s ease;
 }
-.btnEliminar:hover {
-  background: #ff6b6b; /* color más claro al pasar el mouse */
-}
+.btnEliminar:hover { background: #ff6b6b; }
 
-/* Pop-ups */
+/* Pop-ups (tus existentes) */
 .popUp, .confirmPop { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--color-light); padding: 1rem; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 999; }
 .popUp button, .confirmPop button { margin-top: 0.5rem; width: 100%; }
 
@@ -83,7 +82,7 @@ button.action-btn { margin-top: 1rem; background: var(--color-accent); color: wh
   100% { background-color: var(--color-light); color: var(--color-text-dark); transform: scale(1); }
 }
 
-/* Tooltips estilo burbuja blanca */
+/* Tooltips */
 .form-group { position: relative; }
 .tooltip { display: none; position: absolute; left: 0; top: -2rem; background: var(--color-light); color: var(--color-text-dark); padding: 0.35rem 0.55rem; border-radius: 6px; font-size: 0.8rem; white-space: normal; max-width: 95%; box-shadow: 0 4px 12px rgba(0,0,0,0.12); border: 1px solid #ccc; }
 .form-group:focus-within .tooltip { display: block; }
@@ -98,34 +97,66 @@ button.action-btn { margin-top: 1rem; background: var(--color-accent); color: wh
 
 /* Footer */
 footer { color: #888; text-align: center; padding: 0.8rem 0.5rem; font-size: 0.8rem; margin-top: 1.5rem; }
-  /* Optimización pop-up para móviles */
+
+/* Optimización pop-up móviles (tus existentes) */
 @media (max-width: 600px) {
   .popUp {
-    width: 90%;               /* ocupa casi todo el ancho de la pantalla */
-    max-width: 400px;         /* no demasiado grande en pantallas más anchas */
-    padding: 1.5rem;          /* más espacio interior */
-    border-radius: 16px;      /* bordes redondeados */
+    width: 90%;
+    max-width: 400px;
+    padding: 1.5rem;
+    border-radius: 16px;
   }
-
   .popUp form input,
   .popUp form textarea,
   .popUp form select,
-  .popUp button {
-    font-size: 1rem;          /* más fácil de leer y tocar */
-  }
-
-  .popUp form label {
-    font-size: 0.95rem;       /* etiquetas más legibles */
-  }
-
-  .popUp form textarea {
-    min-height: 80px;         /* más cómodo al escribir */
-  }
+  .popUp button { font-size: 1rem; }
+  .popUp form label { font-size: 0.95rem; }
+  .popUp form textarea { min-height: 80px; }
 }
 
+/* --------- NUEVOS: OVERLAYS DE CONTRASEÑA --------- */
+.authOverlay {
+  position: fixed; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 10000;
+}
+.authBox {
+  background: var(--color-light);
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+  padding: 1.25rem;
+  width: 92%;
+  max-width: 340px;
+  text-align: center;
+}
+.authBox h2 { color: var(--color-accent); font-size: 1.2rem; margin-bottom: 0.75rem; }
+.authBox input {
+  width: 100%; padding: 0.65rem; border-radius: 8px; border: 1px solid #ccc; margin-bottom: 0.75rem;
+}
+.authBox .btn {
+  width: 100%; padding: 0.65rem; border: none; border-radius: 8px; font-weight: 700; cursor: pointer;
+  background: var(--color-accent); color: #fff;
+}
+.authBox .btn.secondary { background: #888; }
+.authError { color: #e53935; font-size: 0.9rem; display: none; margin-top: 0.25rem; }
+
+/* contenedor estadísticas */
+#estadisticas-container { margin-top: 0.75rem; }
+#estadisticasFrame {
+  width: 100%;
+  min-height: 70vh;
+  border: 0;
+  border-radius: 12px;
+  background: #fff;
+}
 </style>
 </head>
 <body>
+
+<div id="app"><!-- wrapper para blur si hiciera falta -->
 
 <header>
 <h1>Panel del Operador</h1>
@@ -133,6 +164,7 @@ footer { color: #888; text-align: center; padding: 0.8rem 0.5rem; font-size: 0.8
 <button id="btnInicio">Inicio</button>
 <button id="btnAgregar" class="inactive">Agregar Paquete</button>
 <button id="btnActualizar" class="inactive">Actualizar Seguimiento</button>
+<button id="btnEstadisticas" class="inactive">Estadísticas</button>
 </nav>
 </header>
 
@@ -238,10 +270,10 @@ Esta plataforma es de prueba, dog. Acción no disponible por el momento.
       <option value="listo_recoger">Listo Para Recoger</option>
     </select>
   </div>
-<div class="form-group">
-  <label for="pesoSeg">Peso en libras</label>
-  <input type="number" id="pesoSeg" name="pesoSeg" step="0.1" min="0" placeholder="Ej: 1.0">
-</div>
+  <div class="form-group">
+    <label for="pesoSeg">Peso en libras</label>
+    <input type="number" id="pesoSeg" name="pesoSeg" step="0.1" min="0" placeholder="Ej: 1.0">
+  </div>
   <div class="form-group">
     <label for="fechaEstado">Ingrese fecha</label>
     <input type="date" id="fechaEstado" name="fechaEstado" required>
@@ -253,32 +285,82 @@ Esta plataforma es de prueba, dog. Acción no disponible por el momento.
 </div>
 </section>
 
+<!-- ESTADÍSTICAS (Nueva sección) -->
+<section id="estadisticas">
+  <h2>Estadísticas</h2>
+  <div id="estadisticas-container">
+    <p>Para ver las estadísticas, usa el botón “Estadísticas” y coloca la contraseña.</p>
+    <iframe id="estadisticasFrame" src="" title="Estadísticas"></iframe>
+  </div>
+</section>
+
 <footer>
 &copy; 2025. Irvin Prado. Ascende Superius - Seek Higher Things
 </footer>
 
+</div><!-- /#app -->
+
+<!-- OVERLAY: LOCK INICIAL -->
+<div id="lockOverlay" class="authOverlay">
+  <div class="authBox">
+    <h2>Acceso al Panel</h2>
+    <input type="password" id="lockPass" placeholder="Contraseña">
+    <button class="btn" id="lockSubmit">Entrar</button>
+    <div class="authError" id="lockError">Contraseña incorrecta</div>
+  </div>
+</div>
+
+<!-- OVERLAY: ESTADÍSTICAS -->
+<div id="statsOverlay" class="authOverlay" style="display:none;">
+  <div class="authBox">
+    <h2>Acceso a Estadísticas</h2>
+    <input type="password" id="statsPass" placeholder="Contraseña">
+    <button class="btn" id="statsSubmit">Acceder</button>
+    <button class="btn secondary" id="statsCancel" style="margin-top:0.5rem;">Cancelar</button>
+    <div class="authError" id="statsError">Contraseña incorrecta</div>
+  </div>
+</div>
+
 <script>
-// Navegación
+// ================== NAVEGACIÓN (ajustada para incluir Estadísticas) ==================
 const btnInicio = document.getElementById('btnInicio');
 const btnAgregar = document.getElementById('btnAgregar');
 const btnActualizar = document.getElementById('btnActualizar');
-const secciones = { inicio: document.getElementById('inicio'), agregar: document.getElementById('agregar'), actualizar: document.getElementById('actualizar') };
+const btnEstadisticas = document.getElementById('btnEstadisticas');
+
+const secciones = {
+  inicio: document.getElementById('inicio'),
+  agregar: document.getElementById('agregar'),
+  actualizar: document.getElementById('actualizar'),
+  estadisticas: document.getElementById('estadisticas')
+};
+
 function mostrarSeccion(nombre){
   for(let sec in secciones) secciones[sec].classList.remove('active');
   secciones[nombre].classList.add('active');
-  btnInicio.classList.add('inactive'); btnAgregar.classList.add('inactive'); btnActualizar.classList.add('inactive');
+
+  btnInicio.classList.add('inactive');
+  btnAgregar.classList.add('inactive');
+  btnActualizar.classList.add('inactive');
+  btnEstadisticas.classList.add('inactive');
+
   if(nombre==='inicio') btnInicio.classList.remove('inactive');
   if(nombre==='agregar') btnAgregar.classList.remove('inactive');
   if(nombre==='actualizar') btnActualizar.classList.remove('inactive');
+  if(nombre==='estadisticas') btnEstadisticas.classList.remove('inactive');
 }
 btnInicio.addEventListener('click',()=>mostrarSeccion('inicio'));
 btnAgregar.addEventListener('click',()=>mostrarSeccion('agregar'));
 btnActualizar.addEventListener('click',()=>mostrarSeccion('actualizar'));
+btnEstadisticas.addEventListener('click',()=>{
+  // Abrimos el modal de estadísticas (no cambiamos de sección aún)
+  document.getElementById('statsOverlay').style.display = 'flex';
+});
 
-// Fecha actual preseleccionada
+// ================== FECHA ACTUAL PRESELECCIONADA ==================
 document.getElementById("fechaEstado").value = new Date().toISOString().split('T')[0];
 
-// Formularios demo
+// ================== FORMULARIOS DEMO (tus originales) ==================
 document.getElementById("formAgregar").addEventListener("submit", function(e){
   e.preventDefault(); this.reset(); document.getElementById("mensajeAgregar").style.display="block";
   setTimeout(()=>document.getElementById("mensajeAgregar").style.display="none",3000);
@@ -289,7 +371,7 @@ document.getElementById("formActualizar").addEventListener("submit", function(e)
   document.getElementById("fechaEstado").value = new Date().toISOString().split('T')[0];
 });
 
-// RECORDATORIOS
+// ================== RECORDATORIOS (tus originales) ==================
 const listDiv = document.getElementById('listaRecordatorios');
 const formR = document.getElementById('formRecord');
 const popForm = document.getElementById('popFormRecord');
@@ -351,6 +433,70 @@ btnConfirmEliminar.addEventListener('click', ()=>{
   popEliminarConfirm.style.display='none';
   indexEliminar=null;
 });
+
+// ================== NUEVO: CONTRASEÑAS/OVERLAYS ==================
+const PASS_LOCK  = "12345678"; // puedes cambiarlas luego
+const PASS_STATS = "12345678";
+
+const appWrapper   = document.getElementById('app');
+const lockOverlay  = document.getElementById('lockOverlay');
+const statsOverlay = document.getElementById('statsOverlay');
+
+const lockPass   = document.getElementById('lockPass');
+const lockSubmit = document.getElementById('lockSubmit');
+const lockError  = document.getElementById('lockError');
+
+const statsPass    = document.getElementById('statsPass');
+const statsSubmit  = document.getElementById('statsSubmit');
+const statsCancel  = document.getElementById('statsCancel');
+const statsError   = document.getElementById('statsError');
+
+const statsFrame   = document.getElementById('estadisticasFrame');
+
+// Mostrar blur al inicio (por si el navegador no soporta backdrop-filter)
+appWrapper.style.filter = 'blur(6px)';
+
+// LOCK INICIAL
+function tryUnlock(){
+  if (lockPass.value === PASS_LOCK){
+    lockError.style.display = 'none';
+    lockOverlay.style.display = 'none';
+    appWrapper.style.filter = 'none';
+    lockPass.value = '';
+  } else {
+    lockError.style.display = 'block';
+  }
+}
+lockSubmit.addEventListener('click', tryUnlock);
+lockPass.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') tryUnlock(); });
+
+// ESTADÍSTICAS
+function openStats(){
+  statsOverlay.style.display = 'flex';
+  statsError.style.display = 'none';
+  statsPass.value = '';
+  statsPass.focus();
+}
+function closeStats(){
+  statsOverlay.style.display = 'none';
+}
+function loadStatsIfAuthorized(){
+  if (statsPass.value === PASS_STATS){
+    statsError.style.display = 'none';
+    closeStats();
+    // Cargar dentro de la misma página (integrado con iframe)
+    if (statsFrame.src !== 'https://irvinforbusinesses.github.io/plantillacatalogo/estadisticas.html'){
+      statsFrame.src = 'https://irvinforbusinesses.github.io/plantillacatalogo/estadisticas.html';
+    }
+    mostrarSeccion('estadisticas');
+    statsPass.value = '';
+  } else {
+    statsError.style.display = 'block';
+  }
+}
+statsSubmit.addEventListener('click', loadStatsIfAuthorized);
+statsPass.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') loadStatsIfAuthorized(); });
+statsCancel.addEventListener('click', closeStats);
 </script>
 </body>
 </html>
