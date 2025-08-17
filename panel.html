@@ -152,6 +152,95 @@ footer { color: #888; text-align: center; padding: 0.8rem 0.5rem; font-size: 0.8
   border-radius: 12px;
   background: #fff;
 }
+  /* --- Contenedor de estadísticas --- */
+.stats-container {
+  width: 100%;
+  max-width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 15px;
+  border-radius: 10px;
+  box-sizing: border-box;
+  margin: 0 auto;
+}
+
+/* Contenido interno */
+.stats-container .stats-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Ajustes para pantallas grandes */
+@media (min-width: 768px) {
+  .stats-container .stats-content {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+/* Fondo del lightbox con blur */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* Oculto por defecto */
+.hidden {
+  display: none;
+}
+
+/* Caja del lightbox */
+.lightbox-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  max-width: 400px;       /* ancho máximo */
+  width: 90%;              /* ancho relativo a la pantalla */
+  max-height: 70vh;        /* altura máxima: 70% de la ventana */
+  overflow-y: auto;        /* scroll vertical si el contenido es largo */
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  text-align: center;
+  position: relative;
+}
+
+/* Asegura que los párrafos respeten saltos de línea y no se corten */
+.lightbox-content p {
+  white-space: pre-wrap;   /* respeta saltos de línea */
+  word-wrap: break-word;   /* corta palabras largas si es necesario */
+}
+
+/* Botón cerrar (similar al sitio) */
+.close-lightbox {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* Botón eliminar */
+.btn-eliminar {
+  margin-top: 20px;
+  padding: 10px 15px;
+  border: none;
+  background: #e74c3c;
+  color: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.btn-eliminar:hover {
+  background: #c0392b;
+}
+
 </style>
 </head>
 <body>
@@ -318,6 +407,16 @@ Esta plataforma es de prueba, dog. Acción no disponible por el momento.
     <div class="authError" id="statsError">Contraseña incorrecta</div>
   </div>
 </div>
+  <!-- Lightbox Recordatorio -->
+<div id="lightbox-recordatorio" class="lightbox hidden">
+  <div class="lightbox-content">
+    <button class="close-lightbox">&times;</button>
+    <h2>Recordatorio</h2>
+    <p>Versión de prueba, datos no disponibles</p>
+    <button class="btn-eliminar">Eliminar recordatorio</button>
+  </div>
+</div>
+
 
 <script>
 // ================== NAVEGACIÓN (ajustada para incluir Estadísticas) ==================
@@ -392,10 +491,13 @@ function cargarRecord(){
   const activos = arr.filter(r=>r.fecha>=hoy);
   if(!activos.length){ listDiv.innerHTML='<p>No hay recordatorios por el momento.</p>'; return;}
   activos.forEach((r,index)=>{
-    const div = document.createElement('div');
-    div.classList.add('recordatorio-item');
-    div.innerHTML = `<div class="recordatorio-info"><strong>${r.titulo}</strong><br>${r.desc}<br><small>${r.fecha}</small></div>
-    <button class="btnEliminar" data-index="${index}">X</button>`;
+   const div = document.createElement('div');
+div.classList.add('recordatorio-item');
+div.dataset.index = index;  // <-- aquí asignas el índice al div
+div.innerHTML = `
+  <div class="recordatorio-info"><strong>${r.titulo}</strong><br>${r.desc}<br><small>${r.fecha}</small></div>
+  <button class="btnEliminar" data-index="${index}">X</button>`;
+
     listDiv.appendChild(div);
     if(r.fecha===hoy){ div.querySelector('.recordatorio-info').style.animation="parpadeo 1.2s infinite"; }
   });
@@ -416,12 +518,6 @@ formR.addEventListener('submit', e=>{
 });
 cerrarPopConfirm.addEventListener('click', ()=>{ popConfirm.style.display='none'; });
 
-listDiv.addEventListener('click', e=>{
-  if(e.target.classList.contains('btnEliminar')){
-    indexEliminar=e.target.dataset.index;
-    popEliminarConfirm.style.display='block';
-  }
-});
 btnCancelarEliminar.addEventListener('click', ()=>{ popEliminarConfirm.style.display='none'; indexEliminar=null; });
 btnConfirmEliminar.addEventListener('click', ()=>{
   const arr = JSON.parse(localStorage.getItem('recordatorios')||'[]');
@@ -495,6 +591,67 @@ function loadStatsIfAuthorized(){
 statsSubmit.addEventListener('click', loadStatsIfAuthorized);
 statsPass.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') loadStatsIfAuthorized(); });
 statsCancel.addEventListener('click', closeStats);
+ // ===== LIGHTBOX RECORDATORIOS =====
+const lightbox = document.getElementById('lightbox-recordatorio');
+const closeBtn = document.querySelector('.close-lightbox');
+const lbDelete = document.querySelector('#lightbox-recordatorio .btn-eliminar');
+let indexSeleccionado = null;
+
+// Un solo listener con delegación para ambos casos:
+listDiv.addEventListener('click', (e) => {
+  // 1) Si hicieron click en el botón X (eliminar clásico → pop existente)
+  const eliminarBtn = e.target.closest('.btnEliminar');
+  if (eliminarBtn) {
+    indexEliminar = eliminarBtn.dataset.index;
+    popEliminarConfirm.style.display='block';
+    return; // no seguimos para que no abra el lightbox
+  }
+
+  // 2) Si hicieron click en cualquier parte del item, abrimos el lightbox
+  const item = e.target.closest('.recordatorio-item');
+  if (item) {
+    indexSeleccionado = Number(item.dataset.index);
+    const arr = JSON.parse(localStorage.getItem('recordatorios')||'[]');
+    const r = arr[indexSeleccionado];
+
+    // Rellenamos el contenido del lightbox
+    const titleEl = lightbox.querySelector('h2');
+    const pEl = lightbox.querySelector('p');
+
+    if (r) {
+      titleEl.textContent = r.titulo || 'Recordatorio';
+      pEl.innerHTML = `${r.desc || ''}<br><small>${r.fecha || ''}</small>`;
+    } else {
+      titleEl.textContent = 'Recordatorio';
+      pEl.textContent = 'Versión de prueba, datos no disponibles';
+    }
+
+    lightbox.classList.remove('hidden');
+  }
+});
+
+// Cerrar lightbox
+closeBtn.addEventListener('click', () => {
+  lightbox.classList.add('hidden');
+});
+
+// Cerrar al clickear fuera de la caja
+lightbox.addEventListener('click', (e) => {
+  if (e.target === lightbox) lightbox.classList.add('hidden');
+});
+
+// Eliminar desde el lightbox (borra el recordatorio seleccionado)
+// Eliminar desde el lightbox (abrir pop-up de confirmación)
+lbDelete.addEventListener('click', () => {
+  if (indexSeleccionado != null) {
+    // Mostrar pop-up de confirmación
+    popEliminarConfirm.style.display = 'block';
+  }
+  // Cerrar el lightbox mientras se confirma
+  lightbox.classList.add('hidden');
+});
+
+
 </script>
 </body>
 </html>
