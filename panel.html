@@ -303,6 +303,13 @@ footer { color: #888; text-align: center; padding: 0.8rem 0.5rem; font-size: 0.8
     <div class="tooltip">Ingresa un nombre y un apellido</div>
     <input type="text" id="nombre" name="nombre" placeholder="Ej: Lester Gamez" required>
   </div>
+
+  <!-- Nuevo campo opcional de código de seguimiento -->
+  <div class="form-group">
+    <label for="codigo">Código de seguimiento (opcional, max 10 dígitos)</label>
+    <input type="text" id="codigo" name="codigo" maxlength="10" pattern="\d{0,10}" placeholder="Solo números">
+  </div>
+
   <div class="form-group">
     <label for="telefonoDigits">Teléfono</label>
     <div class="tooltip">Selecciona (505) o (1) y luego ingresa de 8 a 10 dígitos</div>
@@ -315,6 +322,7 @@ footer { color: #888; text-align: center; padding: 0.8rem 0.5rem; font-size: 0.8
              inputmode="numeric" pattern="[0-9]{8,10}" title="Ingresa solo números (8 a 10 dígitos)" required>
     </div>
   </div>
+
   <div class="form-group">
     <label for="tipo">Tipo de envío</label>
     <select id="tipo" name="tipo" required>
@@ -322,6 +330,7 @@ footer { color: #888; text-align: center; padding: 0.8rem 0.5rem; font-size: 0.8
       <option value="maritimo">Marítimo</option>
     </select>
   </div>
+
   <button type="submit" class="action-btn">Registrar Paquete</button>
 </form>
 <div id="mensajeAgregar" class="mensaje" style="display:none;">
@@ -336,43 +345,56 @@ Esta plataforma es de prueba, dog. Acción no disponible por el momento.
   <div class="form-group">
     <label for="nombreSeg">Nombre del cliente</label>
     <div class="tooltip">Ingresa un nombre y un apellido</div>
-    <input type="text" id="nombreSeg" name="nombreSeg" placeholder="Ej: Lester Gamez" required>
+    <input type="text" id="nombreSeg" name="nombreSeg" placeholder="Ej: Lester Gamez">
   </div>
+
+  <!-- Nuevo campo opcional de código de seguimiento -->
+ <div class="form-group">
+    <label for="codigoSeg">Código de seguimiento (obligatorio, max 10 dígitos)</label>
+    <input type="text" id="codigoSeg" name="codigoSeg" maxlength="10" pattern="\d{1,10}" placeholder="Solo números" required>
+  </div>
+
   <div class="form-group">
     <label for="telefonoSegDigits">Teléfono</label>
     <div class="tooltip">Selecciona (505) o (1) y luego ingresa de 8 a 10 dígitos</div>
     <div class="phone-row">
-      <select id="telCodeSeg" name="telCodeSeg" required>
+      <select id="telCodeSeg" name="telCodeSeg">
         <option value="(505)">(505)</option>
         <option value="(1)">(1)</option>
       </select>
       <input type="tel" id="telefonoSegDigits" name="telefonoSegDigits" placeholder="Ej: 12345678"
-             inputmode="numeric" pattern="[0-9]{8,10}" title="Ingresa solo números (8 a 10 dígitos)" required>
+             inputmode="numeric" pattern="[0-9]{8,10}" title="Ingresa solo números (8 a 10 dígitos)">
     </div>
   </div>
+
   <div class="form-group">
     <label for="estado">Estado del paquete</label>
-    <select id="estado" name="estado" required>
+    <select id="estado" name="estado">
+      <option value="">-- Seleccione --</option>
       <option value="recibido">Recibido</option>
       <option value="en_transito">En tránsito</option>
       <option value="en_aduana">En Aduana</option>
       <option value="listo_recoger">Listo Para Recoger</option>
     </select>
   </div>
+
   <div class="form-group">
     <label for="pesoSeg">Peso en libras</label>
     <input type="number" id="pesoSeg" name="pesoSeg" step="0.1" min="0" placeholder="Ej: 1.0">
   </div>
+
   <div class="form-group">
     <label for="fechaEstado">Ingrese fecha</label>
-    <input type="date" id="fechaEstado" name="fechaEstado" required>
+    <input type="date" id="fechaEstado" name="fechaEstado">
   </div>
+
   <button type="submit" class="action-btn">Actualizar Estado</button>
 </form>
 <div id="mensajeActualizar" class="mensaje" style="display:none;">
 Esta plataforma es de prueba, dog. Acción no disponible por el momento.
 </div>
 </section>
+
 
 <!-- ESTADÍSTICAS (Nueva sección) -->
 <section id="estadisticas">
