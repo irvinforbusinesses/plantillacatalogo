@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+=<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -65,6 +65,33 @@ display: none;
 section.active {
 display: block;
 }
+/* Secciones generales */
+section {
+  background: #FFFFFF; /* crema frío sólido */
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-top: 1rem;
+  display: none;
+  opacity: 0;           /* para fade-in */
+  transform: translateY(15px); /* ligera caída inicial */
+  animation: fadeIn 0.8s forwards; /* animación suave */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.08); /* sombra ligera */
+}
+
+/* Cuando se activa la sección */
+section.active {
+  display: block;
+}
+
+/* Animación fade-in */
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
 
 /* Sección de bienvenida */
 #inicio {
@@ -82,8 +109,9 @@ font-size: 1.1rem;
 line-height: 1.6;
 white-space: pre-line;
 }
- #inicio {
-  background: linear-gradient(135deg, #E8F0F5, #DDE7F1);
+
+
+;
   border-radius: 16px;
   padding: 2rem 1rem;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
@@ -91,6 +119,15 @@ white-space: pre-line;
 .link-btn {
   box-shadow: 0 2px 6px rgba(0,0,0,0.15);
 }
+#inicio {
+  opacity: 0;
+  animation: fadeIn 1s forwards; /* 1 segundo de animación */
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
 
 
 /* Inputs mobile-friendly */
