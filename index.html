@@ -21,6 +21,8 @@ body{
   margin:auto;
   padding-bottom:80px;
 }
+  footer { color: #888; text-align: center; padding: 0.8rem 0.5rem; font-size: 0.8rem; margin-top: 1.5rem; }
+
 header{text-align:center;margin-bottom:1.5rem}
 h1{font-family:'Poppins',sans-serif;font-size:1.8rem;color:var(--color-accent)}
 nav{display:flex;justify-content:center;gap:.5rem;margin-top:1rem}
@@ -199,7 +201,7 @@ button.calc-btn{margin-top:1rem;background:var(--color-accent);color:white;borde
 <!-- confetti wrapper -->
 <div id="confettiWrap" aria-hidden="true"></div>
 
-<footer style="margin-top:2rem;">
+<footer>
   <p>&copy; 2025. Irvin Prado. Ascende Superius - Seek Higher Things</p>
 </footer>
 
@@ -582,7 +584,7 @@ hideResult();
     el.style.background = colors[Math.floor(Math.random()*colors.length)];
     el.style.opacity = String(0.7 + Math.random()*0.3); // opacidad más visible
     el.style.borderRadius='2px';
-    el.style.zIndex = 3500;
+    el.style.zIndex = 6000;
     el.style.transition = `transform 1.5s ease-out, opacity 1.5s linear, top 1.5s linear`;
 
     wrap.appendChild(el);
