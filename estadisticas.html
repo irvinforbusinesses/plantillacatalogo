@@ -1,108 +1,393 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Estadísticas - Versión de prueba</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Estadísticas (Demo) - Nica Expressway</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@600&display=swap" rel="stylesheet">
 <style>
-:root {
-  --color-bg: #E8F0F5;
-  --color-accent: #2F528F;
-  --color-light: #FFFFFF;
-  --color-gray: #F6F8FB;
-  --color-text-dark: #1A1A1A;
+:root{
+  --color-bg:#E8F0F5;
+  --color-accent:#2F528F;
+  --color-light:#FFFFFF;
+  --muted:#888;
+  --card-shadow: 0 6px 18px rgba(47,82,143,0.08);
 }
-* { box-sizing: border-box; margin:0; padding:0; }
-
-body {
-  font-family: 'Inter', sans-serif;
-  background: var(--color-bg);
-  color: var(--color-text-dark);
-  padding: 1rem;
-  max-width: 900px;
-  margin: auto;
-}
-
-h1, h2 { font-family: 'Poppins', sans-serif; color: var(--color-accent); }
-
-.filters-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-  align-items: flex-end;
-}
-.filter-item { display: flex; flex-direction: column; }
-.filter-item label { margin-bottom: 0.25rem; font-weight: 600; }
-.filter-select { padding: 0.5rem 0.75rem; border-radius: 8px; border:1px solid #ccc; }
-
-.cards-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill,minmax(200px,1fr));
-  gap: 1rem;
-}
-
-.card {
-  background: var(--color-light);
-  border-radius: 12px;
-  padding: 1.25rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.card-title {
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-}
-
-.card-text {
-  font-size: 1rem;
-  color: #555;
-}
-
-/* Nota al final */
-.note {
-  margin-top: 1.5rem;
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Inter",sans-serif;background:var(--color-bg);color:#1a1a1a;padding:1.2rem;max-width:980px;margin:auto;padding-bottom:96px;}
+h1{font-family:'Poppins',sans-serif;color:var(--color-accent);margin-bottom:0.75rem}
+.filters-container{display:flex;gap:1rem;align-items:flex-end;margin-bottom:1.25rem;flex-wrap:wrap}
+.filter-item label{display:block;margin-bottom:0.25rem;font-weight:600}
+.filter-select{padding:0.55rem 0.75rem;border-radius:10px;border:1px solid #d7dbe6;background:linear-gradient(180deg,#fff,#fbfdff);box-shadow:0 2px 6px rgba(47,82,143,0.04);font-weight:600}
+.grid{display:grid;grid-template-columns: repeat(auto-fit,minmax(220px,1fr));gap:1rem}
+.card{background:var(--color-light);border-radius:12px;padding:1rem;box-shadow:var(--card-shadow);min-height:110px;display:flex;flex-direction:column;justify-content:center;align-items:flex-start}
+.card-title{font-weight:700;color:#233a66;margin-bottom:0.4rem}
+.card-value{font-size:1.45rem;font-weight:800;display:flex;align-items:center;gap:0.6rem}
+.pkg-icon{width:28px;height:28px;display:inline-block;vertical-align:middle}
+.chart-wrap{background:var(--color-light);border-radius:12px;padding:1rem;box-shadow:var(--card-shadow);margin-top:1rem}
+.canvas-holder{width:100%;height:220px;position:relative}
+.loading{background:linear-gradient(90deg,#f4f8ff,#f8fbff);border:1px dashed #dbe7fb;padding:0.8rem;border-radius:10px;color:#234;display:flex;align-items:center;gap:0.6rem;box-shadow:0 2px 6px rgba(47,82,143,0.03)}
+/* footer legal */
+.site-footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
   text-align: center;
-  font-style: italic;
   color: #888;
+  background: rgba(255,255,255,0.95);
+  padding: 0.5rem;
+  font-size: 0.8rem;
+  box-shadow: 0 -1px 6px rgba(0,0,0,0.03);
+}
+
+/* responsive - mobile optimizations: tarjetas cuadradas y 2 columnas */
+@media (max-width:520px){
+  .grid{grid-template-columns: repeat(2, 1fr); gap:0.6rem}
+  .card{aspect-ratio: 1 / 1; padding:0.9rem; min-height:auto}
+  .card-title{font-size:0.95rem}
+  .card-value{font-size:1.2rem}
+  .canvas-holder{height:180px}
 }
 </style>
 </head>
 <body>
-<!-- FILTROS -->
-<div class="filters-container">
-  <div class="filter-item">
-    <label for="filter-general">Filtrar por:</label>
-    <select id="filter-general" class="filter-select">
-      <option value="general">Ventas Generales</option>
-      <option value="maritimo">Marítimo</option>
-      <option value="aereo">Aéreo</option>
-    </select>
-  </div>
-</div>
+  <h1>Estadísticas (Demo)</h1>
 
-<!-- TARJETAS -->
-<div class="cards-container">
-  <div class="card">
-    <h3 class="card-title">Paquetes enviados</h3>
-    <p class="card-text">Versión de prueba, datos no disponibles</p>
+  <div class="filters-container">
+    <div class="filter-item">
+      <label for="filter-general">Filtrar por:</label>
+      <select id="filter-general" class="filter-select" aria-label="Filtro estadisticas">
+        <option value="general">Generales</option>
+        <option value="maritimo">Marítimo</option>
+        <option value="aereo">Aéreo</option>
+      </select>
+    </div>
+
+    <div style="margin-left:auto;align-self:flex-end;display:flex;gap:.6rem">
+      <button id="regenBtn" style="background:#5a6fb0;color:#fff;padding:.45rem .7rem;border-radius:10px;border:none;font-weight:700;cursor:pointer">Regenerar demo</button>
+      <button id="refreshBtn" style="background:var(--color-accent);color:#fff;padding:.55rem .9rem;border-radius:10px;border:none;font-weight:700;cursor:pointer">Actualizar</button>
+    </div>
   </div>
-  <div class="card">
-    <h3 class="card-title">Paquetes en bodega</h3>
-    <p class="card-text">Versión de prueba, datos no disponibles</p>
+
+  <div id="loading" class="loading" style="display:none;">
+    <strong>Generando datos demo…</strong>
   </div>
-  <div class="card">
-    <h3 class="card-title">Paquetes camino a Nicaragua</h3>
-    <p class="card-text">Versión de prueba, datos no disponibles</p>
+
+  <div class="grid" style="margin-top:1rem">
+    <div class="card">
+      <div>
+        <div class="card-title">Paquetes enviados</div>
+        <div id="card-enviados" class="card-value">—</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div>
+        <div class="card-title">Paquetes en bodega</div>
+        <div id="card-bodega" class="card-value">—</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div>
+        <div class="card-title">Paquetes camino a Nicaragua</div>
+        <div id="card-camino" class="card-value">—</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div>
+        <div class="card-title">Paquetes en aduana</div>
+        <div id="card-aduana" class="card-value">—</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div>
+        <div class="card-title">Libras totales</div>
+        <div id="card-pounds" class="card-value">—</div>
+      </div>
+    </div>
+
+    <div class="card" style="grid-column: span 2;">
+      <div>
+        <div class="card-title">Ganancias (USD)</div>
+        <div id="card-ganancias" class="card-value">—</div>
+      </div>
+    </div>
   </div>
-  <div class="card">
-    <h3 class="card-title">Ganancias en dólares</h3>
-    <p class="card-text">Versión de prueba, datos no disponibles</p>
+
+  <div class="chart-wrap" id="chartWrap" style="display:none;margin-top:1rem">
+    <h2 style="margin:0 0 0.6rem 0;font-size:1rem;color:var(--color-accent)">Distribución por estado (Pie)</h2>
+    <div class="canvas-holder">
+      <canvas id="pieCanvas" width="800" height="400" role="img" aria-label="Gráfico de pastel con distribución de paquetes" style="width:100%;height:220px;display:block"></canvas>
+    </div>
+    <div id="chartLegend" style="display:flex;gap:1rem;margin-top:.6rem;flex-wrap:wrap"></div>
   </div>
-</div>
+
+  <!-- footer legal -->
+  <div class="site-footer">&copy; 2025. Irvin Prado. Ascende Superius - Seek Higher Things</div>
+
+<script>
+/* Demo-only page: no backend calls. Generates random dataset locally and supports filtering.
+   - General: shows all packages
+   - Maritimo: only tipo_envio_id === 2
+   - Aereo: only tipo_envio_id === 1
+*/
+
+/* helpers random */
+function rnd(min, max) { return Math.random()*(max-min)+min; }
+function rndInt(min,max){ return Math.floor(rnd(min,max+1)); }
+function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
+/* icon svgs inline for cards (same look as prod) */
+function svgMailbox(color){ return `<svg class="pkg-icon" viewBox="0 0 24 24" fill="${color}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3 11v8a2 2 0 0 0 2 2h14v-2H5v-6H3z"/><path d="M21 7h-6.5L12 3 9.5 7H3v6h18V7z"/></svg>`; }
+function svgWarehouse(color){ return `<svg class="pkg-icon" viewBox="0 0 24 24" fill="${color}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 2L2 7v13a1 1 0 0 0 1 1h6v-7h6v7h6a1 1 0 0 0 1-1V7L12 2z"/><path d="M12 12v8"/></svg>`; }
+function svgPlane(color){ return `<svg class="pkg-icon" viewBox="0 0 24 24" fill="${color}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9L2 14v2l8-1.5V21l1 .5 1-.5v-6.5L21 16z"/></svg>`; }
+function svgClock(color){ return `<svg class="pkg-icon" viewBox="0 0 24 24" fill="${color}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 11h4v-2h-3V6h-2v7z"/></svg>`; }
+function svgScale(color){ return `<svg class="pkg-icon" viewBox="0 0 24 24" fill="${color}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M7 20h10v-2H7v2zM5 8l1.5-4h11L19 8h-14zm3 0h8l-1.5-3h-5L8 8z"/></svg>`; }
+
+/* canvas helpers */
+const pieCanvas = document.getElementById('pieCanvas');
+const ctx = pieCanvas.getContext('2d');
+function resizeCanvasToDisplaySize(canvas) {
+  const ratio = window.devicePixelRatio || 1;
+  const w = canvas.clientWidth;
+  const h = canvas.clientHeight;
+  if (w === 0 || h === 0) return false;
+  const needResize = canvas.width !== Math.floor(w * ratio) || canvas.height !== Math.floor(h * ratio);
+  if (needResize) {
+    canvas.width  = Math.floor(w * ratio);
+    canvas.height = Math.floor(h * ratio);
+    ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+  }
+  return true;
+}
+
+/* palette */
+const PIE_COLORS = ['#2F528F','#1f3a66','#79A7E4','#9bbcf3'];
+
+/* DOM refs */
+const selectFilter = document.getElementById('filter-general');
+const refreshBtn = document.getElementById('refreshBtn');
+const regenBtn = document.getElementById('regenBtn');
+const loading = document.getElementById('loading');
+
+const cardEnviados = document.getElementById('card-enviados');
+const cardBodega = document.getElementById('card-bodega');
+const cardCamino = document.getElementById('card-camino');
+const cardAduana = document.getElementById('card-aduana');
+const cardPounds = document.getElementById('card-pounds');
+const cardGanancias = document.getElementById('card-ganancias');
+
+const chartWrap = document.getElementById('chartWrap');
+const chartLegend = document.getElementById('chartLegend');
+
+/* fake dataset */
+let FAKE_PACKAGES = [];
+
+/* generate a fake dataset of packages
+   - totalCount: total number of packages
+   - ratio: proportion between aero/maritimo can be adjusted inside
+*/
+function generateFakeDataset(totalCount = 120){
+  const arr = [];
+  // let's create two clusters so filters look different
+  // we'll bias probabilities slightly
+  for (let i=0;i<totalCount;i++){
+    // tipo: 60% aereo, 40% maritimo (feel free to change)
+    const tipo_envio_id = (Math.random() < 0.6) ? 1 : 2;
+    // peso: between 0.5 and 50 lbs (rounded to 2 decimals)
+    const peso_libras = Math.round((rnd(0.5, 50))*100)/100;
+    // tarifa: between 1.5 USD/lb and 8 USD/lb
+    const tarifa_usd = Math.round((rnd(1.5, 8))*100)/100;
+
+    // create a latest state with some probabilities:
+    // prefer "en_transito" or "recibido" depending on tipo to make filters interesting
+    const p = Math.random();
+    let latestState;
+    if (p < 0.18) latestState = 'listo_recoger';
+    else if (p < 0.45) latestState = 'recibido';
+    else if (p < 0.75) latestState = 'en_transito';
+    else latestState = 'en_aduana';
+
+    arr.push({
+      id: 'PKG-'+Math.random().toString(36).slice(2,9),
+      tipo_envio_id,
+      peso_libras,
+      tarifa_usd,
+      latestState
+    });
+  }
+  return arr;
+}
+
+/* compute stats from dataset with optional filter ('general'|'maritimo'|'aereo') */
+function computeStatsFromDataset(dataset, filter = 'general'){
+  // filter dataset by tipo if requested
+  let filtered = dataset;
+  if (filter === 'aereo') filtered = dataset.filter(p => p.tipo_envio_id === 1);
+  if (filter === 'maritimo') filtered = dataset.filter(p => p.tipo_envio_id === 2);
+
+  const counts = { enviados:0, bodega:0, camino:0, aduana:0 };
+  let ganancias = 0;
+  let total_pounds = 0;
+
+  for (const row of filtered){
+    // classify by latestState
+    const s = (row.latestState||'').toLowerCase();
+    if (s.includes('listo')) counts.enviados++;
+    else if (s.includes('recib')) counts.bodega++;
+    else if (s.includes('transit') || s.includes('en transito')) counts.camino++;
+    else if (s.includes('aduan')) counts.aduana++;
+
+    // pounds and gains
+    const peso = Number(row.peso_libras||0);
+    const tarifa = Number(row.tarifa_usd||0);
+    if (!Number.isNaN(peso)) total_pounds += peso;
+    if (!Number.isNaN(peso) && !Number.isNaN(tarifa)) ganancias += peso * tarifa;
+  }
+
+  // rounding
+  ganancias = Math.round((ganancias + Number.EPSILON) * 100)/100;
+  total_pounds = Math.round((total_pounds + Number.EPSILON) * 100)/100;
+
+  return { counts, ganancias, total_pounds };
+}
+
+/* draw pie */
+function drawPieFromCounts(counts){
+  const enviados = counts.enviados||0;
+  const bodega = counts.bodega||0;
+  const camino = counts.camino||0;
+  const aduana = counts.aduana||0;
+  const total = enviados + bodega + camino + aduana;
+
+  if (total === 0) {
+    chartWrap.style.display = 'none';
+    return;
+  }
+  chartWrap.style.display = 'block';
+
+  const segments = [
+    { label: 'Enviados', value: enviados, color: PIE_COLORS[0] },
+    { label: 'Bodega', value: bodega, color: PIE_COLORS[2] },
+    { label: 'Camino', value: camino, color: PIE_COLORS[1] },
+    { label: 'Aduana', value: aduana, color: PIE_COLORS[3] }
+  ].filter(s => s.value > 0);
+
+  const ok = resizeCanvasToDisplaySize(pieCanvas);
+  if (!ok) { setTimeout(()=> drawPieFromCounts(counts), 150); return; }
+
+  const w = pieCanvas.clientWidth;
+  const h = pieCanvas.clientHeight;
+  const cx = w/2;
+  const cy = h/2;
+  const radius = Math.min(cx, cy) - 10;
+
+  ctx.clearRect(0,0,pieCanvas.width,pieCanvas.height);
+
+  let start = -Math.PI/2;
+  chartLegend.innerHTML = '';
+
+  segments.forEach((seg, idx) => {
+    const slice = seg.value / total * Math.PI * 2;
+    const end = start + slice;
+
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.arc(cx, cy, radius, start, end);
+    ctx.closePath();
+    ctx.fillStyle = seg.color;
+    ctx.fill();
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    const percent = Math.round((seg.value / total) * 100);
+    const leg = document.createElement('div');
+    leg.style.display='flex';
+    leg.style.alignItems='center';
+    leg.style.gap='0.5rem';
+    leg.innerHTML = `<div style="width:14px;height:14px;background:${seg.color};border-radius:4px"></div>
+                     <div style="font-size:0.95rem">${seg.label}: ${seg.value} (${percent}%)</div>`;
+    chartLegend.appendChild(leg);
+
+    start = end;
+  });
+}
+
+/* UI render cards */
+function renderCardsFromStats(stats){
+  const accent = getComputedStyle(document.documentElement).getPropertyValue('--color-accent') || '#2F528F';
+  const c = accent.trim() || '#2F528F';
+
+  cardEnviados.innerHTML = `${stats.counts.enviados} ${svgMailbox(c)}`;
+  cardBodega.innerHTML  = `${stats.counts.bodega} ${svgWarehouse(c)}`;
+  cardCamino.innerHTML  = `${stats.counts.camino} ${svgPlane(c)}`;
+  cardAduana.innerHTML  = `${stats.counts.aduana} ${svgClock(c)}`;
+  cardPounds.innerHTML  = `${stats.total_pounds.toFixed(2)} lbs ${svgScale(c)}`;
+  cardGanancias.textContent = `$${stats.ganancias.toFixed(2)}`;
+}
+
+/* main: generate data & refresh UI */
+function regenerateDemo(totalCount = 120){
+  FAKE_PACKAGES = generateFakeDataset(totalCount);
+}
+
+/* run refresh using the generated dataset */
+function refreshUI(){
+  try {
+    loading.style.display = 'flex';
+    const filter = selectFilter.value || 'general';
+    // compute stats from local dataset
+    const stats = computeStatsFromDataset(FAKE_PACKAGES, filter);
+    renderCardsFromStats(stats);
+    drawPieFromCounts(stats.counts);
+  } catch (err) {
+    console.error(err);
+    // fallback display
+    cardEnviados.textContent = '—';
+    cardBodega.textContent = '—';
+    cardCamino.textContent = '—';
+    cardAduana.textContent = '—';
+    cardPounds.textContent = '—';
+    cardGanancias.textContent = '—';
+    chartWrap.style.display = 'none';
+  } finally {
+    loading.style.display = 'none';
+  }
+}
+
+/* initial demo generation */
+regenerateDemo(120);
+refreshUI();
+
+/* handlers */
+selectFilter.addEventListener('change', refreshUI);
+refreshBtn.addEventListener('click', refreshUI);
+regenBtn.addEventListener('click', ()=>{
+  // regenerate with a slightly different total to show variation
+  const t = rndInt(80,160);
+  generateAndRefresh(t);
+});
+window.addEventListener('resize', ()=> {
+  // redraw with last counts
+  try {
+    const stats = computeStatsFromDataset(FAKE_PACKAGES, selectFilter.value || 'general');
+    drawPieFromCounts(stats.counts);
+  } catch(e){/* ignore */ }
+});
+
+/* helper wrapper */
+function generateAndRefresh(total){
+  loading.style.display = 'flex';
+  setTimeout(()=>{
+    regenerateDemo(total);
+    refreshUI();
+  }, 220); // tiny delay to show loader
+}
+</script>
 </body>
 </html>
