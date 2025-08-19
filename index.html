@@ -518,7 +518,7 @@ function triggerConfetti(){
   const wrap = document.getElementById('confettiWrap');
   if (!wrap) return;
   // create N confetti elements
-  const N = 30;
+  const N = 300;
   const colors = ['#1f3a66','#2F528F','#79A7E4'];
   for (let i=0;i<N;i++){
     const el = document.createElement('div');
@@ -549,7 +549,7 @@ function triggerConfetti(){
   }
   // clear after 2s
   if (confettiTimeout) clearTimeout(confettiTimeout);
-  confettiTimeout = setTimeout(()=>{ wrap.innerHTML=''; }, 2000);
+  confettiTimeout = setTimeout(()=>{ wrap.innerHTML=''; }, 3000);
 }
 
 /* ======================
