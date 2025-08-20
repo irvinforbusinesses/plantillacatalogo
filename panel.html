@@ -297,6 +297,39 @@ footer { color: #888; text-align: center; padding: 0.8rem 0.5rem; font-size: 0.8
 @media (max-width:420px){
   nav { flex-direction: column; gap:.45rem; }
 }
+  /* ===== Forzar botones del nav en una sola fila en móviles =====
+   Pegar al final del <style> (sobre-escribe rules previas que los apilen)
+*/
+@media (max-width: 600px) {
+  header nav {
+    display: flex;
+    flex-direction: row !important;   /* asegurar fila */
+    flex-wrap: nowrap;                /* no se rompen a siguiente línea */
+    gap: .45rem;
+    overflow-x: auto;                 /* permitir scroll horizontal si hacen overflow */
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 6px;              /* espacio para scroll */
+  }
+
+  /* Cada botón se comporta como elemento fijo (no se estira) */
+  header nav button {
+    flex: 0 0 auto !important;
+    min-width: 110px;                 /* ancho mínimo para que sigan siendo legibles */
+    padding: .55rem .6rem;
+    font-size: .95rem;
+    white-space: nowrap;              /* evitar salto de texto dentro del botón */
+  }
+
+  /* Opcional: ocultar scrollbar en WebKit pero mantener scroll táctil */
+  header nav::-webkit-scrollbar { height: 6px; }
+  header nav::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.08); border-radius: 6px; }
+}
+
+/* Extra: si quieres forzar aún más en pantallas muy estrechas, reduce min-width */
+@media (max-width: 360px) {
+  header nav button { min-width: 92px; font-size: .88rem; padding: .45rem .5rem; }
+}
+
 </style>
 </head>
 <body>
