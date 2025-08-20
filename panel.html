@@ -69,6 +69,21 @@ button.action-btn { margin-top: 1rem; background: var(--color-accent); color: wh
 }
 .btnEliminar:hover { background: #ff6b6b; }
 
+/* NUEVO: estilo para item de pedido (mismo tamaño/estética que recordatorio) */
+.pedido-item {
+  background: var(--color-gray);
+  padding: 0.75rem;
+  border-radius: 16px;
+  margin-bottom: 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+  cursor: pointer;
+}
+.pedido-info { flex:1; padding:0.4rem; }
+.pedido-meta { text-align:right; font-size:0.9rem; color:#444; }
+
 /* Pop-ups (tus existentes) */
 .popUp, .confirmPop { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--color-light); padding: 1rem; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 999; }
 .popUp button, .confirmPop button { margin-top: 0.5rem; width: 100%; }
@@ -143,7 +158,6 @@ footer { color: #888; text-align: center; padding: 0.8rem 0.5rem; font-size: 0.8
 .authBox .btn.secondary { background: #888; }
 .authError { color: #e53935; font-size: 0.9rem; display: none; margin-top: 0.25rem; }
 
-/* contenedor estadísticas */
 #estadisticas-container { margin-top: 0.75rem; }
 #estadisticasFrame {
   width: 100%;
@@ -152,7 +166,6 @@ footer { color: #888; text-align: center; padding: 0.8rem 0.5rem; font-size: 0.8
   border-radius: 12px;
   background: #fff;
 }
-  /* --- Contenedor de estadísticas --- */
 .stats-container {
   width: 100%;
   max-width: 100%;
@@ -161,21 +174,6 @@ footer { color: #888; text-align: center; padding: 0.8rem 0.5rem; font-size: 0.8
   border-radius: 10px;
   box-sizing: border-box;
   margin: 0 auto;
-}
-
-/* Contenido interno */
-.stats-container .stats-content {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-/* Ajustes para pantallas grandes */
-@media (min-width: 768px) {
-  .stats-container .stats-content {
-    flex-direction: row;
-    justify-content: space-between;
-  }
 }
 
 /* Fondo del lightbox con blur */
@@ -194,7 +192,7 @@ footer { color: #888; text-align: center; padding: 0.8rem 0.5rem; font-size: 0.8
 .hidden {
   display: none;
 }
-  .link-btn {
+.link-btn {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -209,18 +207,12 @@ footer { color: #888; text-align: center; padding: 0.8rem 0.5rem; font-size: 0.8
   margin: 0.3rem auto;
   box-shadow: 0 2px 6px rgba(0,0,0,0.12);
   transition: transform .12s;
-
-  /* 👉 Esta línea evita que el texto se divida en 2 */
   white-space: nowrap;
 }
-
 .link-btn:hover {
   transform: translateY(-3px);
   background: #1f3a66;
 }
-
-
-
 
 /* Caja del lightbox */
 .lightbox-content {
@@ -232,14 +224,14 @@ footer { color: #888; text-align: center; padding: 0.8rem 0.5rem; font-size: 0.8
   max-height: 70vh;        /* altura máxima: 70% de la ventana */
   overflow-y: auto;        /* scroll vertical si el contenido es largo */
   box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-  text-align: center;
+  text-align: left;
   position: relative;
 }
 
 /* Asegura que los párrafos respeten saltos de línea y no se corten */
 .lightbox-content p {
-  white-space: pre-wrap;   /* respeta saltos de línea */
-  word-wrap: break-word;   /* corta palabras largas si es necesario */
+  white-space: pre-wrap;
+  word-wrap: break-word;
 }
 
 /* Botón cerrar (similar al sitio) */
@@ -251,6 +243,11 @@ footer { color: #888; text-align: center; padding: 0.8rem 0.5rem; font-size: 0.8
   border: none;
   font-size: 24px;
   cursor: pointer;
+}
+/* Variante para colocar la X en la esquina superior izquierda (pedido) */
+.close-lightbox.left {
+  left: 10px;
+  right: auto;
 }
 
 /* Botón eliminar */
@@ -268,6 +265,38 @@ footer { color: #888; text-align: center; padding: 0.8rem 0.5rem; font-size: 0.8
   background: #c0392b;
 }
 
+/* Estilos para los títulos dentro del lightbox de pedido (negrita como en formulario) */
+.lb-field { font-weight:700; margin-top: 8px; }
+.lb-value { margin-top: 4px; color:#333; }
+
+/* Confirmación aviso (check circular) */
+.confirmAviso {
+  position: fixed;
+  inset: 0;
+  display: flex; align-items:center; justify-content:center;
+  background: rgba(0,0,0,0.35);
+  z-index: 1100;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s ease;
+}
+.confirmAviso.show { opacity: 1; pointer-events: auto; }
+.confirmBox {
+  background: #fff; padding: 1rem 1.1rem; border-radius: 12px; text-align:center; width: 88%; max-width: 360px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+}
+.check-icon {
+  width:72px;height:72px;border-radius:999px;margin:0 auto 0.6rem;display:flex;align-items:center;justify-content:center;background:rgba(47,82,143,0.08);
+}
+.check-icon svg { display:block; }
+
+/* small helper for bold label spacing */
+.lb-row { margin-bottom: 6px; }
+
+/* responsive tweaks */
+@media (max-width:420px){
+  nav { flex-direction: column; gap:.45rem; }
+}
 </style>
 </head>
 <body>
@@ -278,6 +307,7 @@ footer { color: #888; text-align: center; padding: 0.8rem 0.5rem; font-size: 0.8
 <h1>Panel del Operador</h1>
 <nav>
 <button id="btnInicio">Inicio</button>
+<button id="btnPedidos" class="inactive">Pedidos</button>
 <button id="btnAgregar" class="inactive">Agregar Paquete</button>
 <button id="btnActualizar" class="inactive">Actualizar Seguimiento</button>
 <button id="btnEstadisticas" class="inactive">Estadísticas</button>
@@ -319,6 +349,15 @@ footer { color: #888; text-align: center; padding: 0.8rem 0.5rem; font-size: 0.8
 <button id="btnConfirmEliminar" class="action-btn" style="background:#f56565;">Eliminar</button>
 <button id="btnCancelarEliminar" class="action-btn" style="background:#888;">Cancelar</button>
 </div>
+</section>
+
+<!-- PEDIDOS (nuevo) -->
+<section id="pedidos">
+  <h2>Pedidos</h2>
+  <div id="listaPedidos">
+    <!-- Items prellenados desde JS -->
+  </div>
+  <p class="small-muted" style="margin-top:8px;">Estos son pedidos de ejemplo (datos de prueba).</p>
 </section>
 
 <!-- Agregar Paquete -->
@@ -427,7 +466,6 @@ Esta plataforma es de prueba, dog. Acción no disponible por el momento.
 </div>
 </section>
 
-
 <!-- ESTADÍSTICAS (Nueva sección) -->
 <section id="estadisticas">
   <div id="estadisticas-container">
@@ -462,7 +500,8 @@ Esta plataforma es de prueba, dog. Acción no disponible por el momento.
     <div class="authError" id="statsError">Contraseña incorrecta</div>
   </div>
 </div>
-  <!-- Lightbox Recordatorio -->
+
+<!-- Lightbox Recordatorio (existente) -->
 <div id="lightbox-recordatorio" class="lightbox hidden">
   <div class="lightbox-content">
     <button class="close-lightbox">&times;</button>
@@ -472,16 +511,56 @@ Esta plataforma es de prueba, dog. Acción no disponible por el momento.
   </div>
 </div>
 
+<!-- Lightbox Pedido (nuevo) -->
+<div id="lightbox-pedido" class="lightbox hidden" aria-hidden="true">
+  <div class="lightbox-content" role="dialog" aria-modal="true" aria-labelledby="lbPedidoTitle">
+    <!-- X en esquina superior izquierda (igual estilo, pero left) -->
+    <button class="close-lightbox left" id="closePedido">&times;</button>
+    <h2 id="lbPedidoTitle" style="text-align:center;margin-bottom:8px;">Pedido</h2>
+
+    <!-- Campos (títulos exactamente como en el formulario en negrita) -->
+    <div class="lb-row"><div class="lb-field">Nombre</div><div class="lb-value" id="lbNombre"></div></div>
+    <div class="lb-row"><div class="lb-field">Teléfono</div><div class="lb-value" id="lbTelefono"></div></div>
+    <div class="lb-row"><div class="lb-field">Plataforma / Agencia</div><div class="lb-value" id="lbPlataforma"></div></div>
+    <div class="lb-row"><div class="lb-field">Descripción</div><div class="lb-value" id="lbDescripcion"></div></div>
+    <div class="lb-row"><div class="lb-field">Tipo de envío</div><div class="lb-value" id="lbTipo"></div></div>
+    <div class="lb-row"><div class="lb-field">Peso aproximado (libras)</div><div class="lb-value" id="lbPeso"></div></div>
+
+    <!-- Botones: Rechazar y Aceptar (solo dos botones) -->
+    <div style="display:flex;gap:8px;margin-top:12px;">
+      <button id="btnRechazarPedido" class="btn-eliminar" style="flex:1;">Rechazar pedido</button>
+      <button id="btnAceptarPedido" class="action-btn" style="flex:1;background:#2F528F;">Aceptar pedido</button>
+    </div>
+  </div>
+</div>
+
+<!-- Confirmación visual (check circular) que aparece al rechazar/aceptar -->
+<div id="confirmAviso" class="confirmAviso" aria-hidden="true">
+  <div class="confirmBox" role="dialog" aria-modal="true">
+    <div class="check-icon" aria-hidden="true">
+      <!-- SVG check circular -->
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="12" cy="12" r="10" stroke="none" fill="transparent"/>
+        <path d="M9 12.5l2 2 4-4" stroke="#2F528F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
+    </div>
+    <h3 style="color:var(--color-accent);margin-bottom:6px;">Se le avisó al cliente</h3>
+    <p style="color:#444;margin-bottom:10px;">El cliente será notificado por WhatsApp con los detalles.</p>
+    <button id="btnCerrarAviso" class="action-btn" style="background:var(--color-accent);">Cerrar</button>
+  </div>
+</div>
 
 <script>
-// ================== NAVEGACIÓN (ajustada para incluir Estadísticas) ==================
+// ================== NAVEGACIÓN (ajustada para incluir Pedidos) ==================
 const btnInicio = document.getElementById('btnInicio');
+const btnPedidos = document.getElementById('btnPedidos');
 const btnAgregar = document.getElementById('btnAgregar');
 const btnActualizar = document.getElementById('btnActualizar');
 const btnEstadisticas = document.getElementById('btnEstadisticas');
 
 const secciones = {
   inicio: document.getElementById('inicio'),
+  pedidos: document.getElementById('pedidos'),
   agregar: document.getElementById('agregar'),
   actualizar: document.getElementById('actualizar'),
   estadisticas: document.getElementById('estadisticas')
@@ -489,23 +568,21 @@ const secciones = {
 
 function mostrarSeccion(nombre){
   for(let sec in secciones) secciones[sec].classList.remove('active');
-  secciones[nombre].classList.add('active');
+  if(secciones[nombre]) secciones[nombre].classList.add('active');
 
-  btnInicio.classList.add('inactive');
-  btnAgregar.classList.add('inactive');
-  btnActualizar.classList.add('inactive');
-  btnEstadisticas.classList.add('inactive');
-
+  // reset nav buttons
+  [btnInicio, btnPedidos, btnAgregar, btnActualizar, btnEstadisticas].forEach(b => b.classList.add('inactive'));
   if(nombre==='inicio') btnInicio.classList.remove('inactive');
+  if(nombre==='pedidos') btnPedidos.classList.remove('inactive');
   if(nombre==='agregar') btnAgregar.classList.remove('inactive');
   if(nombre==='actualizar') btnActualizar.classList.remove('inactive');
   if(nombre==='estadisticas') btnEstadisticas.classList.remove('inactive');
 }
 btnInicio.addEventListener('click',()=>mostrarSeccion('inicio'));
+btnPedidos.addEventListener('click',()=>mostrarSeccion('pedidos'));
 btnAgregar.addEventListener('click',()=>mostrarSeccion('agregar'));
 btnActualizar.addEventListener('click',()=>mostrarSeccion('actualizar'));
 btnEstadisticas.addEventListener('click',()=>{
-  // Abrimos el modal de estadísticas (no cambiamos de sección aún)
   document.getElementById('statsOverlay').style.display = 'flex';
 });
 
@@ -583,7 +660,116 @@ btnConfirmEliminar.addEventListener('click', ()=>{
   indexEliminar=null;
 });
 
-// ================== NUEVO: CONTRASEÑAS/OVERLAYS ==================
+// ================== NUEVO: Pedidos (ejemplos preseleccionados) ==================
+const listaPedidosDiv = document.getElementById('listaPedidos');
+
+// Generador simple de teléfono USA aleatorio de 10 dígitos
+function generarUSNumber(){
+  const n = Math.floor(Math.random()*900000000) + 100000000; // 9 digits + leading 1
+  // Ajustar a 10 dígitos con prefijo 1
+  return `(1) ${String(Math.floor(100 + Math.random()*900))}-${String(Math.floor(100 + Math.random()*900))}-${String(Math.floor(1000 + Math.random()*9000))}`;
+}
+
+// Crear pedidos de muestra
+const pedidosEjemplo = [
+  {
+    id: 'pedido-1',
+    nombre: 'Lester Games',
+    telefono: generarUSNumber(),
+    plataforma: 'El Campo / Amazon',
+    descripcion: '3 perfumes: Acme Bliss 50ml, Acme Noir 75ml, Acme Fresh 30ml',
+    tipo: 'Marítimo',
+    peso: '2'
+  },
+  {
+    id: 'pedido-2',
+    nombre: 'Ana Morales',
+    telefono: '(505) 87234567',
+    plataforma: 'El Campo / Tienda Demo',
+    descripcion: 'Caja con 2 camisetas y 1 zapatilla (marca DemoSport)',
+    tipo: 'Aéreo',
+    peso: '1.5'
+  }
+];
+
+// Renderizar pedidos en la lista (misma estética que recordatorios)
+function renderPedidos(){
+  listaPedidosDiv.innerHTML = '';
+  pedidosEjemplo.forEach((p, idx) => {
+    const div = document.createElement('div');
+    div.className = 'pedido-item';
+    div.dataset.index = idx;
+    div.innerHTML = `
+      <div class="pedido-info"><strong>${p.nombre}</strong><div class="small-muted">${p.plataforma}</div></div>
+      <div class="pedido-meta">${p.tipo}</div>
+    `;
+    listaPedidosDiv.appendChild(div);
+  });
+}
+renderPedidos();
+
+// ================== Lightbox Pedidos: interacción ==================
+const lbPedido = document.getElementById('lightbox-pedido');
+const lbClosePedido = document.getElementById('closePedido');
+const lbNombre = document.getElementById('lbNombre');
+const lbTelefono = document.getElementById('lbTelefono');
+const lbPlataforma = document.getElementById('lbPlataforma');
+const lbDescripcion = document.getElementById('lbDescripcion');
+const lbTipo = document.getElementById('lbTipo');
+const lbPeso = document.getElementById('lbPeso');
+
+const btnRechazarPedido = document.getElementById('btnRechazarPedido');
+const btnAceptarPedido = document.getElementById('btnAceptarPedido');
+
+let pedidoSeleccionadoIndex = null;
+
+// Delegación: click en listaPedidosDiv
+listaPedidosDiv.addEventListener('click', (e) => {
+  const item = e.target.closest('.pedido-item');
+  if(!item) return;
+  pedidoSeleccionadoIndex = Number(item.dataset.index);
+  const p = pedidosEjemplo[pedidoSeleccionadoIndex];
+  // llenar campos en lightbox
+  lbNombre.textContent = p.nombre;
+  lbTelefono.textContent = p.telefono;
+  lbPlataforma.textContent = p.plataforma;
+  lbDescripcion.textContent = p.descripcion;
+  lbTipo.textContent = p.tipo;
+  lbPeso.textContent = `${p.peso} lb`;
+  // mostrar lightbox
+  lbPedido.classList.remove('hidden');
+});
+
+// Cerrar lightbox (X)
+lbClosePedido.addEventListener('click', ()=>{ lbPedido.classList.add('hidden'); });
+
+// Cerrar si clic fuera de contenido
+lbPedido.addEventListener('click', (e)=>{
+  if(e.target === lbPedido) lbPedido.classList.add('hidden');
+});
+
+// acciones Rechazar/Aceptar -> muestran modal de confirmación (mismo para ambos)
+const confirmAviso = document.getElementById('confirmAviso');
+const btnCerrarAviso = document.getElementById('btnCerrarAviso');
+
+function showConfirmAviso(){
+  confirmAviso.classList.add('show');
+  // cerrar lightbox si estaba abierto
+  lbPedido.classList.add('hidden');
+}
+function hideConfirmAviso(){
+  confirmAviso.classList.remove('show');
+}
+btnRechazarPedido.addEventListener('click', ()=> showConfirmAviso());
+btnAceptarPedido.addEventListener('click', ()=> showConfirmAviso());
+btnCerrarAviso.addEventListener('click', ()=> hideConfirmAviso());
+
+// cerrar confirm al clickear afuera
+confirmAviso.addEventListener('click', (e)=>{
+  if(e.target === confirmAviso) hideConfirmAviso();
+});
+
+// ================== CONTRASEÑAS/OVERLAYS ==================
 const PASS_LOCK  = "12345678"; // puedes cambiarlas luego
 const PASS_STATS = "12345678";
 
@@ -633,7 +819,6 @@ function loadStatsIfAuthorized(){
   if (statsPass.value === PASS_STATS){
     statsError.style.display = 'none';
     closeStats();
-    // Cargar dentro de la misma página (integrado con iframe)
     if (statsFrame.src !== 'https://irvinforbusinesses.github.io/plantillacatalogo/estadisticas.html'){
       statsFrame.src = 'https://irvinforbusinesses.github.io/plantillacatalogo/estadisticas.html';
     }
@@ -646,30 +831,26 @@ function loadStatsIfAuthorized(){
 statsSubmit.addEventListener('click', loadStatsIfAuthorized);
 statsPass.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') loadStatsIfAuthorized(); });
 statsCancel.addEventListener('click', closeStats);
- // ===== LIGHTBOX RECORDATORIOS =====
+
+// ===== LIGHTBOX RECORDATORIOS (tu código original) =====
 const lightbox = document.getElementById('lightbox-recordatorio');
-const closeBtn = document.querySelector('.close-lightbox');
+const closeBtn = document.querySelector('#lightbox-recordatorio .close-lightbox');
 const lbDelete = document.querySelector('#lightbox-recordatorio .btn-eliminar');
 let indexSeleccionado = null;
 
-// Un solo listener con delegación para ambos casos:
 listDiv.addEventListener('click', (e) => {
-  // 1) Si hicieron click en el botón X (eliminar clásico → pop existente)
   const eliminarBtn = e.target.closest('.btnEliminar');
   if (eliminarBtn) {
     indexEliminar = eliminarBtn.dataset.index;
     popEliminarConfirm.style.display='block';
-    return; // no seguimos para que no abra el lightbox
+    return;
   }
-
-  // 2) Si hicieron click en cualquier parte del item, abrimos el lightbox
   const item = e.target.closest('.recordatorio-item');
   if (item) {
     indexSeleccionado = Number(item.dataset.index);
     const arr = JSON.parse(localStorage.getItem('recordatorios')||'[]');
     const r = arr[indexSeleccionado];
 
-    // Rellenamos el contenido del lightbox
     const titleEl = lightbox.querySelector('h2');
     const pEl = lightbox.querySelector('p');
 
@@ -685,27 +866,18 @@ listDiv.addEventListener('click', (e) => {
   }
 });
 
-// Cerrar lightbox
 closeBtn.addEventListener('click', () => {
   lightbox.classList.add('hidden');
 });
-
-// Cerrar al clickear fuera de la caja
 lightbox.addEventListener('click', (e) => {
   if (e.target === lightbox) lightbox.classList.add('hidden');
 });
-
-// Eliminar desde el lightbox (borra el recordatorio seleccionado)
-// Eliminar desde el lightbox (abrir pop-up de confirmación)
 lbDelete.addEventListener('click', () => {
   if (indexSeleccionado != null) {
-    // Mostrar pop-up de confirmación
     popEliminarConfirm.style.display = 'block';
   }
-  // Cerrar el lightbox mientras se confirma
   lightbox.classList.add('hidden');
 });
-
 
 </script>
 </body>
