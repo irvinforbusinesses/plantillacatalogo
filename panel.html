@@ -293,57 +293,109 @@ footer { color: #888; text-align: center; padding: 0.8rem 0.5rem; font-size: 0.8
 /* small helper for bold label spacing */
 .lb-row { margin-bottom: 6px; }
 
-/* responsive tweaks */
-@media (max-width:420px){
-  nav { flex-direction: column; gap:.45rem; }
-}
-  /* ===== Forzar botones del nav en una sola fila en móviles =====
-   Pegar al final del <style> (sobre-escribe rules previas que los apilen)
-*/
-@media (max-width: 600px) {
-  header nav {
-    display: flex;
-    flex-direction: row !important;   /* asegurar fila */
-    flex-wrap: nowrap;                /* no se rompen a siguiente línea */
-    gap: .45rem;
-    overflow-x: auto;                 /* permitir scroll horizontal si hacen overflow */
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: 6px;              /* espacio para scroll */
+@media (max-width:600px){
+  /* Ocultar nav original y mostrar barra móvil (si la implementas) */
+  header nav { display:flex; gap:8px; }
+  header nav.mobile-mode button {
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:8px 6px;
+    min-width:60px;
+    border-radius:10px;
   }
-
-  /* Cada botón se comporta como elemento fijo (no se estira) */
-  header nav button {
-    flex: 0 0 auto !important;
-    min-width: 110px;                 /* ancho mínimo para que sigan siendo legibles */
-    padding: .55rem .6rem;
-    font-size: .95rem;
-    white-space: nowrap;              /* evitar salto de texto dentro del botón */
+  /* Mostrar etiqueta corta (data-short) usando pseudo-element (si quieres sin JS) */
+  header nav.mobile-mode button::after{
+    content: attr(data-short);
+    display:block;
+    font-size:11px;
+    margin-top:4px;
+    color: #fff;
   }
-
-  /* Opcional: ocultar scrollbar en WebKit pero mantener scroll táctil */
-  header nav::-webkit-scrollbar { height: 6px; }
-  header nav::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.08); border-radius: 6px; }
+  /* Hacer botones circulares para destacar */
+  header nav.mobile-mode button { width:56px; height:56px; border-radius:12px; }
+}
+ /* Modo móvil: transforma los botones en pills/iconos */
+header nav.mobile-mode {
+  display:flex;
+  gap:8px;
+  justify-content:center;
+  align-items:center;
 }
 
-/* Extra: si quieres forzar aún más en pantallas muy estrechas, reduce min-width */
-@media (max-width: 360px) {
-  header nav button { min-width: 92px; font-size: .88rem; padding: .45rem .5rem; }
+/* Cada botón en columna: icono arriba, etiqueta corta abajo */
+header nav.mobile-mode button {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  min-width:56px;
+  padding:8px 6px;
+  height:auto;
+  border-radius:10px;
+  font-size:12px;
+  line-height:1;
+  white-space:nowrap;
 }
 
+/* icono usando data-icon */
+header nav.mobile-mode button::before{
+  content: attr(data-icon);
+  display:block;
+  font-size:18px;
+  margin-bottom:6px;
+  line-height:1;
+}
+
+/* etiqueta corta usando data-short */
+header nav.mobile-mode button::after{
+  content: attr(data-short);
+  display:block;
+  font-size:11px;
+  margin-top:0;
+  color:#fff; /* o el color que uses en el botón */
+}
+
+/* Si quieres que el texto largo del botón siga visible en pantallas más amplias,
+   asegúrate de no ocultarlo con display:none; el CSS anterior solo añade icono+short,
+   pero conserva el botón original (el texto sigue ahí). Si quieres ocultar el texto
+   largo en mobile, añade: */
+header nav.mobile-mode button > * { display: none; } /* opcional: oculta contenido interno */ 
 </style>
 </head>
 <body>
+
 
 <div id="app"><!-- wrapper para blur si hiciera falta -->
 
 <header>
 <h1>Panel del Operador</h1>
 <nav>
-<button id="btnInicio">Inicio</button>
-<button id="btnPedidos" class="inactive">Pedidos</button>
-<button id="btnAgregar" class="inactive">Agregar Paquete</button>
-<button id="btnActualizar" class="inactive">Actualizar Seguimiento</button>
-<button id="btnEstadisticas" class="inactive">Estadísticas</button>
+  <button id="btnInicio"
+          data-short="Inicio"
+          data-icon="🏠"
+          aria-label="Ir a Inicio">Inicio</button>
+
+  <button id="btnPedidos" class="inactive"
+          data-short="Pedidos"
+          data-icon="📦"
+          aria-label="Ver Pedidos">Pedidos</button>
+
+  <button id="btnAgregar" class="inactive"
+          data-short="Agregar"
+          data-icon="➕"
+          aria-label="Agregar Paquete">Agregar Paquete</button>
+
+  <button id="btnActualizar" class="inactive"
+          data-short="Actualizar"
+          data-icon="🔄"
+          aria-label="Actualizar Seguimiento">Actualizar Seguimiento</button>
+
+  <button id="btnEstadisticas" class="inactive"
+          data-short="Estadís."
+          data-icon="📊"
+          aria-label="Ver Estadísticas">Estadísticas</button>
 </nav>
 </header>
 
@@ -584,6 +636,23 @@ Esta plataforma es de prueba, dog. Acción no disponible por el momento.
 </div>
 
 <script>
+(function(){
+  const nav = document.querySelector('header nav');
+  if(!nav) return;
+
+  function updateNavMode(){
+    if(window.innerWidth <= 600){
+      nav.classList.add('mobile-mode');
+    } else {
+      nav.classList.remove('mobile-mode');
+    }
+  }
+
+  // Inicial y en resize
+  updateNavMode();
+  window.addEventListener('resize', updateNavMode);
+  // opcional: rota el foco al primer botón en mobile para accesibilidad
+})();
 // ================== NAVEGACIÓN (ajustada para incluir Pedidos) ==================
 const btnInicio = document.getElementById('btnInicio');
 const btnPedidos = document.getElementById('btnPedidos');
