@@ -362,6 +362,37 @@ header nav.mobile-mode button::after{
    pero conserva el botón original (el texto sigue ahí). Si quieres ocultar el texto
    largo en mobile, añade: */
 header nav.mobile-mode button > * { display: none; } /* opcional: oculta contenido interno */ 
+  /* Pegar al final del <style> - opción rápida (no tocar HTML) */
+@media (max-width:600px) {
+  header nav.mobile-mode button{
+    /* oculta el texto real */
+    font-size: 0 !important;
+    color: transparent !important;
+    line-height: 0 !important;
+    padding-top: 10px; /* ajusta si necesitas más espacio para el icono */
+    padding-bottom: 10px;
+  }
+
+  /* icono usando data-icon (visible) */
+  header nav.mobile-mode button::before{
+    content: attr(data-icon);
+    display:block;
+    font-size:18px;
+    line-height:1;
+    margin-bottom:6px;
+    color: #fff;              /* color del icono */
+  }
+
+  /* etiqueta corta usando data-short (visible) */
+  header nav.mobile-mode button::after{
+    content: attr(data-short);
+    display:block;
+    font-size:11px;
+    line-height:1;
+    color:#fff;               /* color del texto corto */
+  }
+}
+
 </style>
 </head>
 <body>
@@ -374,27 +405,22 @@ header nav.mobile-mode button > * { display: none; } /* opcional: oculta conteni
 <nav>
   <button id="btnInicio"
           data-short="Inicio"
-          data-icon="🏠"
           aria-label="Ir a Inicio">Inicio</button>
 
   <button id="btnPedidos" class="inactive"
           data-short="Pedidos"
-          data-icon="📦"
           aria-label="Ver Pedidos">Pedidos</button>
 
   <button id="btnAgregar" class="inactive"
           data-short="Agregar"
-          data-icon="➕"
           aria-label="Agregar Paquete">Agregar Paquete</button>
 
   <button id="btnActualizar" class="inactive"
           data-short="Actualizar"
-          data-icon="🔄"
           aria-label="Actualizar Seguimiento">Actualizar Seguimiento</button>
 
   <button id="btnEstadisticas" class="inactive"
           data-short="Estadís."
-          data-icon="📊"
           aria-label="Ver Estadísticas">Estadísticas</button>
 </nav>
 </header>
