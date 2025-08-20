@@ -10,6 +10,7 @@
   --color-bg:#E8F0F5;
   --color-accent:#2F528F;
   --text:#1A1A1A;
+  --solicitar-highlight: #1f3a66; /* color hover / destacado */
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{
@@ -21,13 +22,18 @@ body{
   margin:auto;
   padding-bottom:80px;
 }
-  footer { color: #888; text-align: center; padding: 0.8rem 0.5rem; font-size: 0.8rem; margin-top: 1.5rem; }
+footer { color: #888; text-align: center; padding: 0.8rem 0.5rem; font-size: 0.8rem; margin-top: 1.5rem; }
 
 header{text-align:center;margin-bottom:1.5rem}
 h1{font-family:'Poppins',sans-serif;font-size:1.8rem;color:var(--color-accent)}
 nav{display:flex;justify-content:center;gap:.5rem;margin-top:1rem}
-nav button{flex:1;background:var(--color-accent);color:#fff;border:none;padding:.75rem;font-weight:700;border-radius:8px;cursor:pointer}
+nav button{flex:1;background:var(--color-accent);color:#fff;border:none;padding:.75rem;font-weight:700;border-radius:8px;cursor:pointer; transition:transform .12s}
 nav button.inactive{background:#a0b6e0}
+nav button#btnSolicitar{ /* destacar por defecto con color hover */
+  background: var(--solicitar-highlight);
+  box-shadow: 0 6px 14px rgba(31,58,102,0.16);
+}
+nav button:hover{ transform: translateY(-2px); }
 
 /* sections */
 section{
@@ -53,7 +59,8 @@ section.active{display:block}
 
 /* Form basics */
 label{display:block;margin:1rem 0 .5rem;font-weight:600}
-select,input{width:100%;padding:.75rem;border-radius:8px;border:1px solid #ccc;font-size:1rem}
+select,input,textarea{width:100%;padding:.75rem;border-radius:8px;border:1px solid #ccc;font-size:1rem}
+textarea{min-height:90px;resize:vertical}
 button.calc-btn{margin-top:1rem;background:var(--color-accent);color:white;border:none;padding:.75rem;font-size:1rem;border-radius:8px;width:100%;font-weight:bold;cursor:pointer}
 .resultado{margin-top:1rem;font-size:1.05rem;font-weight:600}
 
@@ -97,6 +104,25 @@ button.calc-btn{margin-top:1rem;background:var(--color-accent);color:white;borde
 .small-muted{font-size:.9rem;color:#666;margin-top:.25rem}
 .center{text-align:center}
 
+/* receipt */
+.hr-divider{height:1px;background:#111;margin:1rem 0;border-radius:2px}
+.receipt-line{display:flex;justify-content:space-between;gap:.5rem;padding:.25rem 0;font-weight:600}
+.receipt-small{font-size:.95rem;color:#444;margin-top:.25rem}
+
+/* Modal */
+.modal-backdrop{
+  position:fixed;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;z-index:3000;
+  opacity:0;pointer-events:none;transition:opacity .28s ease;
+}
+.modal-backdrop.show{opacity:1;pointer-events:auto}
+.modal{
+  width:86%;max-width:420px;background:#fff;border-radius:12px;padding:1.25rem;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.18);transform:translateY(8px);transition:transform .28s ease, opacity .28s ease; opacity:0;
+}
+.modal-backdrop.show .modal{ transform: translateY(0); opacity:1; }
+
+/* icon */
+.check-icon{width:72px;height:72px;margin:0 auto 0.5rem;display:flex;align-items:center;justify-content:center;border-radius:999px;background:rgba(47,82,143,0.08)}
+
 /* responsive tweaks */
 @media (max-width:420px){ .link-btn{max-width:100%} .phone-row select{width:40%} }
 </style>
@@ -108,6 +134,7 @@ button.calc-btn{margin-top:1rem;background:var(--color-accent);color:white;borde
   <nav>
     <button id="btnInicio">Inicio</button>
     <button id="btnCotizar" class="inactive">Cotizar</button>
+    <button id="btnSolicitar">Solicitar</button>
     <button id="btnSeguimiento" class="inactive">Seguimiento</button>
   </nav>
 </header>
@@ -123,23 +150,72 @@ button.calc-btn{margin-top:1rem;background:var(--color-accent);color:white;borde
   </div>
 </section>
 
-<!-- COTIZAR -->
+<!-- COTIZAR (IDs actualizados para evitar choques con Solicitar) -->
 <section id="cotizar">
   <h2>Calculadora de Envío</h2>
-  <label for="tipoEnvio">Tipo de envío:</label>
-  <select id="tipoEnvio">
+  <label for="tipoEnvioCotizar">Tipo de envío:</label>
+  <select id="tipoEnvioCotizar">
     <option value="aereo">Aéreo</option>
     <option value="maritimo">Marítimo</option>
   </select>
 
-  <label for="peso">Peso aproximado (libras):</label>
-  <input type="number" id="peso" placeholder="Ej: 5">
+  <label for="pesoCotizar">Peso aproximado (libras):</label>
+  <input type="number" id="pesoCotizar" placeholder="Ej: 5">
 
-  <button class="calc-btn" onclick="calcular()">Calcular</button>
+  <button class="calc-btn" onclick="calcularCotizar()">Calcular</button>
 
-  <div class="resultado" id="resultado"></div>
+  <div class="resultado" id="resultadoCotizar"></div>
 </section>
 
+<!-- SOLICITAR (nuevo formulario) -->
+<section id="solicitar">
+  <h2>Solicita tu pedido</h2>
+
+  <label for="nombreSolicitar">Nombre</label>
+  <input type="text" id="nombreSolicitar" placeholder="Ej: Lester Gamez" required>
+
+  <label for="telefonoSolicitar">Teléfono</label>
+  <div class="phone-row">
+    <select id="telCodeSolicitar" aria-label="Código país">
+      <option value="+505">+505</option>
+      <option value="+1">+1</option>
+    </select>
+    <input type="tel" id="telefonoSolicitar" placeholder="Ej: 12345678" inputmode="numeric" pattern="[0-9]{8,10}" minlength="8" maxlength="10" required>
+  </div>
+
+  <label for="plataformaSolicitar">Plataforma/Agencia donde realizas tu pedido</label>
+  <input type="text" id="plataformaSolicitar" placeholder="Ej: Shein" required>
+
+  <label for="descripcionSolicitar">Descripción del paquete(opcional)</label>
+  <textarea id="descripcionSolicitar" placeholder="Ropa, perfumes, etc (opcional)"></textarea>
+
+  <label for="tipoEnvioSolicitar">Tipo de envío:</label>
+  <select id="tipoEnvioSolicitar" required>
+    <option value="">-- Selecciona --</option>
+    <option value="aereo">Aéreo</option>
+    <option value="maritimo">Marítimo</option>
+  </select>
+
+  <label for="pesoSolicitar">Peso aproximado (libras):</label>
+  <input type="number" id="pesoSolicitar" placeholder="Ej: 5" min="0.1" step="0.1" required>
+
+  <!-- botón llamar la atención (color hover por defecto ya aplicado en nav) -->
+  <button id="btnCalcularSolicitar" class="calc-btn" type="button">Solicitar</button>
+
+  <!-- Div donde aparecerá el recibo -->
+  <div id="reciboSolicitar" style="display:none;margin-top:1rem;">
+    <div class="hr-divider"></div>
+    <div class="receipt-line"><div>Precio por libra de envío</div><div id="precioPorLb">$0.00</div></div>
+    <div class="receipt-line"><div>Libras totales</div><div id="librasTotales">0</div></div>
+    <div class="receipt-line"><div>Total</div><div id="totalSolicitar">$0.00</div></div>
+
+    <!-- Confirmar (aparece después de calcular) -->
+    <div style="margin-top:0.75rem;">
+      <button id="btnConfirmarSolicitud" class="calc-btn" style="display:none;background:#2F528F">Confirmar solicitud</button>
+    </div>
+  </div>
+</section>
+  
 <!-- SEGUIMIENTO (actualizado) -->
 <section id="seguimiento">
   <h2>Seguimiento de Pedido</h2>
@@ -201,6 +277,24 @@ button.calc-btn{margin-top:1rem;background:var(--color-accent);color:white;borde
 <!-- confetti wrapper -->
 <div id="confettiWrap" aria-hidden="true"></div>
 
+<!-- Modal confirmación -->
+<div id="modalBackdrop" class="modal-backdrop" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="check-icon" aria-hidden="true">
+      <!-- inline SVG check (se ve bonito y mantiene color web) -->
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="12" cy="12" r="10" stroke="none" fill="transparent"/>
+        <path d="M9 12.5l2 2 4-4" stroke="#2F528F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
+    </div>
+    <h3 id="modalTitle" style="margin-bottom:.4rem;color:var(--color-accent)">Solicitud enviada</h3>
+    <p class="receipt-small">Tu solicitud ha sido enviada, te contactaremos por WhatsApp para confirmar el estado de tu solicitud en los próximos minutos.</p>
+    <div style="margin-top:1rem;">
+      <button id="modalClose" class="calc-btn" style="background:var(--solicitar-highlight)">Cerrar</button>
+    </div>
+  </div>
+</div>
+
 <footer>
   <p>&copy; 2025. Irvin Prado. Ascende Superius - Seek Higher Things</p>
 </footer>
@@ -209,37 +303,142 @@ button.calc-btn{margin-top:1rem;background:var(--color-accent);color:white;borde
 /* CONFIG */
 const API_BASE = 'https://nicaexpressway.onrender.com'; // <- adapta cuando conectes la API real
 
-/* UI refs */
+/* UI refs (nav + secciones) */
 const btnInicio = document.getElementById('btnInicio');
 const btnCotizar = document.getElementById('btnCotizar');
 const btnSeguimiento = document.getElementById('btnSeguimiento');
+const btnSolicitar = document.getElementById('btnSolicitar');
+
 const secciones = {
   inicio: document.getElementById('inicio'),
   cotizar: document.getElementById('cotizar'),
+  solicitar: document.getElementById('solicitar'),
   seguimiento: document.getElementById('seguimiento')
 };
+
 function mostrarSeccion(nombre){
   for(let s in secciones) secciones[s].classList.remove('active');
-  secciones[nombre].classList.add('active');
-  [btnInicio,btnCotizar,btnSeguimiento].forEach(b=>b.classList.add('inactive'));
+  if(secciones[nombre]) secciones[nombre].classList.add('active');
+
+  // reset nav active states
+  [btnInicio, btnCotizar, btnSolicitar, btnSeguimiento].forEach(b => b.classList.add('inactive'));
   if(nombre==='inicio') btnInicio.classList.remove('inactive');
   if(nombre==='cotizar') btnCotizar.classList.remove('inactive');
+  if(nombre==='solicitar') btnSolicitar.classList.remove('inactive');
   if(nombre==='seguimiento') btnSeguimiento.classList.remove('inactive');
 }
+
 btnInicio.addEventListener('click',()=>mostrarSeccion('inicio'));
 btnCotizar.addEventListener('click',()=>mostrarSeccion('cotizar'));
 btnSeguimiento.addEventListener('click',()=>mostrarSeccion('seguimiento'));
+btnSolicitar.addEventListener('click',()=>mostrarSeccion('solicitar'));
 
-/* calcular (mantener) */
-function calcular(){
-  const tipo = document.getElementById('tipoEnvio').value;
-  const peso = parseFloat(document.getElementById('peso').value);
-  const resultadoDiv = document.getElementById('resultado');
+/* ========== COTIZAR (mantener, IDs actualizados) ========== */
+function calcularCotizar(){
+  const tipo = document.getElementById('tipoEnvioCotizar').value;
+  const peso = parseFloat(document.getElementById('pesoCotizar').value);
+  const resultadoDiv = document.getElementById('resultadoCotizar');
   if(isNaN(peso)||peso<=0){ resultadoDiv.textContent="Por favor, ingresa un peso válido."; return; }
   let precio=0,dias=0;
   if(tipo==='aereo'){ precio = peso*7.50; dias=7; } else { precio = peso*3.00; dias=15; }
   resultadoDiv.innerHTML = `Precio estimado: $${precio.toFixed(2)} USD<br>Llegada estimada: ${dias} días`;
 }
+
+/* ========== SOLICITAR ========== */
+const btnCalcularSolicitar = document.getElementById('btnCalcularSolicitar');
+const reciboDiv = document.getElementById('reciboSolicitar');
+const precioPorLbEl = document.getElementById('precioPorLb');
+const librasTotalesEl = document.getElementById('librasTotales');
+const totalSolicitarEl = document.getElementById('totalSolicitar');
+const btnConfirmarSolicitud = document.getElementById('btnConfirmarSolicitud');
+
+btnCalcularSolicitar.addEventListener('click', onCalcularSolicitar);
+
+function onCalcularSolicitar(){
+  // obtener valores
+  const nombre = (document.getElementById('nombreSolicitar').value||'').trim();
+  const telCode = document.getElementById('telCodeSolicitar').value;
+  const telefonoDigits = (document.getElementById('telefonoSolicitar').value||'').trim();
+  const telefono = telefonoDigits ? `${telCode}${telefonoDigits}` : '';
+  const plataforma = (document.getElementById('plataformaSolicitar').value||'').trim();
+  const descripcion = (document.getElementById('descripcionSolicitar').value||'').trim();
+  const tipo = document.getElementById('tipoEnvioSolicitar').value;
+  const peso = parseFloat(document.getElementById('pesoSolicitar').value);
+
+  // validaciones
+  if(!nombre){ alert('Por favor ingresa tu nombre.'); return; }
+  if(!telefonoDigits || !/^\d{8,10}$/.test(telefonoDigits)){ alert('Ingresa un número válido de 8 a 10 dígitos.'); return; }
+  if(!plataforma){ alert('Por favor indica la plataforma o agencia de donde viene el paquete.'); return; }
+  if(!tipo){ alert('Selecciona el tipo de envío.'); return; }
+  if(isNaN(peso) || peso<=0){ alert('Ingresa un peso válido mayor que 0.'); return; }
+
+  // precios (misma lógica que calculadora)
+  const pricePerLb = (tipo === 'aereo') ? 7.50 : 3.00;
+  const total = Number((pricePerLb * peso).toFixed(2));
+
+  // Mostrar recibo
+  precioPorLbEl.textContent = `$${pricePerLb.toFixed(2)} USD`;
+  librasTotalesEl.textContent = `${peso} lb`;
+  totalSolicitarEl.textContent = `$${total.toFixed(2)} USD`;
+  reciboDiv.style.display = 'block';
+
+  // esconder botón solicitar y mostrar confirmar
+  btnCalcularSolicitar.style.display = 'none';
+  btnConfirmarSolicitud.style.display = 'block';
+
+  // almacenar datos temporalmente en dataset para usar en confirmación si lo deseas
+  btnConfirmarSolicitud.dataset.payload = JSON.stringify({
+    nombre, telefono, plataforma, descripcion, tipo, peso, pricePerLb, total
+  });
+}
+
+/* Confirmar solicitud -> mostrar modal, reset form al cerrar */
+const modalBackdrop = document.getElementById('modalBackdrop');
+const modalCloseBtn = document.getElementById('modalClose');
+
+btnConfirmarSolicitud.addEventListener('click', async ()=>{
+  // Aquí podrías enviar a tu API con fetch() si quieres. Por ahora mostramos modal.
+  // Ejemplo (descomentar cuando tengas endpoint):
+  /*
+  const payload = JSON.parse(btnConfirmarSolicitud.dataset.payload || '{}');
+  await fetch(`${API_BASE}/solicitudes`, {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify(payload)
+  });
+  */
+
+  showModal();
+});
+
+function showModal(){
+  modalBackdrop.classList.add('show');
+}
+
+function hideModal(){
+  modalBackdrop.classList.remove('show');
+
+  // Resetear el formulario de solicitar
+  document.getElementById('nombreSolicitar').value = '';
+  document.getElementById('telCodeSolicitar').value = '+505';
+  document.getElementById('telefonoSolicitar').value = '';
+  document.getElementById('plataformaSolicitar').value = '';
+  document.getElementById('descripcionSolicitar').value = '';
+  document.getElementById('tipoEnvioSolicitar').value = '';
+  document.getElementById('pesoSolicitar').value = '';
+  reciboDiv.style.display = 'none';
+  btnConfirmarSolicitud.style.display = 'none';
+  btnCalcularSolicitar.style.display = 'block';
+}
+
+modalCloseBtn.addEventListener('click', ()=> {
+  hideModal();
+});
+
+/* permitir cerrar modal al clickear backdrop */
+modalBackdrop.addEventListener('click', (e)=>{
+  if(e.target === modalBackdrop) hideModal();
+});
 
 /* ================================
    SEGUIMIENTO: lógica de búsqueda
@@ -317,28 +516,9 @@ async function onBuscar(){
 
 /* ***********************
    fetchPackageFromAPI()
-   ***********************
-   Actualmente esta función es un *placeholder*:
-   - Aquí debes conectar con tus endpoints reales de Supabase o tu backend.
-   - Ejemplos (descomentar y adaptar):
-     // Buscar por código (GET)
-     const res = await fetch(`${API_BASE}/paquetes?codigo=${encodeURIComponent(codigo)}`);
-     const arr = await res.json();
-
-     // Buscar por nombre/telefono -> podrías implementar un endpoint POST /paquetes/search
-     const res = await fetch(`${API_BASE}/paquetes/search`, {
-       method:'POST', headers:{'Content-Type':'application/json'},
-       body: JSON.stringify({ nombre, telefono })
-     });
-     const arr = await res.json();
-
-   Por ahora la función devuelve datos MOCK cuando `codigo === 'demo'` (útil para pruebas).
-*/
+   (misma función demo que antes)
+   ***********************/
 async function fetchPackageFromAPI({codigo, nombre, telefono}){
-  // Si conectas con APIs reales, reemplaza esta función por tus fetch(...) y devuelve:
-  // { paquete: { codigo_seguimiento, tipo_envio_id, peso_libras, tarifa_usd, fecha_estado }, historial: { estado1,... fecha1... } }
-
-  // ---- DEMO: si el usuario escribe 'demo' o '1989' devolvemos un mock ----
   if((codigo && (codigo.toLowerCase()==='demo' || codigo==='1989')) || nombre==='Lester Gamez'){
     await delay(700); // simula latencia
     return {
@@ -357,41 +537,6 @@ async function fetchPackageFromAPI({codigo, nombre, telefono}){
       }
     };
   }
-
-  // ---- PLACEHOLDER: aquí deberías invocar tu backend/Supabase ----
-  // ejemplo (comenta/descomenta y adapta):
-  /*
-  if (codigo) {
-    const res = await fetch(`${API_BASE}/paquetes?codigo=${encodeURIComponent(codigo)}`);
-    if (!res.ok) throw new Error('fetch paquetes failed');
-    const arr = await res.json();
-    if (!Array.isArray(arr) || arr.length === 0) return null;
-    const paquete = arr[0];
-
-    // Obtener historial (si tienes endpoint de historial)
-    const histRes = await fetch(`${API_BASE}/historial?codigo=${encodeURIComponent(paquete.codigo_seguimiento)}`);
-    const histArr = await histRes.json();
-    const historial = histArr && histArr.length>0 ? histArr[0] : null;
-
-    return { paquete, historial };
-  } else {
-    // Búsquedas por nombre/telefono podrían requerir un endpoint específico en tu backend
-    const res = await fetch(`${API_BASE}/paquetes/search`, {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ nombre, telefono })
-    });
-    if (!res.ok) throw new Error('search endpoint failed');
-    const arr = await res.json();
-    if (!Array.isArray(arr) || arr.length === 0) return null;
-    const paquete = arr[0];
-
-    // recuperar historial análogo al ejemplo anterior
-    return { paquete, historial: null };
-  }
-  */
-
-  // Si no hay implementación, devolvemos null.
   await delay(600);
   return null;
 }
@@ -427,7 +572,6 @@ function renderPackageResult({ paquete, historial }){
   if (!historial) {
     timelineEl.innerHTML = '<div class="small-muted">Historial no disponible</div>';
   } else {
-    // buscar pares estado1..4 y fecha1..4
     const items = [];
     for (let i=1;i<=4;i++){
       const s = historial[`estado${i}`];
@@ -439,19 +583,15 @@ function renderPackageResult({ paquete, historial }){
     if (items.length===0){
       timelineEl.innerHTML = '<div class="small-muted">No hay eventos en el historial.</div>';
     } else {
-      // render items top->bottom in order they appear
       items.forEach(it => {
         const div = document.createElement('div');
         div.className = 'timeline-item';
-        // human readable label
         const label = mapStateLabel(it.estado);
         div.innerHTML = `<div class="state">${label}</div>
                          <div class="subtext">${mapStateSubtext(it.estado) || ''}</div>
                          <div class="fecha">${it.fecha ? 'El ' + formatDate(it.fecha) : ''}</div>`;
-        // if it's listo_recoger then mark blink and later trigger confetti
         if (it.estado==='listo_recoger'){
           div.classList.add('blink');
-          // schedule confetti
           triggerConfetti();
         }
         timelineEl.appendChild(div);
@@ -484,11 +624,9 @@ function mapStateSubtext(raw){
   }
 }
 function formatDate(d){
-  // aceptamos YYYY-MM-DD o ISO; devolvemos formato legible dd/mm/yyyy
   try {
     const dt = new Date(d);
     if (isNaN(dt)) {
-      // intentar split si viene "YYYY-MM-DD"
       if(typeof d==='string' && d.includes('-')){
         const [y,m,day] = d.split('-');
         return `${day}/${m}/${y}`;
@@ -510,50 +648,74 @@ function hideResult(){
   timelineEl.innerHTML='';
 }
 
-/* ===== CONFETTI =====
-   Confetti burst usando divs, colores azul oscuro/medio/claro.
-   Duración extendida 7–10s para efecto más natural.
-*/
+/* ===== CONFETTI ===== */
 let confettiTimeout = null;
-
 function triggerConfettiDesktop(){
   const wrap = document.getElementById('confettiWrap');
   if (!wrap) return;
-
-  const N = 1000; // menos que 1000, pero con duración larga
+  const N = 600;
   const colors = ['#1f3a66','#2F528F','#79A7E4'];
-
   for (let i=0; i<N; i++){
     const el = document.createElement('div');
     const size = Math.floor(Math.random()*8)+6;
     el.className = 'confetti';
     el.style.position='absolute';
     el.style.left = (Math.random()*100)+'%';
-   el.style.top = (-50 + Math.random()*-50) + 'px'; // entre -50px y -100px
+    el.style.top = (-50 + Math.random()*-50) + 'px';
     el.style.width = size+'px';
     el.style.height = (size*0.6)+'px';
     el.style.background = colors[Math.floor(Math.random()*colors.length)];
     el.style.opacity = String(0.7 + Math.random()*0.3);
     el.style.borderRadius='2px';
     el.style.zIndex = 2500;
-
-   const destX = (Math.random()*500 - 250); // dispersión más aleatoria
-    const destY = window.innerHeight + 100;  // siempre cae más abajo del viewport
-    const duration = 5 + Math.random()*5;    // entre 7 y 10s
-
+    const destX = (Math.random()*500 - 250);
+    const destY = window.innerHeight + 100;
+    const duration = 5 + Math.random()*5;
     el.style.transition = `transform ${duration}s ease-out, top ${duration}s linear, opacity ${duration}s linear`;
-
     wrap.appendChild(el);
-
     requestAnimationFrame(()=>{
       el.style.top = destY + 'px';
       el.style.transform = `translateX(${destX}px) rotate(${Math.random()*360}deg)`;
       el.style.opacity = '0';
     });
   }
-
   if (confettiTimeout) clearTimeout(confettiTimeout);
-  confettiTimeout = setTimeout(()=>{ wrap.innerHTML=''; }, 11000); // limpiar tras 11s
+  confettiTimeout = setTimeout(()=>{ wrap.innerHTML=''; }, 11000);
+}
+function triggerConfettiMobile(){
+  const wrap = document.getElementById('confettiWrap');
+  if (!wrap) return;
+  const N = 200;
+  const colors = ['#1f3a66','#2F528F','#79A7E4'];
+  for (let i=0; i<N; i++){
+    const el = document.createElement('div');
+    const size = Math.floor(Math.random()*8)+6;
+    el.className = 'confetti';
+    el.style.position='absolute';
+    el.style.left = (Math.random()*100)+'%';
+    el.style.top = (-50 + Math.random()*-50) + 'px';
+    el.style.width = size+'px';
+    el.style.height = (size*0.6)+'px';
+    el.style.background = colors[Math.floor(Math.random()*colors.length)];
+    el.style.opacity = String(0.7 + Math.random()*0.3);
+    el.style.borderRadius='2px';
+    el.style.zIndex = 2500;
+    const destX = (Math.random()*500 - 250);
+    const destY = window.innerHeight + 100;
+    const duration = 5 + Math.random()*5;
+    el.style.transition = `transform ${duration}s ease-out, top ${duration}s linear, opacity ${duration}s linear`;
+    wrap.appendChild(el);
+    requestAnimationFrame(()=>{
+      el.style.top = destY + 'px';
+      el.style.transform = `translateX(${destX}px) rotate(${Math.random()*360}deg)`;
+      el.style.opacity = '0';
+    });
+  }
+  if (confettiTimeout) clearTimeout(confettiTimeout);
+  confettiTimeout = setTimeout(()=>{ wrap.innerHTML=''; }, 11000);
+}
+function triggerConfetti(){
+  if(window.innerWidth <= 420) triggerConfettiMobile(); else triggerConfettiDesktop();
 }
 
 /* ======================
@@ -566,55 +728,6 @@ function triggerConfettiDesktop(){
 
 /* inicial */
 hideResult();
-  function triggerConfettiMobile(){
-  const wrap = document.getElementById('confettiWrap');
-  if (!wrap) return;
-
-  const N = 280; // menos que 1000, pero con duración larga
-  const colors = ['#1f3a66','#2F528F','#79A7E4'];
-
-  for (let i=0; i<N; i++){
-    const el = document.createElement('div');
-    const size = Math.floor(Math.random()*8)+6;
-    el.className = 'confetti';
-    el.style.position='absolute';
-    el.style.left = (Math.random()*100)+'%';
-   el.style.top = (-50 + Math.random()*-50) + 'px'; // entre -50px y -100px
-    el.style.width = size+'px';
-    el.style.height = (size*0.6)+'px';
-    el.style.background = colors[Math.floor(Math.random()*colors.length)];
-    el.style.opacity = String(0.7 + Math.random()*0.3);
-    el.style.borderRadius='2px';
-    el.style.zIndex = 2500;
-
-   const destX = (Math.random()*500 - 250); // dispersión más aleatoria
-    const destY = window.innerHeight + 100;  // siempre cae más abajo del viewport
-    const duration = 5 + Math.random()*5;    // entre 7 y 10s
-
-    el.style.transition = `transform ${duration}s ease-out, top ${duration}s linear, opacity ${duration}s linear`;
-
-    wrap.appendChild(el);
-
-    requestAnimationFrame(()=>{
-      el.style.top = destY + 'px';
-      el.style.transform = `translateX(${destX}px) rotate(${Math.random()*360}deg)`;
-      el.style.opacity = '0';
-    });
-  }
-
-  if (confettiTimeout) clearTimeout(confettiTimeout);
-  confettiTimeout = setTimeout(()=>{ wrap.innerHTML=''; }, 11000); // limpiar tras 11s
-}
-
-// Detecta móvil o escritorio
-function triggerConfetti(){
-  if(window.innerWidth <= 420){
-    triggerConfettiMobile();
-  } else {
-    triggerConfettiDesktop();
-  }
-}
-
 </script>
 </body>
 </html>
