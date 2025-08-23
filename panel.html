@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Panel del Operador</title>
+<title>Panel del Operador — Demo</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@600&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -15,6 +15,8 @@
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
+  .link-btn{display:flex;justify-content:center;align-items:center;background:var(--color-accent);color:#fff;text-decoration:none;padding:.96rem 6rem;border-radius:999px;font-weight:700;font-size:1rem;max-width:220px;margin:0.3rem auto;box-shadow:0 2px 6px rgba(0,0,0,0.12);transition:transform .12s}
+.link-btn:hover{transform:translateY(-3px);background:#1f3a66}
 body {
   font-family: 'Inter', sans-serif;
   background: var(--color-bg);
@@ -24,11 +26,11 @@ body {
   margin: auto;
 }
 
-/* --------- NAV/SECCIONES ORIGINALES --------- */
+/* NAV + SECCIONES */
 header { text-align: center; margin-bottom: 2rem; }
 h1 { font-family: 'Poppins', sans-serif; font-size: 1.8rem; color: var(--color-accent); }
-nav { display: flex; justify-content: center; gap: 0.5rem; margin-top: 1rem; }
-nav button { flex: 1; background: var(--color-accent); color: white; border: none; padding: 0.75rem; font-weight: bold; border-radius: 8px; cursor: pointer; }
+nav { display: flex; justify-content: center; gap: 0.5rem; margin-top: 1rem; overflow-x:auto; padding-bottom:6px; }
+nav button { flex: 1 0 auto; background: var(--color-accent); color: white; border: none; padding: 0.75rem; font-weight: bold; border-radius: 8px; cursor: pointer; min-width:90px; }
 nav button.inactive { background: #a0b6e0; }
 
 section { background: var(--color-light); padding: 1.5rem; border-radius: 12px; margin-top: 1rem; display: none; }
@@ -41,7 +43,7 @@ textarea { resize: vertical; }
 
 button.action-btn { margin-top: 1rem; background: var(--color-accent); color: white; border: none; padding: 0.75rem; font-size: 1rem; border-radius: 8px; width: 100%; font-weight: bold; cursor: pointer; }
 
-.recordatorio-item {
+.recordatorio-item, .pedido-item {
   background: var(--color-gray);
   padding: 0.75rem;
   border-radius: 16px;
@@ -51,44 +53,16 @@ button.action-btn { margin-top: 1rem; background: var(--color-accent); color: wh
   align-items: center;
   overflow: hidden;
 }
-
-.recordatorio-info {
-  flex: 1;
-  border-radius: 12px;
-  padding: 0.4rem;
+.recordatorio-info, .pedido-info {
+  flex: 1; padding: 0.4rem;
 }
-.btnEliminar { 
-  background: #f56565; 
-  color: white; 
-  border: none; 
-  padding: 0.35rem 0.6rem;
-  border-radius: 12px;
-  font-size: 0.75rem;
-  cursor: pointer; 
-  transition: background 0.2s ease;
-}
-.btnEliminar:hover { background: #ff6b6b; }
-
-/* NUEVO: estilo para item de pedido (mismo tamaño/estética que recordatorio) */
-.pedido-item {
-  background: var(--color-gray);
-  padding: 0.75rem;
-  border-radius: 16px;
-  margin-bottom: 0.75rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  overflow: hidden;
-  cursor: pointer;
-}
-.pedido-info { flex:1; padding:0.4rem; }
-.pedido-meta { text-align:right; font-size:0.9rem; color:#444; }
+.pedido-meta { text-align: right; font-size: 0.9rem; color: #444; }
 
 /* Pop-ups (tus existentes) */
-.popUp, .confirmPop { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--color-light); padding: 1rem; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 999; }
+.popUp, .confirmPop { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--color-light); padding: 1rem; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 999; width: 92%; max-width:420px;}
 .popUp button, .confirmPop button { margin-top: 0.5rem; width: 100%; }
 
-/* Animación parpadeo */
+/* parpadeo */
 @keyframes parpadeo {
   0% { background-color: var(--color-light); color: var(--color-text-dark); transform: scale(1); }
   25% { background-color: #e0f0ff; color: var(--color-accent); transform: scale(1.02); }
@@ -107,35 +81,16 @@ button.action-btn { margin-top: 1rem; background: var(--color-accent); color: wh
 .phone-row select { width: 35%; min-width: 110px; }
 .phone-row input { flex: 1; }
 
-/* Mensajes */
+/* Mensajes y footer */
 .mensaje { margin-top: 1rem; font-size: 0.95rem; padding: 0.75rem; border-radius: 8px; text-align: center; background: #FFF4CC; color: #665c00; border: 1px solid #FFE08A; }
-
-/* Footer */
 footer { color: #888; text-align: center; padding: 0.8rem 0.5rem; font-size: 0.8rem; margin-top: 1.5rem; }
 
-/* Optimización pop-up móviles (tus existentes) */
-@media (max-width: 600px) {
-  .popUp {
-    width: 90%;
-    max-width: 400px;
-    padding: 1.5rem;
-    border-radius: 16px;
-  }
-  .popUp form input,
-  .popUp form textarea,
-  .popUp form select,
-  .popUp button { font-size: 1rem; }
-  .popUp form label { font-size: 0.95rem; }
-  .popUp form textarea { min-height: 80px; }
-}
-
-/* --------- NUEVOS: OVERLAYS DE CONTRASEÑA --------- */
+/* auth overlay (lock / stats) */
 .authOverlay {
   position: fixed; inset: 0;
   display: flex; align-items: center; justify-content: center;
   background: rgba(0,0,0,0.35);
   backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
   z-index: 10000;
 }
 .authBox {
@@ -148,558 +103,356 @@ footer { color: #888; text-align: center; padding: 0.8rem 0.5rem; font-size: 0.8
   text-align: center;
 }
 .authBox h2 { color: var(--color-accent); font-size: 1.2rem; margin-bottom: 0.75rem; }
-.authBox input {
-  width: 100%; padding: 0.65rem; border-radius: 8px; border: 1px solid #ccc; margin-bottom: 0.75rem;
-}
-.authBox .btn {
-  width: 100%; padding: 0.65rem; border: none; border-radius: 8px; font-weight: 700; cursor: pointer;
-  background: var(--color-accent); color: #fff;
-}
+.authBox input { width: 100%; padding: 0.65rem; border-radius: 8px; border: 1px solid #ccc; margin-bottom: 0.75rem; }
+.authBox .btn { width: 100%; padding: 0.65rem; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; background: var(--color-accent); color: #fff; }
 .authBox .btn.secondary { background: #888; }
 .authError { color: #e53935; font-size: 0.9rem; display: none; margin-top: 0.25rem; }
 
-#estadisticas-container { margin-top: 0.75rem; }
-#estadisticasFrame {
-  width: 100%;
-  min-height: 70vh;
-  border: 0;
-  border-radius: 12px;
-  background: #fff;
-}
-.stats-container {
-  width: 100%;
-  max-width: 100%;
-  background: rgba(255, 255, 255, 0.05);
-  padding: 15px;
-  border-radius: 10px;
-  box-sizing: border-box;
-  margin: 0 auto;
-}
+/* estadisticas iframe - aseguramos buena responsividad */
+#estadisticasFrame { width:100%; min-height:60vh; border:0; border-radius:12px; background:#fff; display:block; box-shadow: 0 6px 18px rgba(0,0,0,0.06); }
 
-/* Fondo del lightbox con blur */
-.lightbox {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.5);
-  backdrop-filter: blur(5px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-
-/* Oculto por defecto */
-.hidden {
-  display: none;
-}
-.link-btn {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: var(--color-accent);
-  color: #fff;
-  text-decoration: none;
-  padding: .56rem 6rem;
-  border-radius: 999px;
-  font-weight: 700;
-  font-size: 1rem;
-  max-width: 220px;
-  margin: 0.3rem auto;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
-  transition: transform .12s;
-  white-space: nowrap;
-}
-.link-btn:hover {
-  transform: translateY(-3px);
-  background: #1f3a66;
-}
-
-/* Caja del lightbox */
+/* LIGHTBOX */
+.lightbox { position: fixed; inset: 0; background: rgba(0,0,0,0.45); backdrop-filter: blur(5px); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+.lightbox.hidden { display: none; }
 .lightbox-content {
   background: #fff;
-  padding: 20px;
+  padding: 18px;
   border-radius: 12px;
-  max-width: 400px;       /* ancho máximo */
-  width: 90%;              /* ancho relativo a la pantalla */
-  max-height: 70vh;        /* altura máxima: 70% de la ventana */
-  overflow-y: auto;        /* scroll vertical si el contenido es largo */
-  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-  text-align: left;
+  max-width: 460px;
+  width: 94%;
+  max-height: 78vh;
+  overflow-y: auto;
+  box-shadow: 0 6px 28px rgba(0,0,0,0.28);
   position: relative;
+  text-align: left;
 }
-
-/* Asegura que los párrafos respeten saltos de línea y no se corten */
-.lightbox-content p {
-  white-space: pre-wrap;
-  word-wrap: break-word;
-}
-
-/* Botón cerrar (similar al sitio) */
 .close-lightbox {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: none;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
+  position: absolute; top: 10px; right: 10px; background: none; border: none; font-size: 24px; cursor: pointer;
 }
-/* Variante para colocar la X en la esquina superior izquierda (pedido) */
-.close-lightbox.left {
-  left: 10px;
-  right: auto;
-}
-
-/* Botón eliminar */
-.btn-eliminar {
-  margin-top: 20px;
-  padding: 10px 15px;
-  border: none;
-  background: #e74c3c;
-  color: #fff;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-.btn-eliminar:hover {
-  background: #c0392b;
-}
-
-/* Estilos para los títulos dentro del lightbox de pedido (negrita como en formulario) */
 .lb-field { font-weight:700; margin-top: 8px; }
 .lb-value { margin-top: 4px; color:#333; }
 
-/* Confirmación aviso (check circular) */
-.confirmAviso {
-  position: fixed;
-  inset: 0;
-  display: flex; align-items:center; justify-content:center;
-  background: rgba(0,0,0,0.35);
-  z-index: 1100;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity .25s ease;
-}
-.confirmAviso.show { opacity: 1; pointer-events: auto; }
-.confirmBox {
-  background: #fff; padding: 1rem 1.1rem; border-radius: 12px; text-align:center; width: 88%; max-width: 360px;
-  box-shadow: 0 12px 40px rgba(0,0,0,0.2);
-}
-.check-icon {
-  width:72px;height:72px;border-radius:999px;margin:0 auto 0.6rem;display:flex;align-items:center;justify-content:center;background:rgba(47,82,143,0.08);
-}
-.check-icon svg { display:block; }
+/* timeline pequeño */
+.timeline{position:relative;padding-left:18px;border-left:2px solid rgba(47,82,143,0.08);margin-bottom:.5rem}
+.timeline-item{position:relative;padding:8px 10px;margin-bottom:.5rem}
+.timeline-item::before{content:"";position:absolute;left:-10px;top:8px;width:10px;height:10px;border-radius:50%;background:#fff;border:3px solid var(--color-accent)}
+.timeline-item .state{font-weight:700}
+.timeline-item .subtext{font-size:.9rem;color:#555;margin-top:.25rem}
+.timeline-item .fecha{font-size:.85rem;color:#666;margin-top:.25rem}
+.blink { animation: blinkAnim 0.9s step-start 0s infinite; box-shadow:0 0 0 4px rgba(47,82,143,0.06) inset; border-radius:8px; }
+@keyframes blinkAnim { 50% { opacity: 0.25; transform: translateY(-1px); } }
 
-/* small helper for bold label spacing */
-.lb-row { margin-bottom: 6px; }
+/* confetti wrapper */
+#confettiWrap{pointer-events:none;position:fixed;left:0;top:0;width:100%;height:100%;overflow:hidden;z-index:2000}
 
+/* responsive */
 @media (max-width:600px){
-  /* Ocultar nav original y mostrar barra móvil (si la implementas) */
-  header nav { display:flex; gap:8px; }
-  header nav.mobile-mode button {
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    padding:8px 6px;
-    min-width:60px;
-    border-radius:10px;
-  }
-  /* Mostrar etiqueta corta (data-short) usando pseudo-element (si quieres sin JS) */
-  header nav.mobile-mode button::after{
-    content: attr(data-short);
-    display:block;
-    font-size:11px;
-    margin-top:4px;
-    color: #fff;
-  }
-  /* Hacer botones circulares para destacar */
-  header nav.mobile-mode button { width:112px; height:112px; border-radius:24px; }
+  header nav { gap:6px; }
+  nav button { padding:0.5rem; font-size:13px; min-width:80px; }
+  .pedido-item { flex-direction: column; align-items: flex-start; gap:6px; }
+  .pedido-meta { text-align: left; width:100%; }
+  .lightbox-content { max-width: 96%; padding: 12px; }
+  #estadisticasFrame { min-height:48vh; }
 }
- /* Modo móvil: transforma los botones en pills/iconos */
-header nav.mobile-mode {
-  display:flex;
-  gap:8px;
-  justify-content:center;
-  align-items:center;
-}
-
-/* Cada botón en columna: icono arriba, etiqueta corta abajo */
-header nav.mobile-mode button {
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  min-width:56px;
-  padding:8px 6px;
-  height:auto;
-  border-radius:10px;
-  font-size:12px;
-  line-height:1;
-  white-space:nowrap;
-}
-
-/* icono usando data-icon */
-header nav.mobile-mode button::before{
-  content: attr(data-icon);
-  display:block;
-  font-size:18px;
-  margin-bottom:6px;
-  line-height:1;
-}
-
-/* etiqueta corta usando data-short */
-header nav.mobile-mode button::after{
-  content: attr(data-short);
-  display:block;
-  font-size:11px;
-  margin-top:0;
-  color:#fff; /* o el color que uses en el botón */
-}
-
-/* Si quieres que el texto largo del botón siga visible en pantallas más amplias,
-   asegúrate de no ocultarlo con display:none; el CSS anterior solo añade icono+short,
-   pero conserva el botón original (el texto sigue ahí). Si quieres ocultar el texto
-   largo en mobile, añade: */
-header nav.mobile-mode button > * { display: none; } /* opcional: oculta contenido interno */ 
-  /* Pegar al final del <style> - opción rápida (no tocar HTML) */
-@media (max-width:600px) {
-  header nav.mobile-mode button{
-    /* oculta el texto real */
-    font-size: 0 !important;
-    color: transparent !important;
-    line-height: 0 !important;
-    padding-top: 10px; /* ajusta si necesitas más espacio para el icono */
-    padding-bottom: 10px;
-  }
-
-  /* icono usando data-icon (visible) */
-  header nav.mobile-mode button::before{
-    content: attr(data-icon);
-    display:block;
-    font-size:18px;
-    line-height:1;
-    margin-bottom:6px;
-    color: #fff;              /* color del icono */
-  }
-
-  /* etiqueta corta usando data-short (visible) */
-  header nav.mobile-mode button::after{
-    content: attr(data-short);
-    display:block;
-    font-size:11px;
-    line-height:1;
-    color:#fff;               /* color del texto corto */
-  }
-}
-
 </style>
 </head>
 <body>
 
-
 <div id="app"><!-- wrapper para blur si hiciera falta -->
 
 <header>
-<h1>Panel del Operador</h1>
-<nav>
-  <button id="btnInicio"
-          data-short="Inicio"
-          aria-label="Ir a Inicio">Inicio</button>
-
-  <button id="btnPedidos" class="inactive"
-          data-short="Pedidos"
-          aria-label="Ver Pedidos">Pedidos</button>
-
-  <button id="btnAgregar" class="inactive"
-          data-short="Agregar"
-          aria-label="Agregar Paquete">Agregar Paquete</button>
-
-  <button id="btnActualizar" class="inactive"
-          data-short="Actualizar"
-          aria-label="Actualizar Seguimiento">Actualizar Seguimiento</button>
-
-  <button id="btnEstadisticas" class="inactive"
-          data-short="Estadís."
-          aria-label="Ver Estadísticas">Estadísticas</button>
-</nav>
+  <h1>Panel del Operador</h1>
+  <nav>
+    <button id="btnInicio" data-short="Inicio" aria-label="Inicio">Inicio</button>
+    <button id="btnPedidos" class="inactive" data-short="Manejo" aria-label="Manejo de Pedidos">Manejo de pedidos</button>
+    <button id="btnAgregar" class="inactive" data-short="Agregar" aria-label="Agregar Paquete">Agregar Paquete</button>
+    <button id="btnActualizar" class="inactive" data-short="Actualizar" aria-label="Actualizar Seguimiento">Actualizar Seguimiento</button>
+    <button id="btnEstadisticas" class="inactive" data-short="Estadís." aria-label="Estadísticas">Estadísticas</button>
+  </nav>
 </header>
 
 <!-- Inicio: Recordatorios -->
 <section id="inicio" class="active">
-<h2>Inicio</h2>
-<div id="listaRecordatorios">
-  <p>No hay recordatorios por el momento.</p>
-</div>
-<button id="btnAgregarRecord" class="action-btn">Agregar Recordatorio</button>
+  <h2>Inicio</h2>
+  <div id="listaRecordatorios">
+    <p>No hay recordatorios por el momento.</p>
+  </div>
+  <button id="btnAgregarRecord" class="action-btn">Agregar Recordatorio</button>
 
-<!-- Pop-up Formulario -->
-<div class="popUp" id="popFormRecord">
-<h3>Agregar Recordatorio</h3>
-<form id="formRecord">
-  <label for="tituloRecord">Título del recordatorio</label>
-  <input type="text" id="tituloRecord" placeholder="Ej: Llamada importante" required>
-  <label for="descRecord">Descripción</label>
-  <textarea id="descRecord" rows="2" placeholder="Ej: Llamar a cliente, enviar factura..." required></textarea>
-  <label for="fechaRecord">Fecha límite</label>
-  <input type="date" id="fechaRecord" required>
-  <button type="submit" class="action-btn">Agregar</button>
-  <button type="button" id="cerrarPopForm" class="action-btn" style="background:#888;">Cancelar</button>
-</form>
-</div>
+  <!-- Pop-up Formulario -->
+  <div class="popUp" id="popFormRecord" aria-hidden="true">
+    <h3>Agregar Recordatorio</h3>
+    <form id="formRecord">
+      <label for="tituloRecord">Título del recordatorio</label>
+      <input type="text" id="tituloRecord" placeholder="Ej: Llamada importante" required>
+      <label for="descRecord">Descripción</label>
+      <textarea id="descRecord" rows="2" placeholder="Ej: Llamar a cliente, enviar factura..." required></textarea>
+      <label for="fechaRecord">Fecha límite</label>
+      <input type="date" id="fechaRecord" required>
+      <button type="submit" class="action-btn">Agregar</button>
+      <button type="button" id="cerrarPopForm" class="action-btn" style="background:#888;">Cancelar</button>
+    </form>
+  </div>
 
-<!-- Pop-up Confirmación Agregado -->
-<div class="confirmPop" id="popConfirm">
-<p>Recordatorio agregado</p>
-<button id="cerrarPopConfirm" class="action-btn">Cerrar</button>
-</div>
+  <!-- Pop Confirm -->
+  <div class="confirmPop" id="popConfirm" aria-hidden="true"><p>Recordatorio agregado</p><button id="cerrarPopConfirm" class="action-btn">Cerrar</button></div>
 
-<!-- Pop-up Confirmación Eliminar -->
-<div class="confirmPop" id="popEliminarConfirm">
-<p>¿Desea eliminar este recordatorio?</p>
-<button id="btnConfirmEliminar" class="action-btn" style="background:#f56565;">Eliminar</button>
-<button id="btnCancelarEliminar" class="action-btn" style="background:#888;">Cancelar</button>
-</div>
+  <div class="confirmPop" id="popEliminarConfirm" aria-hidden="true"><p>¿Desea eliminar este recordatorio?</p>
+    <button id="btnConfirmEliminar" class="action-btn" style="background:#f56565;">Eliminar</button>
+    <button id="btnCancelarEliminar" class="action-btn" style="background:#888;">Cancelar</button>
+  </div>
 </section>
 
-<!-- PEDIDOS (nuevo) -->
+<!-- MANEJO DE PEDIDOS (demo) -->
 <section id="pedidos">
-  <h2>Pedidos</h2>
+  <h2>Manejo de pedidos</h2>
   <div id="listaPedidos">
-    <!-- Items prellenados desde JS -->
+    <!-- llenado por JS (3 demo items) -->
   </div>
-  <p class="small-muted" style="margin-top:8px;">Estos son pedidos de ejemplo (datos de prueba).</p>
+
 </section>
 
 <!-- Agregar Paquete -->
 <section id="agregar">
-<h2>Registrar Paquete</h2>
-<form id="formAgregar">
-  <div class="form-group">
-    <label for="nombre">Nombre del cliente</label>
-    <div class="tooltip">Ingresa un nombre y un apellido</div>
-    <input type="text" id="nombre" name="nombre" placeholder="Ej: Lester Gamez" required>
-  </div>
-
-  <!-- Nuevo campo opcional de código de seguimiento -->
-  <div class="form-group">
-    <label for="codigo">Código de seguimiento (opcional, max 10 dígitos)</label>
-    <input type="text" id="codigo" name="codigo" maxlength="10" pattern="\d{0,10}" placeholder="Solo números">
-  </div>
-
-  <div class="form-group">
-    <label for="telefonoDigits">Teléfono</label>
-    <div class="tooltip">Selecciona (505) o (1) y luego ingresa de 8 a 10 dígitos</div>
-    <div class="phone-row">
-      <select id="telCode" name="telCode" required>
-        <option value="(505)">(505)</option>
-        <option value="(1)">(1)</option>
-      </select>
-      <input type="tel" id="telefonoDigits" name="telefonoDigits" placeholder="Ej: 12345678"
-             inputmode="numeric" pattern="[0-9]{8,10}" title="Ingresa solo números (8 a 10 dígitos)" required>
+  <h2>Registrar Paquete</h2>
+  <form id="formAgregar">
+    <div class="form-group">
+      <label for="nombre">Nombre del cliente</label>
+      <div class="tooltip">Ingresa un nombre y un apellido</div>
+      <input type="text" id="nombre" name="nombre" placeholder="Ej: Lester Gamez" required>
     </div>
-  </div>
 
-  <div class="form-group">
-    <label for="tipo">Tipo de envío</label>
-    <select id="tipo" name="tipo" required>
-      <option value="aereo">Aéreo</option>
-      <option value="maritimo">Marítimo</option>
-    </select>
-  </div>
+    <div class="form-group">
+      <label for="codigo">Código de seguimiento (opcional, max 10 dígitos)</label>
+      <input type="text" id="codigo" name="codigo" maxlength="10" pattern="\d{0,10}" placeholder="Solo números">
+    </div>
 
-  <button type="submit" class="action-btn">Registrar Paquete</button>
-</form>
-<div id="mensajeAgregar" class="mensaje" style="display:none;">
-Esta plataforma es de prueba, dog. Acción no disponible por el momento.
-</div>
+    <div class="form-group">
+      <label for="telefonoDigits">Teléfono</label>
+      <div class="tooltip">Selecciona (505) o (1) y luego ingresa de 8 a 10 dígitos</div>
+      <div class="phone-row">
+        <select id="telCode" name="telCode" required>
+          <option value="(505)">(505)</option>
+          <option value="(1)">(1)</option>
+        </select>
+        <input type="tel" id="telefonoDigits" name="telefonoDigits" placeholder="Ej: 12345678"
+               inputmode="numeric" pattern="[0-9]{8,10}" title="Ingresa solo números (8 a 10 dígitos)" required>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="tipo">Tipo de envío</label>
+      <select id="tipo" name="tipo" required>
+        <option value="aereo">Aéreo</option>
+        <option value="maritimo">Marítimo</option>
+      </select>
+    </div>
+
+    <button type="submit" class="action-btn">Registrar Paquete</button>
+  </form>
+  <div id="mensajeAgregar" class="mensaje" style="display:none;">Esta plataforma es de prueba. Acción no disponible por el momento.</div>
 </section>
 
 <!-- Actualizar Seguimiento -->
 <section id="actualizar">
-<h2>Actualizar Estado</h2>
-<form id="formActualizar">
-  <div class="form-group">
-    <label for="nombreSeg">Nombre del cliente</label>
-    <div class="tooltip">Ingresa un nombre y un apellido</div>
-    <input type="text" id="nombreSeg" name="nombreSeg" placeholder="Ej: Lester Gamez">
-  </div>
-
-  <!-- Nuevo campo opcional de código de seguimiento -->
- <div class="form-group">
-    <label for="codigoSeg">Código de seguimiento (obligatorio, max 10 dígitos)</label>
-    <input type="text" id="codigoSeg" name="codigoSeg" maxlength="10" pattern="\d{1,10}" placeholder="Solo números" required>
-  </div>
-
-  <div class="form-group">
-    <label for="telefonoSegDigits">Teléfono</label>
-    <div class="tooltip">Selecciona (505) o (1) y luego ingresa de 8 a 10 dígitos</div>
-    <div class="phone-row">
-      <select id="telCodeSeg" name="telCodeSeg">
-        <option value="(505)">(505)</option>
-        <option value="(1)">(1)</option>
-      </select>
-      <input type="tel" id="telefonoSegDigits" name="telefonoSegDigits" placeholder="Ej: 12345678"
-             inputmode="numeric" pattern="[0-9]{8,10}" title="Ingresa solo números (8 a 10 dígitos)">
+  <h2>Actualizar Estado</h2>
+  <form id="formActualizar">
+    <div class="form-group">
+      <label for="nombreSeg">Nombre del cliente</label>
+      <div class="tooltip">Ingresa un nombre y un apellido</div>
+      <input type="text" id="nombreSeg" name="nombreSeg" placeholder="Ej: Lester Gamez">
     </div>
-  </div>
 
-  <div class="form-group">
-    <label for="estado">Estado del paquete</label>
-    <select id="estado" name="estado">
-      <option value="">-- Seleccione --</option>
-      <option value="recibido">Recibido</option>
-      <option value="en_transito">En tránsito</option>
-      <option value="en_aduana">En Aduana</option>
-      <option value="listo_recoger">Listo Para Recoger</option>
-    </select>
-  </div>
+    <div class="form-group">
+      <label for="codigoSeg">Código de seguimiento (obligatorio, max 10 dígitos)</label>
+      <input type="text" id="codigoSeg" name="codigoSeg" maxlength="10" pattern="\d{1,10}" placeholder="Solo números" required>
+    </div>
 
-  <div class="form-group">
-    <label for="pesoSeg">Peso en libras</label>
-    <input type="number" id="pesoSeg" name="pesoSeg" step="0.1" min="0" placeholder="Ej: 1.0">
-  </div>
-  <div class="form-group">
-  <label for="tarifaSeg">Tarifa en USD</label>
-  <input type="number" id="tarifaSeg" name="tarifaSeg" step="0.1" min="0" placeholder="Ej: 1.1">
-</div>
+    <div class="form-group">
+      <label for="telefonoSegDigits">Teléfono</label>
+      <div class="tooltip">Selecciona (505) o (1) y luego ingresa de 8 a 10 dígitos</div>
+      <div class="phone-row">
+        <select id="telCodeSeg" name="telCodeSeg">
+          <option value="(505)">(505)</option>
+          <option value="(1)">(1)</option>
+        </select>
+        <input type="tel" id="telefonoSegDigits" name="telefonoSegDigits" placeholder="Ej: 12345678"
+               inputmode="numeric" pattern="[0-9]{8,10}" title="Ingresa solo números (8 a 10 dígitos)">
+      </div>
+    </div>
 
+    <div class="form-group">
+      <label for="estado">Estado del paquete</label>
+      <select id="estado" name="estado">
+        <option value="">-- Seleccione --</option>
+        <option value="recibido">Recibido</option>
+        <option value="en_transito">En tránsito</option>
+        <option value="en_aduana">En Aduana</option>
+        <option value="listo_recoger">Listo Para Recoger</option>
+      </select>
+    </div>
 
-  <div class="form-group">
-    <label for="fechaEstado">Ingrese fecha</label>
-    <input type="date" id="fechaEstado" name="fechaEstado">
-  </div>
+    <div class="form-group">
+      <label for="pesoSeg">Peso en libras</label>
+      <input type="number" id="pesoSeg" name="pesoSeg" step="0.1" min="0" placeholder="Ej: 1.0">
+    </div>
+    <div class="form-group">
+      <label for="tarifaSeg">Tarifa en USD</label>
+      <input type="number" id="tarifaSeg" name="tarifaSeg" step="0.1" min="0" placeholder="Ej: 1.1">
+    </div>
 
-  <button type="submit" class="action-btn">Actualizar Estado</button>
-</form>
-<div id="mensajeActualizar" class="mensaje" style="display:none;">
-Esta plataforma es de prueba, dog. Acción no disponible por el momento.
-</div>
+    <div class="form-group">
+      <label for="fechaEstado">Ingrese fecha</label>
+      <input type="date" id="fechaEstado" name="fechaEstado">
+    </div>
+
+    <button type="submit" class="action-btn">Actualizar Estado</button>
+  </form>
+  <div id="mensajeActualizar" class="mensaje" style="display:none;">Esta plataforma es de prueba. Acción no disponible por el momento.</div>
 </section>
 
-<!-- ESTADÍSTICAS (Nueva sección) -->
+<!-- ESTADÍSTICAS -->
 <section id="estadisticas">
   <div id="estadisticas-container">
-    <iframe id="estadisticasFrame" src="" title="Estadísticas"></iframe>
+    <iframe id="estadisticasFrame" src="https://irvinforbusinesses.github.io/plantillacatalogo/estadisticas.html" title="Estadísticas" aria-hidden="true"></iframe>
   </div>
- <a class="link-btn" href="https://irvinforbusinesses.github.io/plantillacatalogo/estadisticas.html" target="_blank">Vista completa</a>
+  <a class="link-btn" href="https://irvinforbusinesses.github.io/plantillacatalogo/estadisticas.html" target="_blank">Vista completa</a>
 </section>
 
 <footer>
-&copy; 2025. Irvin Prado. Ascende Superius - Seek Higher Things
+  &copy; 2025. Irvin Prado. Ascende Superius - Seek Higher Things
 </footer>
-
 </div><!-- /#app -->
 
 <!-- OVERLAY: LOCK INICIAL -->
-<div id="lockOverlay" class="authOverlay">
-  <div class="authBox">
+<div id="lockOverlay" class="authOverlay" aria-hidden="false">
+  <div class="authBox" role="dialog" aria-modal="true">
     <h2>Acceso al Panel</h2>
-    <input type="password" id="lockPass" placeholder="Contraseña">
+    <input type="password" id="lockPass" placeholder="Contraseña" aria-label="Contraseña de acceso">
     <button class="btn" id="lockSubmit">Entrar</button>
     <div class="authError" id="lockError">Contraseña incorrecta</div>
   </div>
 </div>
 
 <!-- OVERLAY: ESTADÍSTICAS -->
-<div id="statsOverlay" class="authOverlay" style="display:none;">
-  <div class="authBox">
+<div id="statsOverlay" class="authOverlay" style="display:none;" aria-hidden="true">
+  <div class="authBox" role="dialog" aria-modal="true">
     <h2>Acceso a Estadísticas</h2>
-    <input type="password" id="statsPass" placeholder="Contraseña">
+    <input type="password" id="statsPass" placeholder="Contraseña" aria-label="Contraseña estadísticas">
     <button class="btn" id="statsSubmit">Acceder</button>
     <button class="btn secondary" id="statsCancel" style="margin-top:0.5rem;">Cancelar</button>
     <div class="authError" id="statsError">Contraseña incorrecta</div>
   </div>
 </div>
 
-<!-- Lightbox Recordatorio (existente) -->
-<div id="lightbox-recordatorio" class="lightbox hidden">
-  <div class="lightbox-content">
-    <button class="close-lightbox">&times;</button>
+<!-- Lightbox Recordatorio -->
+<div id="lightbox-recordatorio" class="lightbox hidden" aria-hidden="true">
+  <div class="lightbox-content" role="dialog" aria-modal="true">
+    <button class="close-lightbox" aria-label="Cerrar">&times;</button>
     <h2>Recordatorio</h2>
     <p>Versión de prueba, datos no disponibles</p>
     <button class="btn-eliminar">Eliminar recordatorio</button>
   </div>
 </div>
 
-<!-- Lightbox Pedido (nuevo) -->
+<!-- Lightbox Pedido (demo) -->
 <div id="lightbox-pedido" class="lightbox hidden" aria-hidden="true">
   <div class="lightbox-content" role="dialog" aria-modal="true" aria-labelledby="lbPedidoTitle">
-    <!-- X en esquina superior izquierda (igual estilo, pero left) -->
-    <button class="close-lightbox left" id="closePedido">&times;</button>
+    <button class="close-lightbox" id="closePedido" aria-label="Cerrar pedido">&times;</button>
     <h2 id="lbPedidoTitle" style="text-align:center;margin-bottom:8px;">Pedido</h2>
 
-    <!-- Campos (títulos exactamente como en el formulario en negrita) -->
-    <div class="lb-row"><div class="lb-field">Nombre</div><div class="lb-value" id="lbNombre"></div></div>
-    <div class="lb-row"><div class="lb-field">Teléfono</div><div class="lb-value" id="lbTelefono"></div></div>
-    <div class="lb-row"><div class="lb-field">Plataforma / Agencia</div><div class="lb-value" id="lbPlataforma"></div></div>
-    <div class="lb-row"><div class="lb-field">Descripción</div><div class="lb-value" id="lbDescripcion"></div></div>
-    <div class="lb-row"><div class="lb-field">Tipo de envío</div><div class="lb-value" id="lbTipo"></div></div>
-    <div class="lb-row"><div class="lb-field">Peso aproximado (libras)</div><div class="lb-value" id="lbPeso"></div></div>
+    <div class="lb-row"><div class="lb-field">Nombre</div><div class="lb-value" id="lbNombre">-</div></div>
+    <div class="lb-row"><div class="lb-field">Teléfono</div><div class="lb-value" id="lbTelefono">-</div></div>
+    <div class="lb-row"><div class="lb-field">Plataforma / Agencia</div><div class="lb-value" id="lbPlataforma">-</div></div>
+    <div class="lb-row"><div class="lb-field">Descripción</div><div class="lb-value" id="lbDescripcion">-</div></div>
+    <div class="lb-row"><div class="lb-field">Tipo de envío</div><div class="lb-value" id="lbTipo">-</div></div>
+    <div class="lb-row"><div class="lb-field">Peso aproximado (libras)</div><div class="lb-value" id="lbPeso">-</div></div>
 
-    <!-- Botones: Rechazar y Aceptar (solo dos botones) -->
-    <div style="display:flex;gap:8px;margin-top:12px;">
-      <button id="btnRechazarPedido" class="btn-eliminar" style="flex:1;">Rechazar pedido</button>
-      <button id="btnAceptarPedido" class="action-btn" style="flex:1;background:#2F528F;">Aceptar pedido</button>
+    <div style="margin-top:10px;">
+      <div class="lb-field">Vista previa del historial</div>
+      <div id="lbTimeline" class="timeline" style="margin-top:6px;"></div>
     </div>
+
+    <div style="margin-top:12px;">
+      <button id="btnToggleUpdateForm" class="action-btn" style="background:#fff;color:var(--color-accent);border:1px solid #e6e9ef;">Actualizar estado</button>
+    </div>
+
+    <!-- Embedded update form (hidden by default) -->
+    <div id="embeddedUpdate" style="display:none;margin-top:12px;border-top:1px solid #eef3f8;padding-top:12px;">
+      <form id="embeddedUpdateForm">
+        <label for="up_estado">Estado</label>
+        <select id="up_estado">
+          <option value="">-- Seleccione --</option>
+          <option value="recibido">Recibido</option>
+          <option value="en_transito">En tránsito</option>
+          <option value="en_aduana">En Aduana</option>
+          <option value="listo_recoger">Listo Para Recoger</option>
+        </select>
+
+        <label for="up_fecha" style="margin-top:8px;">Fecha (si selecciona estado)</label>
+        <input type="date" id="up_fecha" placeholder="Selecciona fecha">
+
+        <label for="up_peso" style="margin-top:8px;">Peso (lbs)</label>
+        <input type="number" step="0.1" min="0" id="up_peso" placeholder="Ej: 1.5">
+
+        <label for="up_tarifa" style="margin-top:8px;">Tarifa (USD)</label>
+        <input type="number" step="0.1" min="0" id="up_tarifa" placeholder="Ej: 3.50">
+
+        <div style="display:flex;gap:8px;margin-top:10px;">
+          <button type="submit" class="action-btn" style="flex:1;">Actualizar estado</button>
+          <button type="button" id="btnCancelEmbedded" class="action-btn" style="flex:1;background:#888;">Cancelar</button>
+        </div>
+      </form>
+    </div>
+
   </div>
 </div>
 
-<!-- Confirmación visual (check circular) que aparece al rechazar/aceptar -->
-<div id="confirmAviso" class="confirmAviso" aria-hidden="true">
-  <div class="confirmBox" role="dialog" aria-modal="true">
+<!-- Confirmación visual (check circular) -->
+<div id="confirmAviso" class="lightbox hidden" aria-hidden="true">
+  <div class="lightbox-content" style="max-width:360px;text-align:center;">
     <div class="check-icon" aria-hidden="true">
-      <!-- SVG check circular -->
       <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <circle cx="12" cy="12" r="10" stroke="none" fill="transparent"/>
         <path d="M9 12.5l2 2 4-4" stroke="#2F528F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
       </svg>
     </div>
-    <h3 style="color:var(--color-accent);margin-bottom:6px;">Se le avisó al cliente</h3>
-    <p style="color:#444;margin-bottom:10px;">El cliente será notificado por WhatsApp con los detalles.</p>
+    <h3 style="color:var(--color-accent);margin-bottom:6px;">Operación simulada</h3>
+    <p style="color:#444;margin-bottom:10px;">Acción realizada (demo). No se envió nada al servidor.</p>
     <button id="btnCerrarAviso" class="action-btn" style="background:var(--color-accent);">Cerrar</button>
   </div>
 </div>
 
+<!-- confetti wrapper -->
+<div id="confettiWrap" aria-hidden="true"></div>
+
 <script>
-(function(){
-  const nav = document.querySelector('header nav');
-  if(!nav) return;
+/* ----------------------- CONFIG / HELPERS ----------------------- */
+const appWrapper = document.getElementById('app');
 
-  function updateNavMode(){
-    if(window.innerWidth <= 600){
-      nav.classList.add('mobile-mode');
-    } else {
-      nav.classList.remove('mobile-mode');
-    }
-  }
+function $(id){ return document.getElementById(id); }
+function hide(el){ if(!el) return; el.classList.add('hidden'); el.style.display = 'none'; el.setAttribute('aria-hidden','true'); }
+function show(el){ if(!el) return; el.classList.remove('hidden'); el.style.display = 'flex'; el.removeAttribute('aria-hidden'); }
 
-  // Inicial y en resize
-  updateNavMode();
-  window.addEventListener('resize', updateNavMode);
-  // opcional: rota el foco al primer botón en mobile para accesibilidad
-})();
-// ================== NAVEGACIÓN (ajustada para incluir Pedidos) ==================
-const btnInicio = document.getElementById('btnInicio');
-const btnPedidos = document.getElementById('btnPedidos');
-const btnAgregar = document.getElementById('btnAgregar');
-const btnActualizar = document.getElementById('btnActualizar');
-const btnEstadisticas = document.getElementById('btnEstadisticas');
+/* NAV */
+const btnInicio = $('btnInicio');
+const btnPedidos = $('btnPedidos');
+const btnAgregar = $('btnAgregar');
+const btnActualizar = $('btnActualizar');
+const btnEstadisticas = $('btnEstadisticas');
 
 const secciones = {
-  inicio: document.getElementById('inicio'),
-  pedidos: document.getElementById('pedidos'),
-  agregar: document.getElementById('agregar'),
-  actualizar: document.getElementById('actualizar'),
-  estadisticas: document.getElementById('estadisticas')
+  inicio: $('inicio'),
+  pedidos: $('pedidos'),
+  agregar: $('agregar'),
+  actualizar: $('actualizar'),
+  estadisticas: $('estadisticas')
 };
 
 function mostrarSeccion(nombre){
-  for(let sec in secciones) secciones[sec].classList.remove('active');
+  for(let s in secciones) secciones[s].classList.remove('active');
   if(secciones[nombre]) secciones[nombre].classList.add('active');
-
-  // reset nav buttons
-  [btnInicio, btnPedidos, btnAgregar, btnActualizar, btnEstadisticas].forEach(b => b.classList.add('inactive'));
+  [btnInicio,btnPedidos,btnAgregar,btnActualizar,btnEstadisticas].forEach(b => b.classList.add('inactive'));
   if(nombre==='inicio') btnInicio.classList.remove('inactive');
   if(nombre==='pedidos') btnPedidos.classList.remove('inactive');
   if(nombre==='agregar') btnAgregar.classList.remove('inactive');
@@ -711,245 +464,485 @@ btnPedidos.addEventListener('click',()=>mostrarSeccion('pedidos'));
 btnAgregar.addEventListener('click',()=>mostrarSeccion('agregar'));
 btnActualizar.addEventListener('click',()=>mostrarSeccion('actualizar'));
 btnEstadisticas.addEventListener('click',()=>{
-  document.getElementById('statsOverlay').style.display = 'flex';
+  $('statsOverlay').style.display='flex';
+  $('statsOverlay').removeAttribute('aria-hidden');
 });
 
-// ================== FECHA ACTUAL PRESELECCIONADA ==================
-document.getElementById("fechaEstado").value = new Date().toISOString().split('T')[0];
+/* ----------------------- FECHA DEFAULT ----------------------- */
+const today = new Date().toISOString().split('T')[0];
+if($('fechaEstado')) $('fechaEstado').value = today;
+if($('fechaRecord')) $('fechaRecord').value = today;
 
-// ================== FORMULARIOS DEMO (tus originales) ==================
-document.getElementById("formAgregar").addEventListener("submit", function(e){
-  e.preventDefault(); this.reset(); document.getElementById("mensajeAgregar").style.display="block";
-  setTimeout(()=>document.getElementById("mensajeAgregar").style.display="none",3000);
-});
-document.getElementById("formActualizar").addEventListener("submit", function(e){
-  e.preventDefault(); this.reset(); document.getElementById("mensajeActualizar").style.display="block";
-  setTimeout(()=>document.getElementById("mensajeActualizar").style.display="none",3000);
-  document.getElementById("fechaEstado").value = new Date().toISOString().split('T')[0];
-});
-
-// ================== RECORDATORIOS (tus originales) ==================
-const listDiv = document.getElementById('listaRecordatorios');
-const formR = document.getElementById('formRecord');
-const popForm = document.getElementById('popFormRecord');
-const popConfirm = document.getElementById('popConfirm');
-const popEliminarConfirm = document.getElementById('popEliminarConfirm');
-const btnAgregarRecord = document.getElementById('btnAgregarRecord');
-const cerrarPopForm = document.getElementById('cerrarPopForm');
-const cerrarPopConfirm = document.getElementById('cerrarPopConfirm');
-const btnConfirmEliminar = document.getElementById('btnConfirmEliminar');
-const btnCancelarEliminar = document.getElementById('btnCancelarEliminar');
-const fechaInput = document.getElementById('fechaRecord');
-let indexEliminar=null;
-
-fechaInput.value = new Date().toISOString().split('T')[0];
+/* ----------------------- RECORDATORIOS (localStorage) ----------------------- */
+const listDiv = $('listaRecordatorios');
+const formR = $('formRecord');
+const popForm = $('popFormRecord');
+const popConfirm = $('popConfirm');
+const popEliminarConfirm = $('popEliminarConfirm');
+const btnAgregarRecord = $('btnAgregarRecord');
+const cerrarPopForm = $('cerrarPopForm');
+const cerrarPopConfirm = $('cerrarPopConfirm');
+const btnConfirmEliminar = $('btnConfirmEliminar');
+const btnCancelarEliminar = $('btnCancelarEliminar');
+const fechaInput = $('fechaRecord');
+let indexEliminar = null;
 
 function cargarRecord(){
   const arr = JSON.parse(localStorage.getItem('recordatorios')||'[]');
   const hoy = new Date().toISOString().split('T')[0];
   listDiv.innerHTML='';
   const activos = arr.filter(r=>r.fecha>=hoy);
-  if(!activos.length){ listDiv.innerHTML='<p>No hay recordatorios por el momento.</p>'; return;}
+  if(!activos.length){ listDiv.innerHTML='<p>No hay recordatorios por el momento.</p>'; return; }
   activos.forEach((r,index)=>{
-   const div = document.createElement('div');
-div.classList.add('recordatorio-item');
-div.dataset.index = index;  // <-- aquí asignas el índice al div
-div.innerHTML = `
-  <div class="recordatorio-info"><strong>${r.titulo}</strong><br>${r.desc}<br><small>${r.fecha}</small></div>
-  <button class="btnEliminar" data-index="${index}">X</button>`;
-
+    const div = document.createElement('div');
+    div.classList.add('recordatorio-item');
+    div.dataset.index = index;
+    div.innerHTML = `<div class="recordatorio-info"><strong>${escapeHtml(r.titulo)}</strong><br>${escapeHtml(r.desc)}<br><small>${escapeHtml(r.fecha)}</small></div>
+                     <button class="btnEliminar" data-index="${index}">X</button>`;
     listDiv.appendChild(div);
-    if(r.fecha===hoy){ div.querySelector('.recordatorio-info').style.animation="parpadeo 1.2s infinite"; }
+    if(r.fecha === hoy){ div.querySelector('.recordatorio-info').style.animation="parpadeo 1.2s infinite"; }
   });
 }
 cargarRecord();
 
-btnAgregarRecord.addEventListener('click', ()=>{ popForm.style.display='block'; });
-cerrarPopForm.addEventListener('click', ()=>{ popForm.style.display='none'; });
+btnAgregarRecord.addEventListener('click', ()=> { popForm.style.display='block'; popForm.removeAttribute('aria-hidden'); });
+cerrarPopForm.addEventListener('click', ()=> { popForm.style.display='none'; popForm.setAttribute('aria-hidden','true'); });
 
 formR.addEventListener('submit', e=>{
   e.preventDefault();
   const arr = JSON.parse(localStorage.getItem('recordatorios')||'[]');
-  arr.push({titulo:document.getElementById('tituloRecord').value, desc:document.getElementById('descRecord').value, fecha:fechaInput.value});
+  arr.push({ titulo: $('tituloRecord').value, desc: $('descRecord').value, fecha: $('fechaRecord').value });
   localStorage.setItem('recordatorios', JSON.stringify(arr));
-  formR.reset(); fechaInput.value=new Date().toISOString().split('T')[0];
-  popForm.style.display='none'; popConfirm.style.display='block';
+  formR.reset(); $('fechaRecord').value = today;
+  popForm.style.display='none'; popForm.setAttribute('aria-hidden','true');
+  popConfirm.style.display='block';
+  popConfirm.removeAttribute('aria-hidden');
   cargarRecord();
 });
-cerrarPopConfirm.addEventListener('click', ()=>{ popConfirm.style.display='none'; });
+cerrarPopConfirm.addEventListener('click', ()=>{ popConfirm.style.display='none'; popConfirm.setAttribute('aria-hidden','true'); });
 
-btnCancelarEliminar.addEventListener('click', ()=>{ popEliminarConfirm.style.display='none'; indexEliminar=null; });
-btnConfirmEliminar.addEventListener('click', ()=>{
+btnCancelarEliminar.addEventListener('click', ()=>{ popEliminarConfirm.style.display='none'; popEliminarConfirm.setAttribute('aria-hidden','true'); indexEliminar=null; });
+btnConfirmEliminar.addEventListener('click', ()=> {
   const arr = JSON.parse(localStorage.getItem('recordatorios')||'[]');
-  arr.splice(indexEliminar,1);
+  if(indexEliminar != null) arr.splice(indexEliminar,1);
   localStorage.setItem('recordatorios', JSON.stringify(arr));
   cargarRecord();
-  popEliminarConfirm.style.display='none';
-  indexEliminar=null;
+  popEliminarConfirm.style.display='none'; popEliminarConfirm.setAttribute('aria-hidden','true');
+  indexEliminar = null;
 });
 
-// ================== NUEVO: Pedidos (ejemplos preseleccionados) ==================
-const listaPedidosDiv = document.getElementById('listaPedidos');
+/* Delegación de clicks en recordatorios (para eliminar / ver) */
+listDiv.addEventListener('click', (e)=>{
+  const eliminarBtn = e.target.closest('.btnEliminar');
+  if(eliminarBtn){
+    indexEliminar = Number(eliminarBtn.dataset.index);
+    popEliminarConfirm.style.display='block';
+    popEliminarConfirm.removeAttribute('aria-hidden');
+    return;
+  }
+  const item = e.target.closest('.recordatorio-item');
+  if(item){
+    const idx = Number(item.dataset.index);
+    const arr = JSON.parse(localStorage.getItem('recordatorios')||'[]');
+    const r = arr[idx] || {};
+    // fill lightbox
+    const lightbox = $('lightbox-recordatorio');
+    lightbox.querySelector('h2').textContent = r.titulo || 'Recordatorio';
+    lightbox.querySelector('p').innerHTML = `${escapeHtml(r.desc) || ''}<br><small>${escapeHtml(r.fecha) || ''}</small>`;
+    lightbox.classList.remove('hidden');
+    lightbox.removeAttribute('aria-hidden');
+  }
+});
 
-// Generador simple de teléfono USA aleatorio de 10 dígitos
-function generarUSNumber(){
-  const n = Math.floor(Math.random()*900000000) + 100000000; // 9 digits + leading 1
-  // Ajustar a 10 dígitos con prefijo 1
-  return `(1) ${String(Math.floor(100 + Math.random()*900))}-${String(Math.floor(100 + Math.random()*900))}-${String(Math.floor(1000 + Math.random()*9000))}`;
+/* cerrar lightbox recordatorio */
+const lightboxRec = $('lightbox-recordatorio');
+const closeBtnRec = lightboxRec.querySelector('.close-lightbox');
+closeBtnRec.addEventListener('click', ()=>{ hide(lightboxRec); });
+
+lightboxRec.addEventListener('click', (e)=>{ if(e.target === lightboxRec) { /* ignore overlay click: keep closed only by X */ } });
+
+/* ----------------------- PEDIDOS DEMO ----------------------- */
+const listaPedidosDiv = $('listaPedidos');
+
+function randomDateBetween(startDaysAgo=20, endDaysAgo=1){
+  const now = new Date();
+  const start = new Date(now.getTime() - startDaysAgo*24*3600*1000);
+  const end = new Date(now.getTime() - endDaysAgo*24*3600*1000);
+  const rand = new Date(start.getTime() + Math.random()*(end.getTime()-start.getTime()));
+  return rand.toISOString().split('T')[0];
 }
+function samplePhone(n){ return (n%2===0) ? `(505) ${Math.floor(60000000 + Math.random()*20000000)}` : `(1) ${Math.floor(2000000000 + Math.random()*7000000000)}`; }
 
-// Crear pedidos de muestra
 const pedidosEjemplo = [
   {
-    id: 'pedido-1',
-    nombre: 'Lester Games',
-    telefono: generarUSNumber(),
-    plataforma: 'El Campo / Amazon',
-    descripcion: '3 perfumes: Acme Bliss 50ml, Acme Noir 75ml, Acme Fresh 30ml',
-    tipo: 'Marítimo',
-    peso: '2'
+    id: 'P-' + Math.floor(Math.random()*9000+1000),
+    nombre: 'Lester Gamez',
+    telefono: samplePhone(1),
+    plataforma: 'Amazon Demo',
+    descripcion: 'Caja con 3 perfumes y 2 accesorios',
+    tipo: 'Aéreo',
+    peso: '5.5',
+    historial: [
+      { estado: 'recibido', fecha: randomDateBetween(20,16) },
+      { estado: 'en_transito', fecha: randomDateBetween(15,12) },
+      { estado: 'en_aduana', fecha: randomDateBetween(11,9) },
+      { estado: 'listo_recoger', fecha: randomDateBetween(8,2) }
+    ]
   },
   {
-    id: 'pedido-2',
+    id: 'P-' + Math.floor(Math.random()*9000+1000),
     nombre: 'Ana Morales',
-    telefono: '(505) 87234567',
-    plataforma: 'El Campo / Tienda Demo',
-    descripcion: 'Caja con 2 camisetas y 1 zapatilla (marca DemoSport)',
+    telefono: samplePhone(2),
+    plataforma: 'DemoStore',
+    descripcion: 'Ropa y calzado - 1 paquete',
+    tipo: 'Marítimo',
+    peso: '2.3',
+    historial: [
+      { estado:'recibido', fecha: randomDateBetween(30,26) },
+      { estado:'en_transito', fecha: randomDateBetween(25,20) }
+    ]
+  },
+  {
+    id: 'P-' + Math.floor(Math.random()*9000+1000),
+    nombre: 'Carlos Ruiz',
+    telefono: samplePhone(3),
+    plataforma: 'Tienda Ejemplo',
+    descripcion: 'Electrónicos pequeños (demo)',
     tipo: 'Aéreo',
-    peso: '1.5'
+    peso: '3.0',
+    historial: [
+      { estado:'recibido', fecha: randomDateBetween(18,14) },
+      { estado:'en_transito', fecha: randomDateBetween(13,10) },
+      { estado:'en_aduana', fecha: randomDateBetween(9,5) }
+    ]
   }
 ];
 
-// Renderizar pedidos en la lista (misma estética que recordatorios)
+// render (limit 3)
 function renderPedidos(){
   listaPedidosDiv.innerHTML = '';
-  pedidosEjemplo.forEach((p, idx) => {
+  pedidosEjemplo.slice(0,3).forEach((p, idx)=>{
+    const firstDate = (p.historial && p.historial.length>0) ? p.historial[0].fecha : '-';
     const div = document.createElement('div');
     div.className = 'pedido-item';
     div.dataset.index = idx;
     div.innerHTML = `
-      <div class="pedido-info"><strong>${p.nombre}</strong><div class="small-muted">${p.plataforma}</div></div>
-      <div class="pedido-meta">${p.tipo}</div>
+      <div class="pedido-info"><strong>${escapeHtml(p.nombre)}</strong><div class="small-muted">Ingresado: ${escapeHtml(firstDate)}<br>${escapeHtml(p.plataforma)}</div></div>
+      <div class="pedido-meta">${escapeHtml(p.tipo)}</div>
     `;
     listaPedidosDiv.appendChild(div);
   });
 }
 renderPedidos();
 
-// ================== Lightbox Pedidos: interacción ==================
-const lbPedido = document.getElementById('lightbox-pedido');
-const lbClosePedido = document.getElementById('closePedido');
-const lbNombre = document.getElementById('lbNombre');
-const lbTelefono = document.getElementById('lbTelefono');
-const lbPlataforma = document.getElementById('lbPlataforma');
-const lbDescripcion = document.getElementById('lbDescripcion');
-const lbTipo = document.getElementById('lbTipo');
-const lbPeso = document.getElementById('lbPeso');
+/* ----------------------- Lightbox Pedido (only X closes overlay) ----------------------- */
+const lbPedido = $('lightbox-pedido');
+const lbClose = $('closePedido');
+const lbNombre = $('lbNombre');
+const lbTelefono = $('lbTelefono');
+const lbPlataforma = $('lbPlataforma');
+const lbDescripcion = $('lbDescripcion');
+const lbTipo = $('lbTipo');
+const lbPeso = $('lbPeso');
+const lbTimeline = $('lbTimeline');
 
-const btnRechazarPedido = document.getElementById('btnRechazarPedido');
-const btnAceptarPedido = document.getElementById('btnAceptarPedido');
+const confirmAviso = $('confirmAviso');
+const btnCerrarAviso = $('btnCerrarAviso');
 
 let pedidoSeleccionadoIndex = null;
 
-// Delegación: click en listaPedidosDiv
-listaPedidosDiv.addEventListener('click', (e) => {
+listaPedidosDiv.addEventListener('click', (e)=>{
   const item = e.target.closest('.pedido-item');
   if(!item) return;
   pedidoSeleccionadoIndex = Number(item.dataset.index);
   const p = pedidosEjemplo[pedidoSeleccionadoIndex];
-  // llenar campos en lightbox
+  // fill details
   lbNombre.textContent = p.nombre;
   lbTelefono.textContent = p.telefono;
   lbPlataforma.textContent = p.plataforma;
   lbDescripcion.textContent = p.descripcion;
   lbTipo.textContent = p.tipo;
   lbPeso.textContent = `${p.peso} lb`;
-  // mostrar lightbox
+  // timeline
+  renderTimeline(p.historial || [], lbTimeline);
+  // show lightbox (only via X to close)
   lbPedido.classList.remove('hidden');
+  lbPedido.style.display = 'flex';
+  lbPedido.removeAttribute('aria-hidden');
+  // ensure focus on close btn
+  setTimeout(()=> { $('closePedido').focus(); }, 60);
 });
 
-// Cerrar lightbox (X)
-lbClosePedido.addEventListener('click', ()=>{ lbPedido.classList.add('hidden'); });
-
-// Cerrar si clic fuera de contenido
+// Prevent closing lightbox by clicking overlay — only the close button closes it
 lbPedido.addEventListener('click', (e)=>{
-  if(e.target === lbPedido) lbPedido.classList.add('hidden');
+  // do nothing on overlay clicks to force X to close
+  // intentionally left blank
+});
+lbClose.addEventListener('click', ()=>{ hide(lbPedido); });
+
+function renderTimeline(hist, container){
+  container.innerHTML = '';
+  if(!hist || hist.length===0){ container.innerHTML = '<div class="small-muted">No hay eventos en el historial.</div>'; return; }
+  hist.forEach((h)=>{
+    const div = document.createElement('div');
+    div.className = 'timeline-item';
+    div.innerHTML = `<div class="state">${mapStateLabel(h.estado)}</div>
+                     <div class="subtext">${mapStateSubtext(h.estado)}</div>
+                     <div class="fecha">${h.fecha ? 'El ' + formatDate(h.fecha) : ''}</div>`;
+    if(String(h.estado).toLowerCase()==='listo_recoger') div.classList.add('blink');
+    container.appendChild(div);
+  });
+  // trigger confetti if last state is listo_recoger
+  const last = hist[hist.length-1];
+  if(last && String(last.estado).toLowerCase()==='listo_recoger') triggerConfetti();
+}
+
+/* ----------------------- Embedded Update Form inside Lightbox ----------------------- */
+const btnToggleUpdateForm = $('btnToggleUpdateForm');
+const embeddedUpdate = $('embeddedUpdate');
+const embeddedUpdateForm = $('embeddedUpdateForm');
+const btnCancelEmbedded = $('btnCancelEmbedded');
+
+btnToggleUpdateForm.addEventListener('click', ()=>{
+  if(embeddedUpdate.style.display === 'none' || embeddedUpdate.style.display === ''){
+    embeddedUpdate.style.display = 'block';
+    embeddedUpdate.removeAttribute('aria-hidden');
+    // prefill with current selected pedido values if any
+    const p = pedidosEjemplo[pedidoSeleccionadoIndex];
+    if(p){
+      $('up_peso').value = p.peso || '';
+      $('up_tarifa').value = ''; // demo: unknown
+      $('up_estado').value = '';
+      $('up_fecha').value = '';
+      // scroll form into view
+      setTimeout(()=> embeddedUpdate.scrollIntoView({behavior:'smooth', block:'center'}), 120);
+    }
+  } else {
+    embeddedUpdate.style.display = 'none';
+    embeddedUpdate.setAttribute('aria-hidden','true');
+  }
+});
+btnCancelEmbedded.addEventListener('click', ()=>{
+  embeddedUpdate.style.display = 'none';
+  embeddedUpdate.setAttribute('aria-hidden','true');
 });
 
-// acciones Rechazar/Aceptar -> muestran modal de confirmación (mismo para ambos)
-const confirmAviso = document.getElementById('confirmAviso');
-const btnCerrarAviso = document.getElementById('btnCerrarAviso');
+/* Handle embedded update form submission (demo: validate, update local data, show confirm) */
+embeddedUpdateForm.addEventListener('submit', function(e){
+  e.preventDefault();
+  const estado = $('up_estado').value || null;
+  const fecha = $('up_fecha').value || null;
+  const peso = $('up_peso').value ? Number($('up_peso').value) : null;
+  const tarifa = $('up_tarifa').value ? Number($('up_tarifa').value) : null;
 
-function showConfirmAviso(){
-  confirmAviso.classList.add('show');
-  // cerrar lightbox si estaba abierto
-  lbPedido.classList.add('hidden');
-}
-function hideConfirmAviso(){
-  confirmAviso.classList.remove('show');
-}
-btnRechazarPedido.addEventListener('click', ()=> showConfirmAviso());
-btnAceptarPedido.addEventListener('click', ()=> showConfirmAviso());
-btnCerrarAviso.addEventListener('click', ()=> hideConfirmAviso());
+  // validation: at least one of estado/peso/tarifa
+  if(!estado && peso === null && tarifa === null){
+    alert('Ingresa al menos un campo para actualizar (estado, peso o tarifa).');
+    return;
+  }
+  // if estado provided, fecha is required
+  if(estado && !fecha){
+    alert('Si ingresa un estado, la fecha es obligatoria.');
+    return;
+  }
 
-// cerrar confirm al clickear afuera
-confirmAviso.addEventListener('click', (e)=>{
-  if(e.target === confirmAviso) hideConfirmAviso();
+  // simulate processing
+  showProcessingSimulation();
+
+  // update local demo data (in-memory)
+  const p = pedidosEjemplo[pedidoSeleccionadoIndex];
+  if(p){
+    if(peso !== null) p.peso = String(peso);
+    if(tarifa !== null) p.tarifa = String(tarifa);
+    if(estado){
+      p.historial = p.historial || [];
+      // push to historial as next slot (limit 4)
+      p.historial.push({ estado: estado, fecha: fecha });
+      if(p.historial.length > 4) p.historial = p.historial.slice(-4);
+    }
+  }
+
+  // after simulated processing, update UI
+  setTimeout(()=>{
+    hideProcessingSimulation();
+    embeddedUpdate.style.display = 'none';
+    renderPedidos(); // refresh list preview
+    // if lightbox still open, refresh its displayed details and timeline
+    if(!lbPedido.classList.contains('hidden')){
+      const pp = pedidosEjemplo[pedidoSeleccionadoIndex];
+      lbPeso.textContent = `${pp.peso || '-'} lb`;
+      renderTimeline(pp.historial || [], lbTimeline);
+    }
+    // show confirmation
+    confirmAviso.classList.remove('hidden');
+    confirmAviso.style.display = 'flex';
+    confirmAviso.removeAttribute('aria-hidden');
+  }, 900);
 });
 
-// ================== CONTRASEÑAS/OVERLAYS ==================
-const PASS_LOCK  = "12345678"; // puedes cambiarlas luego
+/* Processing simulation UI (simple) */
+function showProcessingSimulation(){
+  confirmAviso.classList.remove('hidden');
+  confirmAviso.style.display='flex';
+  confirmAviso.removeAttribute('aria-hidden');
+  confirmAviso.querySelector('h3').textContent = 'Actualizando (simulado)';
+  confirmAviso.querySelector('p').textContent = 'Simulando actualización...';
+  $('btnCerrarAviso').style.display='none';
+}
+function hideProcessingSimulation(){
+  confirmAviso.querySelector('h3').textContent = 'Operación simulada';
+  confirmAviso.querySelector('p').textContent = 'Acción realizada (demo). No se envió nada al servidor.';
+  $('btnCerrarAviso').style.display = 'block';
+}
+
+/* Close confirmAviso when click on close */
+$('btnCerrarAviso').addEventListener('click', ()=> hide(confirmAviso));
+
+/* ----------------------- CONFETTI (desktop/mobile split) ----------------------- */
+let confettiTimeout = null;
+function triggerConfettiDesktop(){
+  const wrap = document.getElementById('confettiWrap');
+  if(!wrap) return;
+  const N = 300;
+  const colors = ['#1f3a66','#2F528F','#79A7E4'];
+  wrap.innerHTML = '';
+  for(let i=0;i<N;i++){
+    const el = document.createElement('div');
+    const size = Math.floor(Math.random()*8)+6;
+    el.style.position='absolute';
+    el.style.left = Math.random()*100 + '%';
+    el.style.top = (-50 + Math.random()*-50) + 'px';
+    el.style.width = size + 'px';
+    el.style.height = (size*0.6) + 'px';
+    el.style.background = colors[Math.floor(Math.random()*colors.length)];
+    el.style.opacity = String(0.7 + Math.random()*0.3);
+    el.style.borderRadius = '2px';
+    el.style.zIndex = 2500;
+    const destX = (Math.random()*500 - 250);
+    const destY = window.innerHeight + 100;
+    const duration = 4 + Math.random()*4;
+    el.style.transition = `transform ${duration}s ease-out, top ${duration}s linear, opacity ${duration}s linear`;
+    wrap.appendChild(el);
+    requestAnimationFrame(()=> {
+      el.style.top = destY + 'px';
+      el.style.transform = `translateX(${destX}px) rotate(${Math.random()*360}deg)`;
+      el.style.opacity = '0';
+    });
+  }
+  if(confettiTimeout) clearTimeout(confettiTimeout);
+  confettiTimeout = setTimeout(()=> wrap.innerHTML = '', 9000);
+}
+function triggerConfettiMobile(){
+  const wrap = document.getElementById('confettiWrap');
+  if(!wrap) return;
+  const N = 120;
+  const colors = ['#1f3a66','#2F528F','#79A7E4'];
+  wrap.innerHTML = '';
+  for(let i=0;i<N;i++){
+    const el = document.createElement('div');
+    const size = Math.floor(Math.random()*8)+6;
+    el.style.position='absolute';
+    el.style.left = Math.random()*100 + '%';
+    el.style.top = (-50 + Math.random()*-50) + 'px';
+    el.style.width = size + 'px';
+    el.style.height = (size*0.6) + 'px';
+    el.style.background = colors[Math.floor(Math.random()*colors.length)];
+    el.style.opacity = String(0.7 + Math.random()*0.3);
+    el.style.borderRadius = '2px';
+    el.style.zIndex = 2500;
+    const destX = (Math.random()*500 - 250);
+    const destY = window.innerHeight + 100;
+    const duration = 4 + Math.random()*4;
+    el.style.transition = `transform ${duration}s ease-out, top ${duration}s linear, opacity ${duration}s linear`;
+    wrap.appendChild(el);
+    requestAnimationFrame(()=> {
+      el.style.top = destY + 'px';
+      el.style.transform = `translateX(${destX}px) rotate(${Math.random()*360}deg)`;
+      el.style.opacity = '0';
+    });
+  }
+  if(confettiTimeout) clearTimeout(confettiTimeout);
+  confettiTimeout = setTimeout(()=> wrap.innerHTML = '', 9000);
+}
+function triggerConfetti(){
+  if(window.innerWidth <= 420) triggerConfettiMobile(); else triggerConfettiDesktop();
+}
+
+/* ----------------------- UTIL / HELPERS ----------------------- */
+function escapeHtml(str){ if(str===null||str===undefined) return ''; return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function formatDate(d){ try{ const dt = new Date(d); if(isNaN(dt)) return d; return dt.toLocaleDateString('es-ES'); }catch(e){return d;} }
+function mapStateLabel(raw){ if(!raw) return 'Estado desconocido'; const r = String(raw).toLowerCase(); switch(r){ case 'recibido': return 'Recibido'; case 'en_transito': return 'En tránsito'; case 'en_aduana': return 'En Aduana'; case 'listo_recoger': return 'Listo Para Recoger'; default: return raw; } }
+function mapStateSubtext(raw){ if(!raw) return ''; const r = String(raw).toLowerCase(); switch(r){ case 'recibido': return 'Paquete recibido en origen'; case 'en_transito': return 'En tránsito hacia destino'; case 'en_aduana': return 'En proceso aduanal'; case 'listo_recoger': return 'Listo para retiro en sucursal'; default: return ''; } }
+
+/* ----------------------- FORM AGREGAR / ACTUALIZAR (demo) ----------------------- */
+$('formAgregar').addEventListener('submit', function(e){
+  e.preventDefault();
+  const nombre = $('nombre').value.trim();
+  const telCode = $('telCode').value;
+  const telefonoDigits = $('telefonoDigits').value.trim();
+  const telefono = telefonoDigits ? `${telCode} ${telefonoDigits}` : '';
+  const tipo = $('tipo').value;
+  const codigo = $('codigo').value.trim() || null;
+  if(!nombre || !telefonoDigits){ alert('Nombre y teléfono son obligatorios.'); return; }
+  const newP = { id: 'P-' + Math.floor(Math.random()*9000+1000), nombre, telefono, plataforma:'(Demo) Registro manual', descripcion:'Agregado desde demo', tipo, peso: '-', historial: [{estado:'recibido', fecha: today}] };
+  pedidosEjemplo.unshift(newP);
+  renderPedidos();
+  this.reset();
+  $('mensajeAgregar').style.display='block';
+  setTimeout(()=> $('mensajeAgregar').style.display='none', 2500);
+});
+
+/* Demo actualizar (section) - not wired to real backend, shows message */
+$('formActualizar').addEventListener('submit', function(e){
+  e.preventDefault();
+  $('mensajeActualizar').style.display='block';
+  setTimeout(()=> $('mensajeActualizar').style.display='none', 2500);
+  this.reset();
+  $('fechaEstado').value = today;
+});
+
+/* ----------------------- CONTRASEÑAS / STATS ----------------------- */
+const PASS_LOCK  = "12345678";
 const PASS_STATS = "12345678";
 
-const appWrapper   = document.getElementById('app');
-const lockOverlay  = document.getElementById('lockOverlay');
-const statsOverlay = document.getElementById('statsOverlay');
+const lockOverlay = $('lockOverlay');
+const lockPass = $('lockPass');
+const lockSubmit = $('lockSubmit');
+const lockError = $('lockError');
 
-const lockPass   = document.getElementById('lockPass');
-const lockSubmit = document.getElementById('lockSubmit');
-const lockError  = document.getElementById('lockError');
+const statsOverlay = $('statsOverlay');
+const statsPass = $('statsPass');
+const statsSubmit = $('statsSubmit');
+const statsCancel = $('statsCancel');
+const statsError = $('statsError');
+const statsFrame = $('estadisticasFrame');
 
-const statsPass    = document.getElementById('statsPass');
-const statsSubmit  = document.getElementById('statsSubmit');
-const statsCancel  = document.getElementById('statsCancel');
-const statsError   = document.getElementById('statsError');
-
-const statsFrame   = document.getElementById('estadisticasFrame');
-
-// Mostrar blur al inicio (por si el navegador no soporta backdrop-filter)
 appWrapper.style.filter = 'blur(6px)';
 
-// LOCK INICIAL
 function tryUnlock(){
-  if (lockPass.value === PASS_LOCK){
+  if(lockPass.value === PASS_LOCK){
     lockError.style.display = 'none';
     lockOverlay.style.display = 'none';
+    lockOverlay.setAttribute('aria-hidden','true');
     appWrapper.style.filter = 'none';
     lockPass.value = '';
+    // after unlock show initial data
+    cargarRecord();
+    renderPedidos();
   } else {
     lockError.style.display = 'block';
   }
 }
 lockSubmit.addEventListener('click', tryUnlock);
-lockPass.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') tryUnlock(); });
+lockPass.addEventListener('keydown', (e)=>{ if(e.key==='Enter') tryUnlock(); });
 
-// ESTADÍSTICAS
-function openStats(){
-  statsOverlay.style.display = 'flex';
-  statsError.style.display = 'none';
-  statsPass.value = '';
-  statsPass.focus();
-}
-function closeStats(){
-  statsOverlay.style.display = 'none';
-}
+function openStats(){ statsOverlay.style.display='flex'; statsOverlay.removeAttribute('aria-hidden'); statsPass.value=''; statsPass.focus(); }
+function closeStats(){ statsOverlay.style.display='none'; statsOverlay.setAttribute('aria-hidden','true'); }
 function loadStatsIfAuthorized(){
-  if (statsPass.value === PASS_STATS){
+  if(statsPass.value === PASS_STATS){
     statsError.style.display = 'none';
     closeStats();
-    if (statsFrame.src !== 'https://irvinforbusinesses.github.io/plantillacatalogo/estadisticas.html'){
-      statsFrame.src = 'https://irvinforbusinesses.github.io/plantillacatalogo/estadisticas.html';
-    }
+    if(statsFrame.src === '') statsFrame.src = 'https://irvinforbusinesses.github.io/plantillacatalogo/estadisticas.html';
     mostrarSeccion('estadisticas');
     statsPass.value = '';
   } else {
@@ -957,56 +950,39 @@ function loadStatsIfAuthorized(){
   }
 }
 statsSubmit.addEventListener('click', loadStatsIfAuthorized);
-statsPass.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') loadStatsIfAuthorized(); });
+statsPass.addEventListener('keydown', (e)=>{ if(e.key==='Enter') loadStatsIfAuthorized(); });
 statsCancel.addEventListener('click', closeStats);
 
-// ===== LIGHTBOX RECORDATORIOS (tu código original) =====
-const lightbox = document.getElementById('lightbox-recordatorio');
-const closeBtn = document.querySelector('#lightbox-recordatorio .close-lightbox');
-const lbDelete = document.querySelector('#lightbox-recordatorio .btn-eliminar');
-let indexSeleccionado = null;
+/* ----------------------- LIGHTBOX RECORDATORIO CLOSES ----------------------- */
+document.querySelectorAll('.close-lightbox').forEach(btn=>{
+  btn.addEventListener('click', ()=> {
+    const parent = btn.closest('.lightbox');
+    if(parent) hide(parent);
+  });
+});
 
-listDiv.addEventListener('click', (e) => {
-  const eliminarBtn = e.target.closest('.btnEliminar');
-  if (eliminarBtn) {
-    indexEliminar = eliminarBtn.dataset.index;
-    popEliminarConfirm.style.display='block';
-    return;
-  }
-  const item = e.target.closest('.recordatorio-item');
-  if (item) {
-    indexSeleccionado = Number(item.dataset.index);
-    const arr = JSON.parse(localStorage.getItem('recordatorios')||'[]');
-    const r = arr[indexSeleccionado];
-
-    const titleEl = lightbox.querySelector('h2');
-    const pEl = lightbox.querySelector('p');
-
-    if (r) {
-      titleEl.textContent = r.titulo || 'Recordatorio';
-      pEl.innerHTML = `${r.desc || ''}<br><small>${r.fecha || ''}</small>`;
-    } else {
-      titleEl.textContent = 'Recordatorio';
-      pEl.textContent = 'Versión de prueba, datos no disponibles';
+/* ----------------------- UTIL: escape click outside for recordatorio only (kept) ----------------------- */
+document.querySelectorAll('.lightbox').forEach(lb=>{
+  lb.addEventListener('click', (e)=>{
+    if(lb === $('lightbox-recordatorio')){
+      if(e.target === lb) hide(lb);
     }
-
-    lightbox.classList.remove('hidden');
-  }
+  });
 });
 
-closeBtn.addEventListener('click', () => {
-  lightbox.classList.add('hidden');
-});
-lightbox.addEventListener('click', (e) => {
-  if (e.target === lightbox) lightbox.classList.add('hidden');
-});
-lbDelete.addEventListener('click', () => {
-  if (indexSeleccionado != null) {
-    popEliminarConfirm.style.display = 'block';
-  }
-  lightbox.classList.add('hidden');
-});
+/* ----------------------- INITIAL STATE ----------------------- */
+mostrarSeccion('inicio');
+hide($('popFormRecord'));
+hide($('popConfirm'));
+hide($('popEliminarConfirm'));
+hide($('lightbox-pedido'));
+hide($('confirmAviso'));
+hide($('lightbox-recordatorio'));
+hide($('confirmAviso')); // ensure hidden
 
+/* ----------------------- small misc ----------------------- */
+function mapStateLabel(raw){ if(!raw) return 'Estado desconocido'; const r = String(raw).toLowerCase(); switch(r){ case 'recibido': return 'Recibido'; case 'en_transito': return 'En tránsito'; case 'en_aduana': return 'En Aduana'; case 'listo_recoger': return 'Listo Para Recoger'; default: return raw; } }
+function mapStateSubtext(raw){ if(!raw) return ''; const r = String(raw).toLowerCase(); switch(r){ case 'recibido': return 'Paquete recibido en origen'; case 'en_transito': return 'En tránsito hacia destino'; case 'en_aduana': return 'En proceso aduanal'; case 'listo_recoger': return 'Listo para retiro en sucursal'; default: return ''; } }
 </script>
 </body>
 </html>
