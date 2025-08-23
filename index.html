@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Seguimiento y Cotización</title>
+<title>Seguimiento y Cotización — Demo</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@600&display=swap" rel="stylesheet">
 <style>
 :root{
   --color-bg:#E8F0F5;
   --color-accent:#2F528F;
   --text:#1A1A1A;
-  --solicitar-highlight: #2832C2; /* color hover / destacado */
+  --solicitar-highlight: #2832C2;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{
@@ -29,10 +29,12 @@ h1{font-family:'Poppins',sans-serif;font-size:1.8rem;color:var(--color-accent)}
 nav{display:flex;justify-content:center;gap:.5rem;margin-top:1rem}
 nav button{flex:1;background:var(--color-accent);color:#fff;border:none;padding:.75rem;font-weight:700;border-radius:8px;cursor:pointer; transition:transform .12s}
 nav button.inactive{background:#a0b6e0}
-nav button#btnSolicitar{ /* destacar por defecto con color hover */
-  background: var(--solicitar-highlight);
-  box-shadow: 0 6px 14px rgba(31,58,102,0.16);
-}
+/* ocultar el boton solicitar del nav */
+nav button#btnSolicitar{ display:none; }
+
+/* hacer que "Cotizar" tenga el estilo destacado (mismo look que solicit-ar en antiguas versiones) */
+nav button#btnCotizar { background: var(--solicitar-highlight); box-shadow: 0 6px 14px rgba(31,58,102,0.16); }
+
 nav button:hover{ transform: translateY(-2px); }
 
 /* sections */
@@ -79,6 +81,14 @@ button.calc-btn{margin-top:1rem;background:var(--color-accent);color:white;borde
 .details-row{display:flex;justify-content:space-between;gap:.5rem;margin-top:.4rem;font-size:.95rem}
 .details-row div{flex:1;text-align:left}
 
+/* results list (cards) */
+.results-list{display:flex;flex-direction:column;gap:0.75rem;margin-top:0.5rem}
+.result-card{display:flex;justify-content:space-between;align-items:center;padding:0.75rem;border-radius:12px;background:#fff;border:1px solid #e9f0fb;cursor:pointer;box-shadow:0 2px 8px rgba(47,82,143,0.04)}
+.result-card:hover{transform:translateY(-3px)}
+.result-card .left{display:flex;flex-direction:column;gap:4px}
+.result-card .meta{font-size:0.95rem;color:#444}
+.result-card .right{font-weight:700;color:var(--color-accent);font-size:0.95rem}
+
 /* timeline */
 .timeline{position:relative;padding-left:24px;border-left:2px solid rgba(47,82,143,0.08);margin-bottom:.5rem}
 .timeline-item{position:relative;padding:8px 12px;margin-bottom:.5rem}
@@ -104,10 +114,10 @@ button.calc-btn{margin-top:1rem;background:var(--color-accent);color:white;borde
 .small-muted{font-size:.9rem;color:#666;margin-top:.25rem}
 .center{text-align:center}
 
-/* receipt */
-.hr-divider{height:1px;background:#111;margin:1rem 0;border-radius:2px}
-.receipt-line{display:flex;justify-content:space-between;gap:.5rem;padding:.25rem 0;font-weight:600}
-.receipt-small{font-size:.95rem;color:#444;margin-top:.25rem}
+/* receipt / mini result for cotizar (centered) */
+.cotiza-box{margin-top:1rem;padding:14px;border-radius:10px;background:#fff;border:1px solid #eef3f8;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;box-shadow:0 6px 18px rgba(47,82,143,0.06)}
+.cotiza-price{font-weight:800;font-size:1.3rem;color:var(--color-accent)}
+.cotiza-sub{font-size:0.95rem;color:#444}
 
 /* Modal */
 .modal-backdrop{
@@ -116,15 +126,20 @@ button.calc-btn{margin-top:1rem;background:var(--color-accent);color:white;borde
 }
 .modal-backdrop.show{opacity:1;pointer-events:auto}
 .modal{
-  width:86%;max-width:420px;background:#fff;border-radius:12px;padding:1.25rem;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.18);transform:translateY(8px);transition:transform .28s ease, opacity .28s ease; opacity:0;
+  width:86%;max-width:520px;background:#fff;border-radius:12px;padding:1.25rem;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.18);transform:translateY(8px);transition:transform .28s ease, opacity .28s ease; opacity:0;
 }
 .modal-backdrop.show .modal{ transform: translateY(0); opacity:1; }
 
-/* icon */
-.check-icon{width:72px;height:72px;margin:0 auto 0.5rem;display:flex;align-items:center;justify-content:center;border-radius:999px;background:rgba(47,82,143,0.08)}
+/* package detail modal has scroll area */
+.package-modal .modal{max-width:520px;max-height:84vh;overflow-y:auto;text-align:left}
+.package-modal .close-x{position:absolute;right:14px;top:10px;background:#fff;border:1px solid #e6e9ef;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,0.08)}
+.package-modal h3{color:var(--color-accent);margin-top:0}
+
+/* small CTA (same look as linktree buttons) */
+#floatCTA .link-btn { max-width:220px; padding:.6rem 1rem; font-size:0.95rem; display:inline-block; }
 
 /* responsive tweaks */
-@media (max-width:420px){ .link-btn{max-width:100%} .phone-row select{width:40%} }
+@media (max-width:420px){ .link-btn{max-width:100%} .phone-row select{width:40%} .modal{width:92%} }
 </style>
 </head>
 <body>
@@ -144,13 +159,13 @@ button.calc-btn{margin-top:1rem;background:var(--color-accent);color:white;borde
   <img id="logoMain" src="https://github.com/Irvyandl/VirtualAssistance/blob/main/assets/visuals/logo.jpg?raw=true" alt="Logo Nica Expressway">
   <p style="margin-bottom:1.25rem;">Conéctate con nosotros en nuestras redes y mantente al día con tus envíos</p>
   <div class="linktree-buttons">
-    <a class="link-btn" href="https://www.instagram.com/nicaexpressway/" target="_blank">Instagram</a>
-    <a class="link-btn" href="https://www.facebook.com/profile.php?id=61577870368716" target="_blank">Facebook</a>
-    <a class="link-btn" href="https://wa.me/17869133662" target="_blank">WhatsApp</a>
+    <a class="link-btn" href="#" onclick="alert('Demo: enlace falso para demo.');return false;">Instagram</a>
+    <a class="link-btn" href="#" onclick="alert('Demo: enlace falso para demo.');return false;">Facebook</a>
+    <a class="link-btn" href="#" onclick="alert('Demo: enlace falso para demo.');return false;">WhatsApp</a>
   </div>
 </section>
 
-<!-- COTIZAR (IDs actualizados para evitar choques con Solicitar) -->
+<!-- COTIZAR -->
 <section id="cotizar">
   <h2>Calculadora de Envío</h2>
   <label for="tipoEnvioCotizar">Tipo de envío:</label>
@@ -164,10 +179,24 @@ button.calc-btn{margin-top:1rem;background:var(--color-accent);color:white;borde
 
   <button class="calc-btn" onclick="calcularCotizar()">Calcular</button>
 
-  <div class="resultado" id="resultadoCotizar"></div>
+  <!-- mini contenedor centrado para resultados -->
+  <div id="resultadoCotizar" class="cotiza-box" style="display:none;">
+    <div class="cotiza-price" id="cotizaPrice">-</div>
+    <div class="cotiza-sub" id="cotizaDays">-</div>
+  </div>
+
+  <!-- boton flotante de "realiza tu pedido ahora" (demo: aparece a 3s) -->
+  <div id="floatCTA" style="display:none;text-align:center;margin-top:12px;">
+    <a id="ctaWhats" class="link-btn" href="#" onclick="alert('Demo: abrir WhatsApp (falso)');return false;" style="animation:float 3s ease-in-out infinite;">
+      Realiza tu pedido ahora
+    </a>
+  </div>
+  <style>
+    @keyframes float { 0%{transform:translateY(0)} 50%{transform:translateY(-6px)} 100%{transform:translateY(0)} }
+  </style>
 </section>
 
-<!-- SOLICITAR (nuevo formulario) -->
+<!-- SOLICITAR (la sección existe pero el nav ya no tiene acceso visible) -->
 <section id="solicitar">
   <h2>Solicita tu pedido</h2>
 
@@ -183,10 +212,10 @@ button.calc-btn{margin-top:1rem;background:var(--color-accent);color:white;borde
     <input type="tel" id="telefonoSolicitar" placeholder="Ej: 12345678" inputmode="numeric" pattern="[0-9]{8,10}" minlength="8" maxlength="10" required>
   </div>
 
-  <label for="plataformaSolicitar">Plataforma/Agencia donde realizas tu pedido</label>
+  <label for="plataformaSolicitar">Plataforma/Agencia</label>
   <input type="text" id="plataformaSolicitar" placeholder="Ej: Shein" required>
 
-  <label for="descripcionSolicitar">Descripción del paquete(opcional)</label>
+  <label for="descripcionSolicitar">Descripción (opcional)</label>
   <textarea id="descripcionSolicitar" placeholder="Ropa, perfumes, etc (opcional)"></textarea>
 
   <label for="tipoEnvioSolicitar">Tipo de envío:</label>
@@ -199,24 +228,20 @@ button.calc-btn{margin-top:1rem;background:var(--color-accent);color:white;borde
   <label for="pesoSolicitar">Peso aproximado (libras):</label>
   <input type="number" id="pesoSolicitar" placeholder="Ej: 5" min="0.1" step="0.1" required>
 
-  <!-- botón llamar la atención (color hover por defecto ya aplicado en nav) -->
   <button id="btnCalcularSolicitar" class="calc-btn" type="button">Solicitar</button>
 
-  <!-- Div donde aparecerá el recibo -->
   <div id="reciboSolicitar" style="display:none;margin-top:1rem;">
     <div class="hr-divider"></div>
     <div class="receipt-line"><div>Precio por libra de envío</div><div id="precioPorLb">$0.00</div></div>
     <div class="receipt-line"><div>Libras totales</div><div id="librasTotales">0</div></div>
     <div class="receipt-line"><div>Total</div><div id="totalSolicitar">$0.00</div></div>
-
-    <!-- Confirmar (aparece después de calcular) -->
     <div style="margin-top:0.75rem;">
       <button id="btnConfirmarSolicitud" class="calc-btn" style="display:none;background:#2F528F">Confirmar solicitud</button>
     </div>
   </div>
 </section>
   
-<!-- SEGUIMIENTO (actualizado) -->
+<!-- SEGUIMIENTO -->
 <section id="seguimiento">
   <h2>Seguimiento de Pedido</h2>
 
@@ -247,12 +272,12 @@ button.calc-btn{margin-top:1rem;background:var(--color-accent);color:white;borde
     <strong>Buscando tu paquete, espera...</strong>
   </div>
 
-  <!-- Resultado -->
-  <div id="resultContainer" class="package-box" style="display:none;">
-    <!-- timeline -->
-    <div id="timeline" class="timeline"></div>
+  <!-- Results list (max 3 cards) -->
+  <div id="resultsList" class="results-list" style="display:none"></div>
 
-    <!-- datos principales -->
+  <!-- single package detail area (kept for backwards compatibility but hidden; details use modal) -->
+  <div id="resultContainer" class="package-box" style="display:none;">
+    <div id="timeline" class="timeline"></div>
     <div id="packageDetails" class="details-row" style="margin-top:1rem">
       <div>
         <div class="small-muted">Tipo de envío</div>
@@ -267,84 +292,115 @@ button.calc-btn{margin-top:1rem;background:var(--color-accent);color:white;borde
         <div id="detalleTarifa">-</div>
       </div>
     </div>
-
     <div style="margin-top:.8rem" id="detalleTotal"><strong>Total:</strong> -</div>
   </div>
 
   <div id="noResult" class="small-muted center" style="margin-top:1rem; display:none;">Aquí se mostrará el estado del envío.</div>
 </section>
 
-<!-- confetti wrapper -->
-<div id="confettiWrap" aria-hidden="true"></div>
+<!-- PACKAGE DETAIL MODAL (lightbox) - solo CERRAR -->
+<div id="packageBackdrop" class="modal-backdrop package-modal" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="pkgTitle">
+    <button class="close-x" id="pkgClose" aria-label="Cerrar">&times;</button>
+    <h3 id="pkgTitle">Pedido</h3>
 
-<!-- Modal confirmación -->
-<div id="modalBackdrop" class="modal-backdrop" aria-hidden="true">
-  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <div class="check-icon" aria-hidden="true">
-      <!-- inline SVG check (se ve bonito y mantiene color web) -->
-      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <circle cx="12" cy="12" r="10" stroke="none" fill="transparent"/>
-        <path d="M9 12.5l2 2 4-4" stroke="#2F528F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-      </svg>
+    <div style="margin-top:8px;">
+      <div style="margin:8px 0;"><strong>Nombre:</strong> <span id="pkgNombre">-</span></div>
+      <div style="margin:8px 0;"><strong>Teléfono:</strong> <a id="pkgTelefono" class="pedido-phone" target="_blank" rel="noopener">-</a></div>
+      <div style="margin:8px 0;"><strong>Código seguimiento:</strong> <span id="pkgCodigo">-</span></div>
+      <div style="margin:8px 0;"><strong>Tipo:</strong> <span id="pkgTipo">-</span></div>
+      <div style="margin:8px 0;"><strong>Peso:</strong> <span id="pkgPeso">-</span></div>
+      <div style="margin:8px 0;"><strong>Tarifa / lb:</strong> <span id="pkgTarifa">-</span></div>
+      <div style="margin:8px 0;"><strong>Total:</strong> <span id="pkgTotal">-</span></div>
     </div>
-    <h3 id="modalTitle" style="margin-bottom:.4rem;color:var(--color-accent)">Solicitud enviada</h3>
-    <p class="receipt-small">Tu solicitud ha sido enviada, te contactaremos por WhatsApp para confirmar el estado de tu solicitud en los próximos minutos.</p>
-    <div style="margin-top:1rem;">
-      <button id="modalClose" class="calc-btn" style="background:var(--solicitar-highlight)">Cerrar</button>
+
+    <hr style="margin:12px 0;opacity:.06"/>
+
+    <div id="pkgTimeline" class="timeline"></div>
+
+    <div style="margin-top:12px;display:flex;gap:8px;">
+      <!-- solo cerrar -->
+      <button id="btnClosePkg" class="calc-btn" style="flex:1;background:#888">Cerrar</button>
     </div>
   </div>
 </div>
+
+<!-- waiting & confirm modals (demo) -->
+<div id="waitingBackdrop" class="modal-backdrop" aria-hidden="true" style="z-index:3500;">
+  <div class="modal" role="status" aria-live="polite">
+    <div style="width:72px;height:72px;border-radius:999px;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;background:rgba(47,82,143,0.06);">
+      <div style="width:36px;height:36px;border-radius:50%;border:4px solid rgba(47,82,143,0.18);border-top-color:var(--color-accent);animation:spin 1s linear infinite;"></div>
+    </div>
+    <h3 style="color:var(--color-accent);margin-bottom:6px;">Realizando acción</h3>
+    <p style="color:#444;margin-bottom:8px;">Simulando operación, espera...</p>
+  </div>
+</div>
+
+<div id="confirmBackdrop" class="modal-backdrop" aria-hidden="true" style="z-index:3600;">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div style="width:72px;height:72px;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;" class="check-icon">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M9 12.5l2 2 4-4" stroke="#2F528F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
+    </div>
+    <h3 id="modalTitle" style="margin-bottom:.4rem;color:var(--color-accent)">¡Hecho!</h3>
+    <p class="receipt-small">Operación simulada completada. (Demo)</p>
+    <div style="margin-top:1rem;">
+      <button id="confirmClose" class="calc-btn" style="background:var(--solicitar-highlight)">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- confetti wrapper -->
+<div id="confettiWrap" aria-hidden="true"></div>
 
 <footer>
   <p>&copy; 2025. Irvin Prado. Ascende Superius - Seek Higher Things</p>
 </footer>
 
 <script>
-/* CONFIG */
-const API_BASE = 'https://nicaexpressway.onrender.com'; // <- adapta cuando conectes la API real
+/* DEMO — NO HAY LLAMADAS REALES (todo local) */
 
-/* UI refs (nav + secciones) */
+/* NAV */
 const btnInicio = document.getElementById('btnInicio');
 const btnCotizar = document.getElementById('btnCotizar');
 const btnSeguimiento = document.getElementById('btnSeguimiento');
-const btnSolicitar = document.getElementById('btnSolicitar');
-
 const secciones = {
   inicio: document.getElementById('inicio'),
   cotizar: document.getElementById('cotizar'),
   solicitar: document.getElementById('solicitar'),
   seguimiento: document.getElementById('seguimiento')
 };
-
 function mostrarSeccion(nombre){
   for(let s in secciones) secciones[s].classList.remove('active');
   if(secciones[nombre]) secciones[nombre].classList.add('active');
-
-  // reset nav active states
-  [btnInicio, btnCotizar, btnSolicitar, btnSeguimiento].forEach(b => b.classList.add('inactive'));
+  [btnInicio, btnCotizar, btnSeguimiento].forEach(b => b.classList.add('inactive'));
   if(nombre==='inicio') btnInicio.classList.remove('inactive');
   if(nombre==='cotizar') btnCotizar.classList.remove('inactive');
-  if(nombre==='solicitar') btnSolicitar.classList.remove('inactive');
   if(nombre==='seguimiento') btnSeguimiento.classList.remove('inactive');
 }
-
 btnInicio.addEventListener('click',()=>mostrarSeccion('inicio'));
 btnCotizar.addEventListener('click',()=>mostrarSeccion('cotizar'));
 btnSeguimiento.addEventListener('click',()=>mostrarSeccion('seguimiento'));
-btnSolicitar.addEventListener('click',()=>mostrarSeccion('solicitar'));
 
-/* ========== COTIZAR (mantener, IDs actualizados) ========== */
+/* COTIZAR: muestra resultado en mini contenedor centrado */
 function calcularCotizar(){
   const tipo = document.getElementById('tipoEnvioCotizar').value;
   const peso = parseFloat(document.getElementById('pesoCotizar').value);
-  const resultadoDiv = document.getElementById('resultadoCotizar');
-  if(isNaN(peso)||peso<=0){ resultadoDiv.textContent="Por favor, ingresa un peso válido."; return; }
+  const resultadoBox = document.getElementById('resultadoCotizar');
+  const priceEl = document.getElementById('cotizaPrice');
+  const daysEl = document.getElementById('cotizaDays');
+  if(isNaN(peso)||peso<=0){ priceEl.textContent='Por favor, ingresa un peso válido.'; resultadoBox.style.display='flex'; daysEl.textContent=''; return; }
   let precio=0,dias=0;
   if(tipo==='aereo'){ precio = peso*7.50; dias=7; } else { precio = peso*3.00; dias=15; }
-  resultadoDiv.innerHTML = `Precio estimado: $${precio.toFixed(2)} USD<br>Llegada estimada: ${dias} días`;
+  priceEl.textContent = `$${precio.toFixed(2)} USD`;
+  daysEl.textContent = `Llegada estimada: ${dias} días`;
+  resultadoBox.style.display='flex';
+  // show CTA after 3s (demo)
+  setTimeout(()=>{ const cta = document.getElementById('floatCTA'); if(cta) cta.style.display='block'; }, 3000);
 }
 
-/* ========== SOLICITAR ========== */
+/* SOLICITAR (demo behavior only) */
 const btnCalcularSolicitar = document.getElementById('btnCalcularSolicitar');
 const reciboDiv = document.getElementById('reciboSolicitar');
 const precioPorLbEl = document.getElementById('precioPorLb');
@@ -353,72 +409,40 @@ const totalSolicitarEl = document.getElementById('totalSolicitar');
 const btnConfirmarSolicitud = document.getElementById('btnConfirmarSolicitud');
 
 btnCalcularSolicitar.addEventListener('click', onCalcularSolicitar);
-
 function onCalcularSolicitar(){
-  // obtener valores
   const nombre = (document.getElementById('nombreSolicitar').value||'').trim();
   const telCode = document.getElementById('telCodeSolicitar').value;
   const telefonoDigits = (document.getElementById('telefonoSolicitar').value||'').trim();
-  const telefono = telefonoDigits ? `${telCode}${telefonoDigits}` : '';
   const plataforma = (document.getElementById('plataformaSolicitar').value||'').trim();
-  const descripcion = (document.getElementById('descripcionSolicitar').value||'').trim();
   const tipo = document.getElementById('tipoEnvioSolicitar').value;
   const peso = parseFloat(document.getElementById('pesoSolicitar').value);
-
-  // validaciones
   if(!nombre){ alert('Por favor ingresa tu nombre.'); return; }
   if(!telefonoDigits || !/^\d{8,10}$/.test(telefonoDigits)){ alert('Ingresa un número válido de 8 a 10 dígitos.'); return; }
   if(!plataforma){ alert('Por favor indica la plataforma o agencia de donde viene el paquete.'); return; }
   if(!tipo){ alert('Selecciona el tipo de envío.'); return; }
   if(isNaN(peso) || peso<=0){ alert('Ingresa un peso válido mayor que 0.'); return; }
-
-  // precios (misma lógica que calculadora)
   const pricePerLb = (tipo === 'aereo') ? 7.50 : 3.00;
   const total = Number((pricePerLb * peso).toFixed(2));
-
-  // Mostrar recibo
   precioPorLbEl.textContent = `$${pricePerLb.toFixed(2)} USD`;
   librasTotalesEl.textContent = `${peso} lb`;
   totalSolicitarEl.textContent = `$${total.toFixed(2)} USD`;
   reciboDiv.style.display = 'block';
-
-  // esconder botón solicitar y mostrar confirmar
   btnCalcularSolicitar.style.display = 'none';
   btnConfirmarSolicitud.style.display = 'block';
-
-  // almacenar datos temporalmente en dataset para usar en confirmación si lo deseas
-  btnConfirmarSolicitud.dataset.payload = JSON.stringify({
-    nombre, telefono, plataforma, descripcion, tipo, peso, pricePerLb, total
-  });
+  btnConfirmarSolicitud.dataset.payload = JSON.stringify({nombre, telefono:telCode+telefonoDigits, plataforma, tipo, peso, pricePerLb, total});
 }
 
-/* Confirmar solicitud -> mostrar modal, reset form al cerrar */
-const modalBackdrop = document.getElementById('modalBackdrop');
-const modalCloseBtn = document.getElementById('modalClose');
+const waitingBackdrop = document.getElementById('waitingBackdrop');
+const confirmBackdrop = document.getElementById('confirmBackdrop');
+const confirmCloseBtn = document.getElementById('confirmClose');
 
-btnConfirmarSolicitud.addEventListener('click', async ()=>{
-  // Aquí podrías enviar a tu API con fetch() si quieres. Por ahora mostramos modal.
-  // Ejemplo (descomentar cuando tengas endpoint):
-  /*
-  const payload = JSON.parse(btnConfirmarSolicitud.dataset.payload || '{}');
-  await fetch(`${API_BASE}/solicitudes`, {
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body: JSON.stringify(payload)
-  });
-  */
-
-  showModal();
+btnConfirmarSolicitud.addEventListener('click', ()=>{
+  showWaiting();
+  setTimeout(()=>{ hideWaiting(); showConfirm(); }, 900);
 });
-
-function showModal(){
-  modalBackdrop.classList.add('show');
-}
-
-function hideModal(){
-  modalBackdrop.classList.remove('show');
-
-  // Resetear el formulario de solicitar
+confirmCloseBtn.addEventListener('click', ()=>{
+  hideConfirm();
+  // reset form visually
   document.getElementById('nombreSolicitar').value = '';
   document.getElementById('telCodeSolicitar').value = '+505';
   document.getElementById('telefonoSolicitar').value = '';
@@ -429,30 +453,19 @@ function hideModal(){
   reciboDiv.style.display = 'none';
   btnConfirmarSolicitud.style.display = 'none';
   btnCalcularSolicitar.style.display = 'block';
-}
-
-modalCloseBtn.addEventListener('click', ()=> {
-  hideModal();
 });
 
-/* permitir cerrar modal al clickear backdrop */
-modalBackdrop.addEventListener('click', (e)=>{
-  if(e.target === modalBackdrop) hideModal();
-});
+function showWaiting(){ waitingBackdrop.classList.add('show'); waitingBackdrop.setAttribute('aria-hidden','false'); }
+function hideWaiting(){ waitingBackdrop.classList.remove('show'); waitingBackdrop.setAttribute('aria-hidden','true'); }
+function showConfirm(){ confirmBackdrop.classList.add('show'); confirmBackdrop.setAttribute('aria-hidden','false'); }
+function hideConfirm(){ confirmBackdrop.classList.remove('show'); confirmBackdrop.setAttribute('aria-hidden','true'); }
 
-/* ================================
-   SEGUIMIENTO: lógica de búsqueda
-   ================================ */
+/* SEGUIMIENTO (demo) */
 const btnBuscar = document.getElementById('btnBuscar');
 const btnLimpiar = document.getElementById('btnLimpiar');
 const overlay = document.getElementById('searchOverlay');
-const resultContainer = document.getElementById('resultContainer');
+const resultsList = document.getElementById('resultsList');
 const noResult = document.getElementById('noResult');
-const timelineEl = document.getElementById('timeline');
-const detalleTipo = document.getElementById('detalleTipo');
-const detallePeso = document.getElementById('detallePeso');
-const detalleTarifa = document.getElementById('detalleTarifa');
-const detalleTotal = document.getElementById('detalleTotal');
 
 btnBuscar.addEventListener('click', onBuscar);
 btnLimpiar.addEventListener('click', onLimpiar);
@@ -462,10 +475,19 @@ function onLimpiar(){
   document.getElementById('nombreBuscar').value='';
   document.getElementById('telefonoBuscar').value='';
   document.getElementById('telCodeBuscar').value='+505';
-  hideResult();
+  resultsList.style.display='none';
+  resultsList.innerHTML='';
+  hideResultArea();
 }
 
-/* Validación: al menos uno de codigo / nombre / telefono */
+function hideResultArea(){
+  document.getElementById('resultContainer').style.display='none';
+  noResult.style.display='block';
+  noResult.textContent = 'Aquí se mostrará el estado del envío.';
+  const t = document.getElementById('timeline'); if(t) t.innerHTML='';
+}
+
+/* gather params */
 function gatherSearchParams(){
   const codigo = (document.getElementById('codigo').value||'').trim() || null;
   const nombre = (document.getElementById('nombreBuscar').value||'').trim() || null;
@@ -475,132 +497,160 @@ function gatherSearchParams(){
   return { codigo, nombre, telefono };
 }
 
+/* validate */
 function validateAtLeastOne(params){
   return Boolean(params.codigo || params.nombre || params.telefono);
 }
 
-/* Main search handler */
+/* main */
 async function onBuscar(){
   const params = gatherSearchParams();
   if(!validateAtLeastOne(params)){
     alert('Ingresa al menos el código, o el nombre, o el teléfono para buscar.');
     return;
   }
-
-  // Mostrar overlay
   overlay.style.display = 'block';
-  hideResult(); // limpiar resultado previo
-
-  try {
-    // Llamada a la API
-    const pkg = await fetchPackageFromAPI(params); // <-- implementa tu API aquí
-
-    if(!pkg){
-      // nada encontrado
-      overlay.style.display = 'none';
-      noResult.style.display = 'block';
-      noResult.textContent = 'No se encontró paquete con los criterios introducidos.';
-      return;
-    }
-
-    // Mostrar datos en UI
-    renderPackageResult(pkg);
-    overlay.style.display = 'none';
-  } catch (err) {
-    console.error('Error búsqueda:', err);
-    overlay.style.display = 'none';
+  resultsList.style.display='none';
+  resultsList.innerHTML='';
+  hideResultArea();
+  const pkgs = await fetchPackageFromAPI(params);
+  overlay.style.display = 'none';
+  if(!pkgs || pkgs.length === 0){
     noResult.style.display = 'block';
-    noResult.textContent = 'Ocurrió un error buscando el paquete. Revisa la consola.';
+    noResult.textContent = 'No se encontró paquete con los criterios introducidos.';
+    return;
   }
+  // if search by code (single) show only that entry as single-card (but still use list)
+  renderResultsList(pkgs.slice(0,3));
 }
 
-/* ***********************
-   fetchPackageFromAPI()
-   (misma función demo que antes)
-   ***********************/
+/* DEMO: returns array of up to 3 fake packages
+   - If codigo exact matches '1989-A'/'1989-B'/'1989-C' -> return that single package
+   - If codigo === '1989' or 'demo' -> return first package only (simulate single-code search)
+   - If nombre or telefono match demo triggers -> return up to 3 packages
+*/
 async function fetchPackageFromAPI({codigo, nombre, telefono}){
-  if((codigo && (codigo.toLowerCase()==='demo' || codigo==='1989')) || nombre==='Lester Gamez'){
-    await delay(700); // simula latencia
-    return {
-      paquete: {
-        codigo_seguimiento: codigo || '1989',
-        tipo_envio_id: 1,
-        peso_libras: 5.5,
-        tarifa_usd: 4.25,
-        fecha_estado: '2025-08-18'
-      },
-      historial: {
-        estado1: 'recibido', fecha1: '2025-08-10',
-        estado2: 'en_transito', fecha2: '2025-08-12',
-        estado3: 'en_aduana', fecha3: '2025-08-16',
-        estado4: 'listo_recoger', fecha4: '2025-08-18'
-      }
-    };
-  }
+  const phoneDigits = (telefono||'').replace(/\D/g,'');
+  const demoPhoneMatch = phoneDigits === '50512345678' || phoneDigits === '12345678';
+  const demoName = (nombre && nombre.trim()==='Lester Gamez');
+  const demoCode = codigo ? codigo.toString().trim() : null;
+
   await delay(600);
+
+  // base date
+  const baseDate = new Date('2025-08-10');
+  function fmt(d){ const y=d.getFullYear(); const m=String(d.getMonth()+1).padStart(2,'0'); const dd=String(d.getDate()).padStart(2,'0'); return `${y}-${m}-${dd}`; }
+
+  const all = [
+    {
+      paquete: { id:1, nombre_cliente:'Lester Gamez', codigo_seguimiento:'1989-A', tipo_envio_id:1, peso_libras:5.5, tarifa_usd:4.25, fecha_estado: fmt(new Date(baseDate.getTime())), telefono:'+50512345678' },
+      historial: { estado1:'recibido', fecha1: fmt(new Date(baseDate.getTime())), estado2:'en_transito', fecha2: fmt(new Date(baseDate.getTime()+2*24*3600*1000)), estado3:'en_aduana', fecha3: fmt(new Date(baseDate.getTime()+6*24*3600*1000)), estado4:'listo_recoger', fecha4: fmt(new Date(baseDate.getTime()+8*24*3600*1000)) }
+    },
+    {
+      paquete: { id:2, nombre_cliente:'Lester Gamez', codigo_seguimiento:'1989-B', tipo_envio_id:2, peso_libras:3.2, tarifa_usd:3.10, fecha_estado: fmt(new Date(baseDate.getTime()+1*24*3600*1000)), telefono:'+50512345678' },
+      historial: { estado1:'recibido', fecha1: fmt(new Date(baseDate.getTime()+1*24*3600*1000)), estado2:'en_transito', fecha2: fmt(new Date(baseDate.getTime()+3*24*3600*1000)), estado3:null, fecha3:null, estado4:null, fecha4:null }
+    },
+    {
+      paquete: { id:3, nombre_cliente:'Lester Gamez', codigo_seguimiento:'1989-C', tipo_envio_id:1, peso_libras:null, tarifa_usd:null, fecha_estado: fmt(new Date(baseDate.getTime()+2*24*3600*1000)), telefono:'+50512345678' },
+      historial: { estado1:'recibido', fecha1: fmt(new Date(baseDate.getTime()+2*24*3600*1000)), estado2:null, fecha2:null, estado3:null, fecha3:null, estado4:null, fecha4:null }
+    }
+  ];
+
+  // exact code checks
+  if (demoCode) {
+    const c = demoCode.toString().toLowerCase();
+    // direct exact match
+    const foundExact = all.find(a => (a.paquete.codigo_seguimiento || '').toLowerCase() === c);
+    if (foundExact) return [foundExact];
+    // if user typed '1989' or 'demo' treat as single-code search -> return first
+    if (c === '1989' || c === 'demo') return [all[0]];
+    // otherwise no result
+    return null;
+  }
+
+  // name or phone demo triggers -> return up to 3
+  if (demoName || demoPhoneMatch) return all;
+
+  // default none
   return null;
 }
 
 /* helper delay */
 function delay(ms){ return new Promise(resolve => setTimeout(resolve, ms)); }
 
-/* render result logic */
-function renderPackageResult({ paquete, historial }){
-  // limpiar
-  timelineEl.innerHTML = '';
-  detalleTipo.textContent = 'Datos aún no disponibles';
-  detallePeso.textContent = 'Datos aún no disponibles';
-  detalleTarifa.textContent = 'Datos aún no disponibles';
-  detalleTotal.innerHTML = '<strong>Total:</strong> Datos aún no disponibles';
+/* Render list of result cards (up to 3) */
+function renderResultsList(pkgs){
+  resultsList.innerHTML = '';
+  pkgs.forEach((item, idx) => {
+    const p = item.paquete;
+    const h = item.historial || {};
+    // find first non-null fecha (fecha1..fecha4) or use fecha_estado
+    let firstDate = p.fecha_estado || null;
+    for(let i=1;i<=4;i++){
+      const f = h[`fecha${i}`];
+      if(f){ firstDate = f; break; }
+    }
+    const tipo = (p.tipo_envio_id===1)?'Aéreo': (p.tipo_envio_id===2)?'Marítimo':'-';
+    const card = document.createElement('div');
+    card.className = 'result-card';
+    card.dataset.index = idx;
+    card.innerHTML = `<div class="left"><div class="result-title"><strong>${escapeHtml(p.nombre_cliente||'Sin nombre')}</strong></div><div class="meta">${firstDate?formatDate(firstDate):'Fecha no disponible'}</div></div><div class="right">${escapeHtml(tipo)}</div>`;
+    card.addEventListener('click', ()=> openPackageDetail(item));
+    resultsList.appendChild(card);
+  });
+  resultsList.style.display = 'block';
   noResult.style.display='none';
-  resultContainer.style.display='block';
-
-  // Map tipo_envio_id -> texto
-  const tipoMap = { 1: 'Aéreo', 2: 'Marítimo' };
-  detalleTipo.textContent = tipoMap[paquete?.tipo_envio_id] ?? 'Datos aún no disponibles';
-
-  detallePeso.textContent = paquete?.peso_libras ?? 'Datos aún no disponibles';
-  detalleTarifa.textContent = paquete?.tarifa_usd ?? 'Datos aún no disponibles';
-
-  // Total
-  if (paquete?.peso_libras != null && paquete?.tarifa_usd != null){
-    const total = Number(paquete.peso_libras) * Number(paquete.tarifa_usd);
-    detalleTotal.innerHTML = `<strong>Total:</strong> $${isFinite(total) ? total.toFixed(2) : '0.00'} USD`;
-  }
-
-  // Timeline: procesar estados emparejando estadoN con fechaN
-  if (!historial) {
-    timelineEl.innerHTML = '<div class="small-muted">Historial no disponible</div>';
-  } else {
-    const items = [];
-    for (let i=1;i<=4;i++){
-      const s = historial[`estado${i}`];
-      const f = historial[`fecha${i}`];
-      if ((s && s.toString().trim()!=='') || (f && f.toString().trim()!=='')){
-        items.push({ estado: s || null, fecha: f || null, index: i });
-      }
-    }
-    if (items.length===0){
-      timelineEl.innerHTML = '<div class="small-muted">No hay eventos en el historial.</div>';
-    } else {
-      items.forEach(it => {
-        const div = document.createElement('div');
-        div.className = 'timeline-item';
-        const label = mapStateLabel(it.estado);
-        div.innerHTML = `<div class="state">${label}</div>
-                         <div class="subtext">${mapStateSubtext(it.estado) || ''}</div>
-                         <div class="fecha">${it.fecha ? 'El ' + formatDate(it.fecha) : ''}</div>`;
-        if (it.estado==='listo_recoger'){
-          div.classList.add('blink');
-          triggerConfetti();
-        }
-        timelineEl.appendChild(div);
-      });
-    }
-  }
 }
 
-/* Helpers: estado label/subtext */
+/* Package modal logic (solo detalle + cerrar) */
+const packageBackdrop = document.getElementById('packageBackdrop');
+const pkgClose = document.getElementById('pkgClose');
+const btnClosePkg = document.getElementById('btnClosePkg');
+
+function openPackageDetail(item){
+  const p = item.paquete;
+  const h = item.historial || {};
+  document.getElementById('pkgNombre').textContent = p.nombre_cliente || '-';
+  document.getElementById('pkgTelefono').textContent = p.telefono || '-';
+  if(p.telefono){ const digits = (p.telefono||'').replace(/\D/g,''); document.getElementById('pkgTelefono').href = `https://wa.me/${digits}`; } else { document.getElementById('pkgTelefono').removeAttribute('href'); }
+  document.getElementById('pkgCodigo').textContent = p.codigo_seguimiento || '-';
+  document.getElementById('pkgTipo').textContent = (p.tipo_envio_id===1)?'Aéreo':(p.tipo_envio_id===2)?'Marítimo':'-';
+  document.getElementById('pkgPeso').textContent = p.peso_libras!=null ? `${p.peso_libras} lb` : 'No disponible, actualizar los datos';
+  document.getElementById('pkgTarifa').textContent = p.tarifa_usd!=null ? `$${Number(p.tarifa_usd).toFixed(2)} USD` : 'No disponible, actualizar los datos';
+  if(p.peso_libras!=null && p.tarifa_usd!=null){ const tot = Number(p.peso_libras)*Number(p.tarifa_usd); document.getElementById('pkgTotal').textContent = `$${isFinite(tot)?tot.toFixed(2):'0.00'} USD`; } else { document.getElementById('pkgTotal').textContent = 'No disponible'; }
+
+  // timeline
+  const timelineWrap = document.getElementById('pkgTimeline');
+  timelineWrap.innerHTML = '';
+  const items = [];
+  for(let i=1;i<=4;i++){
+    const s = h[`estado${i}`];
+    const f = h[`fecha${i}`];
+    if((s && String(s).trim()!=='') || (f && String(f).trim()!=='')) items.push({estado:s || null, fecha:f || null});
+  }
+  if(items.length===0){
+    timelineWrap.innerHTML = '<div class="small-muted">Historial no disponible</div>';
+  } else {
+    items.forEach(it => {
+      const div = document.createElement('div');
+      div.className = 'timeline-item';
+      const label = mapStateLabel(it.estado);
+      div.innerHTML = `<div class="state">${label}</div><div class="subtext">${mapStateSubtext(it.estado)||''}</div><div class="fecha">${it.fecha?('El '+formatDate(it.fecha)):''}</div>`;
+      if(it.estado==='listo_recoger'){ div.classList.add('blink'); triggerConfetti(); }
+      timelineWrap.appendChild(div);
+    });
+  }
+
+  // show modal
+  packageBackdrop.classList.add('show');
+  packageBackdrop.setAttribute('aria-hidden','false');
+}
+function closePackageModal(){ packageBackdrop.classList.remove('show'); packageBackdrop.setAttribute('aria-hidden','true'); }
+pkgClose.addEventListener('click', closePackageModal);
+btnClosePkg.addEventListener('click', closePackageModal);
+packageBackdrop.addEventListener('click', (e)=>{ if(e.target===packageBackdrop) { /* do nothing (no close on backdrop) */ } });
+
+/* helpers */
 function mapStateLabel(raw){
   if(!raw) return 'Estado desconocido';
   const r = raw.toString().toLowerCase();
@@ -634,31 +684,21 @@ function formatDate(d){
       return d;
     }
     return dt.toLocaleDateString('es-ES');
-  } catch(e){
-    return d;
-  }
+  } catch(e){ return d; }
 }
 function capitalize(s){ return s.charAt(0).toUpperCase()+s.slice(1); }
+function escapeHtml(str){ if (str===null||str===undefined) return ''; return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
-/* show/hide */
-function hideResult(){
-  resultContainer.style.display='none';
-  noResult.style.display='block';
-  noResult.textContent = 'Aquí se mostrará el estado del envío.';
-  timelineEl.innerHTML='';
-}
-
-/* ===== CONFETTI ===== */
+/* CONFETTI (conservador) */
 let confettiTimeout = null;
 function triggerConfettiDesktop(){
   const wrap = document.getElementById('confettiWrap');
   if (!wrap) return;
-  const N = 600;
+  const N = 400;
   const colors = ['#1f3a66','#2F528F','#79A7E4'];
   for (let i=0; i<N; i++){
     const el = document.createElement('div');
     const size = Math.floor(Math.random()*8)+6;
-    el.className = 'confetti';
     el.style.position='absolute';
     el.style.left = (Math.random()*100)+'%';
     el.style.top = (-50 + Math.random()*-50) + 'px';
@@ -670,7 +710,7 @@ function triggerConfettiDesktop(){
     el.style.zIndex = 2500;
     const destX = (Math.random()*500 - 250);
     const destY = window.innerHeight + 100;
-    const duration = 5 + Math.random()*5;
+    const duration = 4 + Math.random()*4;
     el.style.transition = `transform ${duration}s ease-out, top ${duration}s linear, opacity ${duration}s linear`;
     wrap.appendChild(el);
     requestAnimationFrame(()=>{
@@ -680,17 +720,16 @@ function triggerConfettiDesktop(){
     });
   }
   if (confettiTimeout) clearTimeout(confettiTimeout);
-  confettiTimeout = setTimeout(()=>{ wrap.innerHTML=''; }, 11000);
+  confettiTimeout = setTimeout(()=>{ wrap.innerHTML=''; }, 9000);
 }
 function triggerConfettiMobile(){
   const wrap = document.getElementById('confettiWrap');
   if (!wrap) return;
-  const N = 200;
+  const N = 100;
   const colors = ['#1f3a66','#2F528F','#79A7E4'];
   for (let i=0; i<N; i++){
     const el = document.createElement('div');
     const size = Math.floor(Math.random()*8)+6;
-    el.className = 'confetti';
     el.style.position='absolute';
     el.style.left = (Math.random()*100)+'%';
     el.style.top = (-50 + Math.random()*-50) + 'px';
@@ -702,7 +741,7 @@ function triggerConfettiMobile(){
     el.style.zIndex = 2500;
     const destX = (Math.random()*500 - 250);
     const destY = window.innerHeight + 100;
-    const duration = 5 + Math.random()*5;
+    const duration = 4 + Math.random()*4;
     el.style.transition = `transform ${duration}s ease-out, top ${duration}s linear, opacity ${duration}s linear`;
     wrap.appendChild(el);
     requestAnimationFrame(()=>{
@@ -712,22 +751,18 @@ function triggerConfettiMobile(){
     });
   }
   if (confettiTimeout) clearTimeout(confettiTimeout);
-  confettiTimeout = setTimeout(()=>{ wrap.innerHTML=''; }, 11000);
+  confettiTimeout = setTimeout(()=>{ wrap.innerHTML=''; }, 9000);
 }
-function triggerConfetti(){
-  if(window.innerWidth <= 420) triggerConfettiMobile(); else triggerConfettiDesktop();
-}
+function triggerConfetti(){ if(window.innerWidth<=420) triggerConfettiMobile(); else triggerConfettiDesktop(); }
 
-/* ======================
-   UTIL: enable quick test by pressing Enter in phone/code fields
-   ====================== */
-['codigo','telefonoBuscar','nombreBuscar'].forEach(id=>{
+/* Enter shortcuts */
+['codigo','telefonoBuscar','nombreBuscar','pesoCotizar'].forEach(id=>{
   const el = document.getElementById(id);
-  if(el) el.addEventListener('keydown',(e)=>{ if(e.key==='Enter'){ e.preventDefault(); onBuscar(); } });
+  if(el) el.addEventListener('keydown',(e)=>{ if(e.key==='Enter'){ e.preventDefault(); if(id==='pesoCotizar') calcularCotizar(); else onBuscar(); } });
 });
 
-/* inicial */
-hideResult();
+/* initial state */
+hideResultArea();
 </script>
 </body>
 </html>
